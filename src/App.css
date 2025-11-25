@@ -429,3 +429,150 @@ body {
 .logo-link:hover {
   opacity: 0.8;
 }
+
+/* === ANIMATIONS === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === HOME PAGE STYLES === */
+.home-page {
+  padding-bottom: 4rem;
+}
+
+/* Hero Section */
+.hero-section {
+  padding: 4rem 0;
+  /* Apply Animation */
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.badge {
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-size: 3.5rem; /* Bigger Title */
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.8rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  color: #cbd5e1;
+  max-width: 650px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+/* Features Grid */
+.features-section {
+  margin-top: 4rem;
+}
+
+.section-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  border-radius: 12px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+}
+
+.feature-card .icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.feature-card p {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.feature-card a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Focus Section */
+.focus-section {
+  margin-top: 4rem;
+}
+
+.focus-card {
+  background: linear-gradient(to right, rgba(56, 189, 248, 0.05), transparent);
+  border-left: 4px solid var(--accent);
+  padding: 2rem;
+  border-radius: 0 12px 12px 0;
+}
+
+.focus-label {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.focus-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.focus-card p {
+  color: var(--text-muted);
+  max-width: 700px;
+}
+
+/* Mobile Tweaks */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.4rem;
+  }
+}
