@@ -5,10 +5,16 @@ import '../App.css';
 function Navbar() {
   return (
     <nav className="navbar">
-      {/* The centered container */}
       <div className="nav-inner">
         
-        <div className="logo">GNRHUB</div>
+        {/* Logo Image (Clickable) */}
+        <NavLink to="/" className="logo-link">
+          <img 
+            src="/svg.svg" 
+            alt="GNRHUB Logo" 
+            className="nav-logo"
+          />
+        </NavLink>
         
         <ul className="nav-links">
           <li><NavLink to="/" end className={({isActive}) => isActive ? "active" : ""}>Home</NavLink></li>
