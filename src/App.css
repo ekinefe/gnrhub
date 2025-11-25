@@ -1,31 +1,64 @@
+/* If this isn't in your file, add it to the VERY TOP of App.css */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./assets/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* === 1. TECH VARIABLES === */
 :root {
-  --bg-dark: #0f172a;
-  --bg-card: #1e293b;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --accent: #38bdf8;
-  --border: #334155;
+  --bg-dark: #000000;       /* Pure Black */
+  --bg-panel: #111111;      /* Very Dark Grey */
+  --text-main: #ffffff;
+  --text-muted: #888888;
+  
+  /* The JetBrains Style Accent (Bright Purple/Blue or Orange) */
+  --accent: #FF318C;        /* Cyber Pink/Red - Change to #38bdf8 for Blue */
+  
+  --border: #333333;        /* Visible Grid Lines */
   --nav-height: 70px;
+  
+  /* FORCE JetBrains Mono for everything */
+  --font-main: 'JetBrains Mono', monospace; 
+}
+
+/* === 2. RESET & BACKGROUND GRID === */
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   background-color: var(--bg-dark);
   color: var(--text-main);
-  font-family: 'Inter', system-ui, sans-serif;
-  overflow-y: scroll;
+  font-family: var(--font-main); /* The "Code" look */
+  
+  /* This creates the "Graph Paper" Tech Background */
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px; /* Size of the grid squares */
+  background-position: center top;
 }
 
-* {
-  box-sizing: border-box;
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
-/* === 1. TOP NAVBAR (Global) === */
+/* === 3. NAVBAR (Industrial Style) === */
 .navbar {
   width: 100vw;
   height: var(--nav-height);
-  background-color: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+  backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
@@ -35,544 +68,157 @@ body {
 }
 
 .nav-inner {
-  /* Removed Yellow Debug Color */
-  
   width: 100%;
-  max-width: none !important;
+  max-width: none;
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Pushes Logo Left, Links Right */
-  padding: 0 3rem; /* Spacing from edges */
+  justify-content: space-between;
+  padding: 0 2rem;
 }
 
 .logo {
-  font-weight: 800;
-  font-size: 1.4rem;
-  color: var(--text-main);
-  white-space: nowrap;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  border: 1px solid var(--text-main); /* Boxed Logo */
+  padding: 5px 10px;
 }
 
-/* === THIS IS THE PART THAT WAS MISSING/BROKEN === */
 .nav-links {
-  display: flex;       /* Makes them horizontal */
-  gap: 2rem;           /* Space between links */
-  list-style: none;    /* Removes bullet points */
-  margin: 0;
-  padding: 0;
-  align-items: center; /* Vertically centers text */
+  display: flex;
+  gap: 1px; /* Gap for borders */
+  background: var(--border); /* Creates lines between items */
+  border: 1px solid var(--border);
+}
+
+.nav-links li {
+  background: var(--bg-dark);
 }
 
 .nav-links a {
+  display: block;
+  padding: 10px 20px;
   color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: var(--accent);
+  background-color: var(--text-main);
+  color: var(--bg-dark); /* Invert colors on hover */
 }
 
-/* === 2. STANDARD PAGE (Home/About) === */
+/* === 4. LAYOUT CONTAINERS === */
 .container {
-  max-width: 1200px; /* MATCHES Navbar */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
-}
-
-/* === 3. SIDEBAR PAGE LAYOUT (Services/Blog) === */
-.sidebar-layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: calc(100vh - var(--nav-height));
-  max-width: 1200px; /* MATCHES Navbar */
-  margin: 0 auto;
-}
-
-.context-sidebar {
+  padding: 4rem 2rem;
+  background-color: var(--bg-dark); /* Cover the grid behind content */
+  min-height: 100vh;
+  border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
-  padding: 2rem 0; /* Padding top/bottom */
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 
-.context-sidebar h3 {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-  letter-spacing: 1px;
-}
-
-.context-sidebar a {
-  color: var(--text-main);
-  text-decoration: none;
-  padding: 0.5rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  transition: background 0.2s;
-}
-
-.context-sidebar a:hover {
-  background-color: var(--bg-card);
-  color: var(--accent);
-}
-
-.layout-content {
-  padding: 2rem 3rem;
-}
-
-/* === HOME PAGE STYLES === */
-.home-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding-top: 4rem;
-}
-
-.hero-text h1 {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-}
-
-.hero-text h2 {
-  font-size: 1.8rem;
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
-  font-weight: 400;
-}
-
-.accent-text {
-  color: var(--accent);
-}
-
-.highlight {
-  color: var(--accent);
-  background: rgba(56, 189, 248, 0.1);
-  padding: 0 6px;
-  border-radius: 4px;
-}
-
-.subtext {
-  font-size: 1.1rem;
-  color: #cbd5e1;
-  max-width: 600px;
-  line-height: 1.6;
-}
-
-/* Buttons */
-.cta-group {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: transform 0.2s, opacity 0.2s;
-  cursor: pointer;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
-}
-
-.primary-btn {
-  background-color: var(--accent);
-  color: var(--bg-dark);
-}
-
-.secondary-btn {
-  background-color: transparent;
-  border: 2px solid var(--accent);
-  color: var(--accent);
-}
-
-/* Mobile Fix */
-@media (max-width: 768px) {
-  .sidebar-layout {
-    grid-template-columns: 1fr;
-  }
-  .context-sidebar {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 1rem;
-  }
-  .nav-links {
-    display: none; /* Hide top menu on mobile for now */
-  }
-}
-
-/* === ABOUT PAGE LAYOUT === */
-.about-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding-bottom: 4rem;
-}
-
-/* Hero Profile Section */
-.about-hero {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
-
-.profile {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-.avatar {
-  width: 120px;
-  height: 120px;
-  /* border-radius: 30%; */
-  border-radius: 16px;
-  border: 3px solid var(--accent);
-  object-fit: cover;
-}
-
-.profile-info {
-  flex: 1;
-}
-
-.headline {
-  font-size: 2rem;
-  margin: 0 0 0.5rem 0;
-  color: var(--text-main);
-}
-
-.lede {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-/* Chips (Tags) */
-.chips-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-bottom: 1.5rem;
-}
-
-.chip {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border);
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  color: #e2e8f0;
-}
-
-/* Buttons */
-.links-row {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.ghost-btn {
-  background: transparent;
-  border: 1px solid var(--text-muted);
-  color: var(--text-muted);
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.ghost-btn:hover {
-  border-color: var(--text-main);
-  color: var(--text-main);
-}
-
-/* === GRID & CARDS === */
-.about-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 1.5rem;
-}
-
-.card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  padding: 1.5rem;
-  border-radius: 10px;
-  transition: transform 0.2s;
-}
-
-.card h2 {
-  font-size: 1.4rem;
+/* === 5. TYPOGRAPHY === */
+h1, h2, h3 {
+  font-weight: 700;
+  letter-spacing: -1px;
   margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--accent);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.5rem;
 }
 
-.summary-card {
-  grid-column: 1 / -1; /* Makes summary span full width */
-}
+h1 { font-size: 3.5rem; line-height: 1; margin-bottom: 1rem; }
+h2 { font-size: 2rem; margin-bottom: 1.5rem; }
 
-/* Lists */
-.list-styled {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.list-styled li {
-  margin-bottom: 0.8rem;
-  padding-left: 1rem;
-  border-left: 2px solid var(--accent);
-  color: #cbd5e1;
-}
-
-/* Timeline Style */
-.timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.timeline-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 0.3rem;
-}
-
-.timeline-header h3 {
-  font-size: 1.1rem;
-  margin: 0;
-  color: var(--text-main);
-}
-
-.date {
-  font-size: 0.85rem;
-  color: var(--accent);
-  font-family: monospace;
-}
-
-.muted {
-  margin: 0;
+p {
+  line-height: 1.6;
   color: var(--text-muted);
-  font-size: 0.95rem;
+  max-width: 700px;
 }
 
-/* Tags Cloud */
-.tags-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.tags-cloud span {
-  background-color: var(--bg-dark);
-  color: var(--text-muted);
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-family: monospace;
-}
-
-.link-accent {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: bold;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .profile {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .chips-row, .links-row {
-    justify-content: center;
-  }
-  .about-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* === NAVBAR LOGO STYLES === */
-.nav-logo {
-  height: 40px; /* Adjust this to fit your navbar height (which is 70px) */
-  width: auto;  /* Maintains aspect ratio */
-  display: block;
-}
-
-.logo-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-/* Optional: Add a hover effect */
-.logo-link:hover {
-  opacity: 0.8;
-}
-
-/* === ANIMATIONS === */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* === HOME PAGE STYLES === */
-.home-page {
-  padding-bottom: 4rem;
-}
-
-/* Hero Section */
-.hero-section {
-  padding: 4rem 0;
-  /* Apply Animation */
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-.badge {
-  background: rgba(56, 189, 248, 0.1);
-  color: var(--accent);
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  display: inline-block;
-  margin-bottom: 1.5rem;
-}
-
-.hero-title {
-  font-size: 3.5rem; /* Bigger Title */
-  margin-bottom: 1rem;
-  line-height: 1.1;
-}
-
-.hero-subtitle {
-  font-size: 1.8rem;
-  color: var(--text-muted);
-  font-weight: 400;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
-}
-
-.hero-desc {
-  font-size: 1.1rem;
-  color: #cbd5e1;
-  max-width: 650px;
-  line-height: 1.7;
-  margin-bottom: 2rem;
-}
-
-/* Features Grid */
-.features-section {
-  margin-top: 4rem;
-}
-
-.section-label {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  margin-bottom: 1.5rem;
-}
-
+/* === 6. CARDS (Bento / Module Style) === */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  gap: 1rem;
+  margin-top: 3rem;
 }
 
-.feature-card {
-  background-color: var(--bg-card);
+.feature-card, .card {
+  background-color: var(--bg-panel);
   border: 1px solid var(--border);
   padding: 2rem;
-  border-radius: 12px;
-  transition: transform 0.2s, border-color 0.2s;
+  transition: border-color 0.2s;
+  /* Sharp corners */
+  border-radius: 0; 
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
   border-color: var(--accent);
 }
 
 .feature-card .icon {
   font-size: 2rem;
   margin-bottom: 1rem;
-}
-
-.feature-card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
   color: var(--text-main);
 }
 
-.feature-card p {
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.feature-card a {
-  color: var(--accent);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-/* Focus Section */
-.focus-section {
-  margin-top: 4rem;
-}
-
-.focus-card {
-  background: linear-gradient(to right, rgba(56, 189, 248, 0.05), transparent);
-  border-left: 4px solid var(--accent);
-  padding: 2rem;
-  border-radius: 0 12px 12px 0;
-}
-
-.focus-label {
-  font-size: 0.75rem;
-  color: var(--accent);
+/* === 7. BUTTONS (Tech Style) === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
   font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 0.5rem;
+  border-radius: 0; /* Sharp corners */
+  transition: all 0.2s;
+  margin-right: 1rem;
+  margin-top: 1rem;
 }
 
-.focus-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
+.primary-btn {
+  background-color: var(--text-main);
+  color: var(--bg-dark);
+  border: 1px solid var(--text-main);
 }
 
-.focus-card p {
-  color: var(--text-muted);
-  max-width: 700px;
+.primary-btn:hover {
+  background-color: transparent;
+  color: var(--text-main);
 }
 
-/* Mobile Tweaks */
+.secondary-btn {
+  background-color: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+.secondary-btn:hover {
+  border-color: var(--text-main);
+}
+
+/* === 8. UTILS === */
+.accent-text { color: var(--accent); }
+.highlight { border-bottom: 2px solid var(--accent); color: var(--text-main); }
+.badge { 
+  border: 1px solid var(--accent); 
+  color: var(--accent); 
+  padding: 5px 10px; 
+  font-size: 0.8rem; 
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+/* Mobile Fixes */
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-  }
-  .hero-subtitle {
-    font-size: 1.4rem;
-  }
+  h1 { font-size: 2.5rem; }
+  .nav-links { display: none; } /* Hide menu on mobile for now */
+  .container { border: none; padding: 2rem 1rem; }
 }
