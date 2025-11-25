@@ -4,99 +4,144 @@ function About() {
   return (
     <div className="container about-container">
       
-      {/* === HEADER SECTION === */}
-      <section className="about-header">
-        <h1>About Me 👨‍💻</h1>
-        <p className="about-subtitle">
-          CS Student • AI Enthusiast • Fedora Linux User
-        </p>
-        <p className="about-bio">
-          I am Ekin Efe Gungor, a Computer Science student passionate about 
-          <b> Artificial Intelligence</b>, <b>Data Science</b>, and building 
-          <b> Micro-SaaS</b> solutions. 
-          <br /><br />
-          My daily driver is a ThinkPad T480s running <b>Fedora Linux</b>. 
-          I love optimizing workflows, writing clean code, and exploring the 
-          intersection of software and hardware.
-        </p>
-      </section>
-
-      <hr className="divider" />
-
-      {/* === EDUCATION & EXPERIENCE (Timeline Style) === */}
-      <section className="timeline-section">
-        <h2>Journey</h2>
-        
-        <div className="timeline">
-          {/* Item 1 */}
-          <div className="timeline-item">
-            <div className="timeline-date">2023 - Present</div>
-            <div className="timeline-content">
-              <h3>Computer Science Student</h3>
-              <span className="institution">University Name (Placeholder)</span>
-              <p>
-                Specializing in AI and Data Science. Working on research projects
-                involving machine learning and Python automation.
-              </p>
+      {/* === HERO SECTION === */}
+      <section className="about-hero">
+        <div className="profile">
+          <img 
+            className="avatar" 
+            src="/profile.jpg" /* Make sure this matches your file in /public */
+            alt="Portrait of Ekin Efe Gungor" 
+          />
+          <div className="profile-info">
+            <h1 className="headline">Ekin Efe Gungor</h1>
+            <p className="lede">
+              CS student (AI & Data Science). I build practical tools across web, data, 
+              and embedded systems—everything from Morse projects to automation scripts.
+            </p>
+            
+            <div className="chips-row">
+              <span className="chip">📍 Warsaw, Poland</span>
+              <span className="chip">🇬🇧 English (Proficient)</span>
+              <span className="chip">🇹🇷 Turkish (Native)</span>
+              <span className="chip">🇵🇱 Polish (Beginner)</span>
             </div>
-          </div>
 
-          {/* Item 2 */}
-          <div className="timeline-item">
-            <div className="timeline-date">2024</div>
-            <div className="timeline-content">
-              <h3>Freelance Developer</h3>
-              <span className="institution">Remote</span>
-              <p>
-                Built custom web solutions and automation scripts for clients.
-                Focused on React and Python backends.
-              </p>
+            <div className="links-row">
+              <a className="btn primary-btn" href="mailto:ekinefegnr@gmail.com">Email Me</a>
+              <a className="btn secondary-btn" href="https://linkedin.com/in/ekin-efe-gungor" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a className="btn secondary-btn" href="https://github.com/ekinefe" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a className="btn ghost-btn" href="/cv.pdf" target="_blank" rel="noopener noreferrer">📄 Download CV</a>
             </div>
           </div>
         </div>
       </section>
 
-      <hr className="divider" />
-
-      {/* === TECH STACK === */}
-      <section className="skills-section">
-        <h2>Tech Stack</h2>
-        <div className="skills-grid">
-          <div className="skill-card">🐍 Python</div>
-          <div className="skill-card">⚛️ React (Vite)</div>
-          <div className="skill-card">🐧 Linux (Fedora)</div>
-          <div className="skill-card">🤖 TensorFlow</div>
-          <div className="skill-card">📊 Pandas/NumPy</div>
-          <div className="skill-card">☁️ Cloudflare</div>
-          <div className="skill-card">🐙 Git & GitHub</div>
-          <div className="skill-card">🐳 Docker</div>
-        </div>
-      </section>
-
-      <hr className="divider" />
-
-      {/* === CONNECT / CV === */}
-      <section className="connect-section">
-        <h2>Let's Connect</h2>
-        <p>I am always open to discussing new projects, creative ideas, or opportunities.</p>
+      {/* === GRID LAYOUT FOR CARDS === */}
+      <section className="about-grid">
         
-        <div className="button-row">
-          <a href="mailto:your.email@example.com" className="btn primary-btn">
-            📧 Email Me
-          </a>
-          <a href="https://github.com/ekinefe" target="_blank" className="btn secondary-btn">
-            🐙 GitHub
-          </a>
-          <a href="https://linkedin.com/in/yourprofile" target="_blank" className="btn secondary-btn">
-            💼 LinkedIn
-          </a>
-          {/* Ensure cv.pdf is in your /public folder */}
-          <a href="/cv.pdf" download className="btn cv-btn">
-            📄 Download CV
-          </a>
-        </div>
-      </section>
+        {/* 1. Professional Summary */}
+        <article className="card summary-card">
+          <h2>Professional Summary</h2>
+          <p>
+            Computer Science student specializing in Artificial Intelligence and Data Science, 
+            with over 3 years of experience in programming, embedded systems, automation, 
+            and team leadership. Skilled in Bash scripting, Linux system administration, 
+            and Python. Experienced in project management and cross-functional collaboration.
+          </p>
+        </article>
 
+        {/* 2. Skills */}
+        <article className="card">
+          <h2>Skills at a Glance</h2>
+          <ul className="list-styled">
+            <li><b>Languages:</b> Python, Bash, Java, C/C++, SQL</li>
+            <li><b>AI & Data:</b> Machine Learning, Data Analysis, Visualization</li>
+            <li><b>System:</b> Linux Administration, Scripting, Embedded Systems</li>
+            <li><b>Tools:</b> Git, IntelliJ, Docker, Figma, KiCAD</li>
+          </ul>
+          <div className="tags-cloud">
+            <span>Arduino</span>
+            <span>Automation</span>
+            <span>Machine Learning</span>
+            <span>Linux</span>
+            <span>React</span>
+          </div>
+        </article>
+
+        {/* 3. Experience Timeline */}
+        <article className="card">
+          <h2>Experience</h2>
+          <div className="timeline">
+            
+            <div className="timeline-item">
+              <div className="timeline-header">
+                <h3>Nobel Learning PBC — Intern</h3>
+                <span className="date">2024–2025</span>
+              </div>
+              <p className="muted">Built instructional content; collaborated with teachers & leads; integrated interactive tools.</p>
+            </div>
+
+            <div className="timeline-item">
+              <div className="timeline-header">
+                <h3>Freelance Photographer</h3>
+                <span className="date">2019–Present</span>
+              </div>
+              <p className="muted">Managed event/portrait work, color workflows, and social media growth.</p>
+            </div>
+
+            <div className="timeline-item">
+              <div className="timeline-header">
+                <h3>Turkish Aeronautical Association</h3>
+                <span className="date">2016–2020</span>
+              </div>
+              <p className="muted">PR/Community Lead. Managed team of 5, ran social campaigns & events.</p>
+            </div>
+
+          </div>
+        </article>
+
+        {/* 4. Education Timeline */}
+        <article className="card">
+          <h2>Education</h2>
+          <div className="timeline">
+            <div className="timeline-item">
+              <div className="timeline-header">
+                <h3>UEHS (Warsaw)</h3>
+                <span className="date">2023–Present</span>
+              </div>
+              <p className="muted">BSc Computer Science — AI & Data Science</p>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-header">
+                <h3>PJAIT</h3>
+                <span className="date">2021–2023</span>
+              </div>
+              <p className="muted">BSc Computer Science</p>
+            </div>
+          </div>
+        </article>
+
+        {/* 5. Projects Highlight */}
+        <article className="card">
+          <div className="card-header-row">
+            <h2>Featured Projects</h2>
+          </div>
+          <ul className="list-styled">
+            <li>
+              <b>CW Keyer</b> — Real-time Morse keyer (Arduino, LCD). 
+              <a href="https://github.com/ekinefe/CW_keyer" className="link-accent"> GitHub →</a>
+            </li>
+            <li>
+              <b>CW Trainer</b> — Python terminal trainer with adaptive difficulty. 
+              <a href="https://github.com/ekinefe/CW_Trainer" className="link-accent"> GitHub →</a>
+            </li>
+            <li>
+              <b>EasyAdmin</b> — Multilingual Bash framework for Linux admin tasks.
+            </li>
+          </ul>
+        </article>
+
+      </section>
     </div>
   );
 }
