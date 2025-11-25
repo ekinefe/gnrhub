@@ -43,10 +43,11 @@ function About() {
         <article className="card">
           <h2>Professional Summary</h2>
           <p>
-            Computer Science student specializing in Artificial Intelligence and Data Science, 
-            with over 3 years of experience in programming, embedded systems, automation, 
-            and team leadership. Skilled in Bash scripting, Linux system administration, 
-            and Python. Experienced in project management and cross-functional collaboration.
+            Computer Science student specializing in Artificial Intelligence and Data Science, with over 3 years of experience in programming,
+            embedded systems, automation, and team leadership. Skilled in Bash scripting, Linux system administration, embedded systems development,
+            and Python, with a proven track record in delivering automation tools and real-time applications. Experienced in project management
+            and cross-functional collaboration. Seeking to leverage expertise in machine learning and data analysis to contribute to innovative,
+            technology-driven projects
           </p>
         </article>
 
