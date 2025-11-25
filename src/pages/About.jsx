@@ -30,7 +30,7 @@ function About() {
               <a className="btn primary-btn" href="mailto:ekinefegnr@gmail.com">Email Me</a>
               <a className="btn secondary-btn" href="https://linkedin.com/in/ekin-efe-gungor" target="_blank" rel="noopener noreferrer">LinkedIn</a>
               <a className="btn secondary-btn" href="https://github.com/ekinefe" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a className="btn ghost-btn" href="/cv.pdf" target="_blank" rel="noopener noreferrer">📄 Download CV</a>
+              <a className="btn ghost-btn" href="/Ekin_Efe_GUNGOR-CV-ATS.pdf" target="_blank" rel="noopener noreferrer">📄 Download CV</a>
             </div>
           </div>
         </div>
