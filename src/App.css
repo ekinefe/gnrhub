@@ -2,7 +2,10 @@
   --bg-dark: #0f172a;
   --bg-card: #1e293b;
   --text-main: #f8fafc;
-  --accent: #38bdf8; /* Sky blue */
+  --text-muted: #94a3b8;
+  --accent: #38bdf8;
+  --border: #334155;
+  --nav-height: 70px;
 }
 
 body {
@@ -10,51 +13,201 @@ body {
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: 'Inter', system-ui, sans-serif;
+  overflow-y: scroll;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+/* === 1. TOP NAVBAR (Global) === */
 .navbar {
+  width: 100vw;
+  height: var(--nav-height);
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background-color: var(--bg-card);
   align-items: center;
-  border-bottom: 1px solid #334155;
 }
 
-.nav-links {
-  list-style: none;
+.nav-inner {
+  /* Removed Yellow Debug Color */
+  
+  width: 100%;
+  max-width: none !important;
+  height: 100%;
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between; /* Pushes Logo Left, Links Right */
+  padding: 0 3rem; /* Spacing from edges */
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+/* === THIS IS THE PART THAT WAS MISSING/BROKEN === */
+.nav-links {
+  display: flex;       /* Makes them horizontal */
+  gap: 2rem;           /* Space between links */
+  list-style: none;    /* Removes bullet points */
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Vertically centers text */
 }
 
 .nav-links a {
-  color: var(--text-main);
+  color: var(--text-muted);
   text-decoration: none;
+  font-size: 0.95rem;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: color 0.2s;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.active {
   color: var(--accent);
 }
 
-.page-content {
-  max-width: 800px;
+/* === 2. STANDARD PAGE (Home/About) === */
+.container {
+  max-width: 1200px; /* MATCHES Navbar */
   margin: 0 auto;
-  padding: 3rem 1rem;
+  padding: 3rem 1.5rem;
 }
 
-.code-block {
-  background-color: #000;
-  padding: 1rem;
+/* === 3. SIDEBAR PAGE LAYOUT (Services/Blog) === */
+.sidebar-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - var(--nav-height));
+  max-width: 1200px; /* MATCHES Navbar */
+  margin: 0 auto;
+}
+
+.context-sidebar {
+  border-right: 1px solid var(--border);
+  padding: 2rem 0; /* Padding top/bottom */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.context-sidebar h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.context-sidebar a {
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 0.5rem 0.8rem;
   border-radius: 6px;
-  font-family: monospace;
-  border-left: 4px solid var(--accent);
+  font-size: 0.9rem;
+  transition: background 0.2s;
 }
 
-.login-btn {
-  background-color: var(--accent);
-  color: var(--bg-dark) !important;
-  padding: 0.5rem 1rem;
+.context-sidebar a:hover {
+  background-color: var(--bg-card);
+  color: var(--accent);
+}
+
+.layout-content {
+  padding: 2rem 3rem;
+}
+
+/* === HOME PAGE STYLES === */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-top: 4rem;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-text h2 {
+  font-size: 1.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+.accent-text {
+  color: var(--accent);
+}
+
+.highlight {
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.1);
+  padding: 0 6px;
   border-radius: 4px;
+}
+
+.subtext {
+  font-size: 1.1rem;
+  color: #cbd5e1;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, opacity 0.2s;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.primary-btn {
+  background-color: var(--accent);
+  color: var(--bg-dark);
+}
+
+.secondary-btn {
+  background-color: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+/* Mobile Fix */
+@media (max-width: 768px) {
+  .sidebar-layout {
+    grid-template-columns: 1fr;
+  }
+  .context-sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 1rem;
+  }
+  .nav-links {
+    display: none; /* Hide top menu on mobile for now */
+  }
 }

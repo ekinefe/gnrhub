@@ -2,28 +2,35 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Py101 from './docs/Py101';
+import About from './pages/About';
+import Services from './pages/Services'; // Import the new page
 import './App.css';
 
-// Placeholder for About and Projects (Create these files later!)
-const About = () => <div className="page-content"><h1>About Me & CV</h1></div>;
-const Projects = () => <div className="page-content"><h1>Micro-SaaS Projects</h1></div>;
-const Login = () => <div className="page-content"><h1>Login Area (Coming Soon)</h1></div>;
+// Placeholder for Blog
+const Blog = () => (
+  <div className="sidebar-layout">
+    <aside className="context-sidebar">
+      <h3>Categories</h3>
+      <a href="#">Tech</a>
+      <a href="#">Linux</a>
+      <a href="#">Life</a>
+    </aside>
+    <div className="layout-content"><h1>Blog Posts</h1></div>
+  </div>
+);
 
 function App() {
   return (
     <Router>
-      <div className="app-container">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/docs/py101" element={<Py101 />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </main>
+      <div className="app-main">
+        <Navbar /> {/* Top Bar is OUTSIDE the Routes */}
+        
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/blog" element={<Blog />} />
+        </Routes>
       </div>
     </Router>
   );

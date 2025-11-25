@@ -1,19 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import '../App.css'; // We'll use the main CSS
+import { NavLink } from 'react-router-dom';
+import '../App.css';
 
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">GNRHUB 🚀</div>
-      <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/about">About Me</Link></li>
-        <li><Link to="/projects">Services</Link></li>
-        <li><Link to="/docs/py101">Blog</Link></li>
-        {/* Future Login Button */}
-        <li><Link to="/login" className="login-btn">Login</Link></li>
-      </ul>
+      {/* The centered container */}
+      <div className="nav-inner">
+        
+        <div className="logo">GNRHUB</div>
+        
+        <ul className="nav-links">
+          <li><NavLink to="/" end className={({isActive}) => isActive ? "active" : ""}>Home</NavLink></li>
+          <li><NavLink to="/about" className={({isActive}) => isActive ? "active" : ""}>About Me</NavLink></li>
+          <li><NavLink to="/services" className={({isActive}) => isActive ? "active" : ""}>Services</NavLink></li>
+          <li><NavLink to="/blog" className={({isActive}) => isActive ? "active" : ""}>Blog</NavLink></li>
+        </ul>
+
+      </div>
     </nav>
   );
 }
