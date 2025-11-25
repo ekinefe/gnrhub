@@ -9,7 +9,7 @@ function About() {
         <div className="profile">
           <img 
             className="avatar" 
-            src="/profile.jpg" /* Make sure this matches your file in /public */
+            src="/IMG_9050E.jpg" /* Make sure this matches your file in /public */
             alt="Portrait of Ekin Efe Gungor" 
           />
           <div className="profile-info">
