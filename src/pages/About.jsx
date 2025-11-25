@@ -38,9 +38,9 @@ function About() {
 
       {/* === GRID LAYOUT FOR CARDS === */}
       <section className="about-grid">
-        
         {/* 1. Professional Summary */}
-        <article className="card summary-card">
+        {/*<article className="card summary-card">*/}
+        <article className="card">
           <h2>Professional Summary</h2>
           <p>
             Computer Science student specializing in Artificial Intelligence and Data Science, 
