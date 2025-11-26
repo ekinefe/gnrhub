@@ -3,50 +3,34 @@ import { Link } from 'react-router-dom';
 
 function Services() {
   return (
-    <div className="sidebar-layout">
-      
-      {/* === THE SIDEBAR (Only for Services) === */}
-      <aside className="context-sidebar">
-        <h3>Micro-SaaS Tools</h3>
-        <Link to="#">PDF Converter</Link>
-        <Link to="#">Image Resizer</Link>
-        <Link to="#">JSON Formatter</Link>
-        <Link to="#">QR Generator</Link>
+    <div className="container">
+      <h1>/services_dashboard</h1>
+      <p>Active Micro-SaaS tools deployed on Cloudflare Pages.</p>
+
+      <div className="grid-layout">
         
-        <h3 style={{marginTop: '2rem'}}>Status</h3>
-        <Link to="#">System Health</Link>
-      </aside>
-
-      {/* === THE MAIN CONTENT === */}
-      <div className="layout-content">
-        <h1>Micro-SaaS Services</h1>
-        <p>Select a tool from the sidebar to get started.</p>
-
-        {/* Example Content Card */}
-        <div style={{
-          background: 'var(--bg-card)', 
-          padding: '2rem', 
-          borderRadius: '8px', 
-          marginTop: '2rem',
-          border: '1px solid var(--border)'
-        }}>
-          <h2>Featured: PDF Converter</h2>
-          <p style={{color: 'var(--text-muted)'}}>
-            Convert your documents securely in the browser. No uploads required.
-          </p>
-          <button style={{
-            background: 'var(--accent)', 
-            border: 'none', 
-            padding: '0.5rem 1rem', 
-            borderRadius: '4px', 
-            marginTop: '1rem',
-            cursor: 'pointer'
-          }}>
-            Launch Tool 🚀
-          </button>
+        {/* Tool 1 */}
+        <div className="tech-card">
+          <h3>PDF_Converter</h3>
+          <p>Client-side image to PDF conversion. Privacy focused.</p>
+          <button className="btn secondary-btn">Launch_Tool</button>
         </div>
+
+        {/* Tool 2 */}
+        <div className="tech-card">
+          <h3>JSON_Formatter</h3>
+          <p>Prettify and validate JSON data instantly.</p>
+          <button className="btn secondary-btn">Launch_Tool</button>
+        </div>
+
+        {/* Tool 3 */}
+        <div className="tech-card">
+          <h3>QR_Generator</h3>
+          <p>Create QR codes for WiFi, URL, or Text.</p>
+          <button className="btn secondary-btn">Launch_Tool</button>
+        </div>
+
       </div>
-      
     </div>
   );
 }

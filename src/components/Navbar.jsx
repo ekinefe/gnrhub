@@ -7,20 +7,16 @@ function Navbar() {
     <nav className="navbar">
       <div className="nav-inner">
         
-        {/* Logo Image (Clickable) */}
-        <NavLink to="/" className="logo-link">
-          <img 
-            src="/svg.svg" 
-            alt="GNRHUB Logo" 
-            className="nav-logo"
-          />
+        {/* Boxed Tech Logo */}
+        <NavLink to="/" className="nav-logo">
+          GNRHUB_
         </NavLink>
         
         <ul className="nav-links">
-          <li><NavLink to="/" end className={({isActive}) => isActive ? "active" : ""}>Home</NavLink></li>
-          <li><NavLink to="/about" className={({isActive}) => isActive ? "active" : ""}>About Me</NavLink></li>
-          <li><NavLink to="/services" className={({isActive}) => isActive ? "active" : ""}>Services</NavLink></li>
-          <li><NavLink to="/blog" className={({isActive}) => isActive ? "active" : ""}>Blog</NavLink></li>
+          <li><NavLink to="/" end className={({isActive}) => isActive ? "active" : ""}>/home</NavLink></li>
+          <li><NavLink to="/services" className={({isActive}) => isActive ? "active" : ""}>/services</NavLink></li>
+          <li><NavLink to="/blog" className={({isActive}) => isActive ? "active" : ""}>/docs</NavLink></li>
+          <li><NavLink to="/about" className={({isActive}) => isActive ? "active" : ""}>/about_me</NavLink></li>
         </ul>
 
       </div>
