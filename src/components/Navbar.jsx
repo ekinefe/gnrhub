@@ -14,9 +14,9 @@ function Navbar() {
         
         <ul className="nav-links">
           <li><NavLink to="/" end className={({isActive}) => isActive ? "active" : ""}>/home</NavLink></li>
+          <li><NavLink to="/about" className={({isActive}) => isActive ? "active" : ""}>/about_me</NavLink></li>
           <li><NavLink to="/services" className={({isActive}) => isActive ? "active" : ""}>/services</NavLink></li>
           <li><NavLink to="/blog" className={({isActive}) => isActive ? "active" : ""}>/docs</NavLink></li>
-          <li><NavLink to="/about" className={({isActive}) => isActive ? "active" : ""}>/about_me</NavLink></li>
         </ul>
 
       </div>

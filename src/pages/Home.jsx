@@ -16,7 +16,7 @@ function Home() {
         </h1>
         <p style={{ maxWidth: '600px', fontSize: '1.1rem' }}>
           Computer Science Student specializing in AI, Data Science, and Micro-SaaS. 
-          Building tools for the modern web on Fedora Linux.
+          Building tools for the modern web on Linux.
         </p>
         
         <div style={{ marginTop: '2rem' }}>
