@@ -55,7 +55,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 .navbar {
   width: 100vw;
   height: var(--nav-height);
-  background-color: rgba(5, 5, 5, 0.9);
+  background-color: rgba(5, 5, 5, 0.95); /* More solid for mobile readability */
   backdrop-filter: blur(5px);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -71,6 +71,7 @@ ul { list-style: none; padding: 0; margin: 0; }
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative; /* Needed for absolute positioning of mobile menu */
 }
 
 .nav-logo {
@@ -80,14 +81,11 @@ ul { list-style: none; padding: 0; margin: 0; }
   border: 1px solid var(--text-main);
   padding: 8px 12px;
   background: var(--bg-dark);
-  transition: all 0.2s;
+  color: var(--text-main);
+  z-index: 1002; /* Ensure logo stays above menu */
 }
 
-.nav-logo:hover {
-  background: var(--text-main);
-  color: var(--bg-dark);
-}
-
+/* === DESKTOP NAV LINKS === */
 .nav-links {
   display: flex;
   gap: 1rem;
@@ -105,6 +103,148 @@ ul { list-style: none; padding: 0; margin: 0; }
 .nav-links a:hover, .nav-links a.active {
   color: var(--accent);
   border-bottom-color: var(--accent);
+}
+
+/* === HAMBURGER BUTTON (Hidden on Desktop) === */
+.hamburger {
+  display: none; /* Hidden by default */
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 10px;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 1002;
+}
+
+.hamburger .bar {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: var(--text-main);
+  transition: all 0.3s ease;
+}
+
+/* === MOBILE STYLES === */
+@media (max-width: 768px) {
+  
+  /* Show Hamburger */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Animate Hamburger to 'X' when active */
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hamburger.active .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Hide Nav Links by default on Mobile */
+  .nav-links {
+    position: fixed;
+    top: var(--nav-height); /* Start below the navbar */
+    left: 0;
+    width: 100%;
+    height: calc(100vh - var(--nav-height));
+    background-color: var(--bg-dark);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    border-top: 1px solid var(--border);
+    
+    /* Slide Animation */
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Show Nav Links when 'active' class is added */
+  .nav-links.active {
+    transform: translateX(0);
+  }
+
+  /* Bigger links for touch targets */
+  .nav-links a {
+    font-size: 1.5rem;
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .container {
+    padding: 2rem 1rem;
+    border: none;
+  }
+}
+
+/* === MOBILE RESPONSIVE STYLES === */
+@media (max-width: 768px) {
+  
+  /* 1. Mobile Container Tweak */
+  .container {
+    padding: 2rem 1rem;
+    border: none;
+  }
+  
+  /* 2. Resize Headings */
+  h1 { font-size: 2.2rem; }
+
+  /* 3. SHOW THE HAMBURGER BUTTON */
+  .hamburger {
+    display: flex; /* Make it visible */
+  }
+
+  /* Hamburger Animation */
+  .hamburger.active .bar:nth-child(2) { opacity: 0; }
+  .hamburger.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* 4. THE MENU DRAWER (Fixed) */
+  .nav-links {
+    /* FORCE it to display */
+    display: flex !important; 
+    
+    /* Position it below the navbar */
+    position: fixed;
+    top: var(--nav-height); 
+    left: 0;
+    width: 100%;
+    height: calc(100vh - var(--nav-height));
+    
+    /* Styling */
+    background-color: var(--bg-dark); /* Solid Black */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Start from top */
+    padding-top: 4rem; /* Spacing from top */
+    gap: 2rem;
+    border-top: 1px solid var(--border);
+    z-index: 999; /* Sit on top of everything */
+    
+    /* Animation: Slide from Right */
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* 5. SLIDE IN WHEN ACTIVE */
+  .nav-links.active {
+    transform: translateX(0);
+  }
+
+  /* 6. BIGGER LINKS FOR TOUCH */
+  .nav-links a {
+    font-size: 1.5rem;
+    padding: 1rem;
+    width: 80%;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
 }
 
 /* === 5. LAYOUT CONTAINER === */
@@ -129,9 +269,17 @@ p { line-height: 1.6; color: var(--text-muted); margin-bottom: 1.5rem; }
 /* === 7. TECH CARDS (Bento Grid) === */
 .grid-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+  /* CHANGE: This restricts it to 2 columns max on desktop, 1 on mobile */
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
   margin-top: 2rem;
+}
+
+/* Mobile Tweak: Ensure 1 column on phones */
+@media (max-width: 768px) {
+  .grid-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 .tech-card {
@@ -171,4 +319,142 @@ p { line-height: 1.6; color: var(--text-muted); margin-bottom: 1.5rem; }
   .container { border: none; padding: 2rem 1rem; }
   h1 { font-size: 2.2rem; }
   .nav-links { display: none; } /* Add hamburger later */
+}
+
+/* === BUTTON GROUP CONTAINER === */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap; /* Allows buttons to drop to next line */
+  gap: 1rem;       /* Adds 1rem space (horizontal AND vertical) */
+  margin-top: 1.5rem;
+}
+
+/* Optional: Remove the old margin-right since 'gap' handles it now */
+.btn {
+  margin-right: 0; 
+  margin-bottom: 0;
+}
+
+
+/* === SIDEBAR LAYOUT (For Services & Blog) === */
+.sidebar-page {
+  display: grid;
+  /* Desktop: 260px Sidebar | Rest is Content */
+  grid-template-columns: 260px 1fr; 
+  min-height: calc(100vh - var(--nav-height));
+  max-width: 1400px;
+  margin: 0 auto;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+/* Sidebar Styling */
+.page-sidebar {
+  background-color: var(--bg-dark);
+  border-right: 1px solid var(--border);
+  padding: 2rem;
+  position: sticky;
+  top: var(--nav-height);
+  height: calc(100vh - var(--nav-height));
+  overflow-y: auto;
+}
+
+.page-sidebar h3 {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.page-sidebar ul {
+  list-style: none;
+}
+
+.page-sidebar li {
+  margin-bottom: 0.5rem;
+}
+
+.page-sidebar a {
+  display: block;
+  padding: 8px 12px;
+  color: var(--text-main);
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.page-sidebar a:hover, .page-sidebar a.active {
+  background-color: var(--bg-panel);
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
+}
+
+/* Main Content Area */
+.page-content {
+  padding: 3rem 4rem;
+  background-color: var(--bg-dark);
+}
+
+/* Mobile Fix */
+@media (max-width: 768px) {
+  .sidebar-page {
+    grid-template-columns: 1fr;
+  }
+  .page-sidebar {
+    position: relative;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 1rem;
+  }
+  .page-content {
+    padding: 2rem 1rem;
+  }
+}
+
+/* Make sidebar headers that are links look clickable */
+.page-sidebar a h3 {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.page-sidebar a:hover h3 {
+  color: var(--accent);
+}
+
+/* === STATUS TAGS === */
+.status-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  letter-spacing: 1px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* 🟢 ACTIVE: Green Tech Look */
+.status-active {
+  color: #00ff9d; /* Matrix Green */
+  border-color: #00ff9d;
+  background: rgba(0, 255, 157, 0.1);
+  box-shadow: 0 0 5px rgba(0, 255, 157, 0.2);
+}
+
+/* 🟡 BETA: Warning Yellow/Orange */
+.status-beta {
+  color: #ffb700;
+  border-color: #ffb700;
+  background: rgba(255, 183, 0, 0.1);
+}
+
+/* 🔴 OFFLINE: Error Red */
+.status-offline {
+  color: #ff3333;
+  border-color: #ff3333;
+  background: rgba(255, 51, 51, 0.1);
+  opacity: 0.7;
 }

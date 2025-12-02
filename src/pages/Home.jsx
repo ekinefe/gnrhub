@@ -15,13 +15,12 @@ function Home() {
           <span style={{ color: 'var(--text-muted)' }}>FULL_STACK_DEV</span>
         </h1>
         <p style={{ maxWidth: '600px', fontSize: '1.1rem' }}>
-          Computer Science Student specializing in AI, Data Science, and Micro-SaaS. 
-          Building tools for the modern web on Linux.
+          I’m Ekin — CS student & maker. Here I document my projects, schematics, code, and notes.
         </p>
         
-        <div style={{ marginTop: '2rem' }}>
-          <Link to="/services" className="btn primary-btn">Initialise_SaaS</Link>
-          <Link to="/about" className="btn secondary-btn">Read_Bio</Link>
+        <div className="btn-group">
+          {/* <Link to="/services" className="btn primary-btn">Initialise_SaaS</Link> */}
+          <Link to="/about" className="btn prmimary-btn">Explore More About Me</Link>
         </div>
       </section>
 
