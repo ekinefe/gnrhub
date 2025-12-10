@@ -1,0 +1,134 @@
+/* === NAVBAR (Industrial) === */
+.navbar {
+    width: 100%;
+    height: var(--nav-height);
+    background-color: rgba(5, 5, 5, 0.95);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+}
+
+.nav-inner {
+    width: 100%;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.nav-logo {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    border: 1px solid var(--text-main);
+    padding: 8px 12px;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    z-index: 1002;
+}
+
+/* === DESKTOP NAV LINKS === */
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 5px 0;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* === HAMBURGER BUTTON (Hidden on Desktop) === */
+.hamburger {
+    display: none;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 10px;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1002;
+}
+
+.hamburger .bar {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: var(--text-main);
+    transition: all 0.3s ease;
+}
+
+/* === MOBILE STYLES === */
+@media (max-width: 768px) {
+
+    /* Show Hamburger */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Hamburger Animation */
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Nav Links Drawer */
+    .nav-links {
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        height: calc(100vh - var(--nav-height));
+        background-color: var(--bg-dark);
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 4rem;
+        gap: 2rem;
+        border-top: 1px solid var(--border);
+        z-index: 999;
+
+        /* Animation: Slide + Visibility */
+        transform: translateX(100%);
+        visibility: hidden;
+        /* Ensures it's not clickable/visible when closed */
+        transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+
+    /* Active State (Open) */
+    .nav-links.active {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    /* Bigger links for touch targets */
+    .nav-links a {
+        font-size: 1.5rem;
+        padding: 1rem;
+        width: 80%;
+        text-align: center;
+        border-bottom: 1px solid var(--border);
+    }
+}

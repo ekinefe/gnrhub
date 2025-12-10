@@ -1,20 +1,27 @@
 /* === 1. TECH VARIABLES === */
 :root {
-  --bg-dark: #050505;       /* Almost Pure Black */
-  --bg-panel: #111111;      /* Dark Panel Background */
-  --text-main: #eeeeee;     /* Off-white for less eye strain */
+  --bg-dark: #050505;
+  /* Almost Pure Black */
+  --bg-panel: #111111;
+  /* Dark Panel Background */
+  --text-main: #eeeeee;
+  /* Off-white for less eye strain */
   --text-muted: #888888;
-  
+
   /* The "Accent" - Change this hex code to swap colors */
-  --accent: #FF318C;        /* Cyber Pink */
-  /* --accent: #38bdf8; */  /* Cyan (Alternative) */
-  /* --accent: #F7B955; */  /* Orange (Alternative) */
-  
-  --border: #333333;        /* Grid Line Color */
+  --accent: #FF318C;
+  /* Cyber Pink */
+  /* --accent: #38bdf8; */
+  /* Cyan (Alternative) */
+  /* --accent: #F7B955; */
+  /* Orange (Alternative) */
+
+  --border: #333333;
+  /* Grid Line Color */
   --nav-height: 70px;
-  
+
   /* FORCE JetBrains Mono */
-  --font-main: 'JetBrains Mono', monospace; 
+  --font-main: 'JetBrains Mono', monospace;
 }
 
 /* === 2. FONT FACES (Ensure these files exist in public/fonts or assets/fonts) === */
@@ -24,6 +31,7 @@
   font-weight: 400;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./assets/fonts/JetBrainsMono-Bold.woff2') format('woff2');
@@ -32,219 +40,41 @@
 }
 
 /* === 3. GLOBAL RESET & GRID BACKGROUND === */
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
 
 body {
   margin: 0;
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: var(--font-main);
-  
+  min-height: 100vh;
+  width: 100%;
+
   /* The "Graph Paper" Background */
   background-image: linear-gradient(var(--border) 1px, transparent 1px),
     linear-gradient(90deg, var(--border) 1px, transparent 1px);
   background-size: 50px 50px;
   background-position: center top;
   overflow-x: hidden;
+  position: relative;
 }
 
-a { text-decoration: none; color: inherit; cursor: pointer; }
-ul { list-style: none; padding: 0; margin: 0; }
-
-/* === 4. NAVBAR (Industrial) === */
-.navbar {
-  width: 100vw;
-  height: var(--nav-height);
-  background-color: rgba(5, 5, 5, 0.95); /* More solid for mobile readability */
-  backdrop-filter: blur(5px);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-}
-
-.nav-inner {
-  width: 100%;
-  padding: 0 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative; /* Needed for absolute positioning of mobile menu */
-}
-
-.nav-logo {
-  font-weight: 700;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  border: 1px solid var(--text-main);
-  padding: 8px 12px;
-  background: var(--bg-dark);
-  color: var(--text-main);
-  z-index: 1002; /* Ensure logo stays above menu */
-}
-
-/* === DESKTOP NAV LINKS === */
-.nav-links {
-  display: flex;
-  gap: 1rem;
-}
-
-.nav-links a {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 5px 0;
-  border-bottom: 1px solid transparent;
-  transition: all 0.2s;
-}
-
-.nav-links a:hover, .nav-links a.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-/* === HAMBURGER BUTTON (Hidden on Desktop) === */
-.hamburger {
-  display: none; /* Hidden by default */
+a {
+  text-decoration: none;
+  color: inherit;
   cursor: pointer;
-  background: transparent;
-  border: 1px solid var(--border);
-  padding: 10px;
-  flex-direction: column;
-  gap: 5px;
-  z-index: 1002;
 }
 
-.hamburger .bar {
-  display: block;
-  width: 25px;
-  height: 2px;
-  background-color: var(--text-main);
-  transition: all 0.3s ease;
-}
-
-/* === MOBILE STYLES === */
-@media (max-width: 768px) {
-  
-  /* Show Hamburger */
-  .hamburger {
-    display: flex;
-  }
-
-  /* Animate Hamburger to 'X' when active */
-  .hamburger.active .bar:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger.active .bar:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-  .hamburger.active .bar:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
-
-  /* Hide Nav Links by default on Mobile */
-  .nav-links {
-    position: fixed;
-    top: var(--nav-height); /* Start below the navbar */
-    left: 0;
-    width: 100%;
-    height: calc(100vh - var(--nav-height));
-    background-color: var(--bg-dark);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    border-top: 1px solid var(--border);
-    
-    /* Slide Animation */
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-  }
-
-  /* Show Nav Links when 'active' class is added */
-  .nav-links.active {
-    transform: translateX(0);
-  }
-
-  /* Bigger links for touch targets */
-  .nav-links a {
-    font-size: 1.5rem;
-    padding: 1rem;
-    width: 100%;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .container {
-    padding: 2rem 1rem;
-    border: none;
-  }
-}
-
-/* === MOBILE RESPONSIVE STYLES === */
-@media (max-width: 768px) {
-  
-  /* 1. Mobile Container Tweak */
-  .container {
-    padding: 2rem 1rem;
-    border: none;
-  }
-  
-  /* 2. Resize Headings */
-  h1 { font-size: 2.2rem; }
-
-  /* 3. SHOW THE HAMBURGER BUTTON */
-  .hamburger {
-    display: flex; /* Make it visible */
-  }
-
-  /* Hamburger Animation */
-  .hamburger.active .bar:nth-child(2) { opacity: 0; }
-  .hamburger.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburger.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-  /* 4. THE MENU DRAWER (Fixed) */
-  .nav-links {
-    /* FORCE it to display */
-    display: flex !important; 
-    
-    /* Position it below the navbar */
-    position: fixed;
-    top: var(--nav-height); 
-    left: 0;
-    width: 100%;
-    height: calc(100vh - var(--nav-height));
-    
-    /* Styling */
-    background-color: var(--bg-dark); /* Solid Black */
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Start from top */
-    padding-top: 4rem; /* Spacing from top */
-    gap: 2rem;
-    border-top: 1px solid var(--border);
-    z-index: 999; /* Sit on top of everything */
-    
-    /* Animation: Slide from Right */
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-  }
-
-  /* 5. SLIDE IN WHEN ACTIVE */
-  .nav-links.active {
-    transform: translateX(0);
-  }
-
-  /* 6. BIGGER LINKS FOR TOUCH */
-  .nav-links a {
-    font-size: 1.5rem;
-    padding: 1rem;
-    width: 80%;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-  }
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* === 5. LAYOUT CONTAINER === */
@@ -252,19 +82,44 @@ ul { list-style: none; padding: 0; margin: 0; }
   max-width: 1200px;
   margin: 0 auto;
   padding: 4rem 2rem;
-  background-color: var(--bg-dark); /* Hides grid behind text */
+  background-color: var(--bg-dark);
+  /* Hides grid behind text */
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
   min-height: 100vh;
 }
 
 /* === 6. TYPOGRAPHY === */
-h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.1; letter-spacing: -1px; }
-h2 { font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
-h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-main); }
-p { line-height: 1.6; color: var(--text-muted); margin-bottom: 1.5rem; }
+h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
 
-.accent-text { color: var(--accent); }
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+p {
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.accent-text {
+  color: var(--accent);
+}
 
 /* === 7. TECH CARDS (Bento Grid) === */
 .grid-layout {
@@ -293,7 +148,11 @@ p { line-height: 1.6; color: var(--text-muted); margin-bottom: 1.5rem; }
   border-color: var(--accent);
 }
 
-.tech-card .icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+.tech-card .icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
 
 /* === 8. BUTTONS === */
 .btn {
@@ -308,153 +167,55 @@ p { line-height: 1.6; color: var(--text-muted); margin-bottom: 1.5rem; }
   margin-right: 1rem;
 }
 
-.primary-btn { background: var(--text-main); color: var(--bg-dark); }
-.primary-btn:hover { background: transparent; color: var(--text-main); }
+.primary-btn {
+  background: var(--text-main);
+  color: var(--bg-dark);
+}
 
-.secondary-btn { background: transparent; color: var(--text-main); border-color: var(--border); }
-.secondary-btn:hover { border-color: var(--text-main); }
+.primary-btn:hover {
+  background: transparent;
+  color: var(--text-main);
+}
+
+.secondary-btn {
+  background: transparent;
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+.secondary-btn:hover {
+  border-color: var(--text-main);
+}
 
 /* === MOBILE === */
 @media (max-width: 768px) {
-  .container { border: none; padding: 2rem 1rem; }
-  h1 { font-size: 2.2rem; }
-  .nav-links { display: none; } /* Add hamburger later */
+  .container {
+    border: none;
+    padding: 2rem 1rem;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
 }
 
 /* === BUTTON GROUP CONTAINER === */
 .btn-group {
   display: flex;
-  flex-wrap: wrap; /* Allows buttons to drop to next line */
-  gap: 1rem;       /* Adds 1rem space (horizontal AND vertical) */
+  flex-wrap: wrap;
+  /* Allows buttons to drop to next line */
+  gap: 1rem;
+  /* Adds 1rem space (horizontal AND vertical) */
   margin-top: 1.5rem;
 }
 
-/* Optional: Remove the old margin-right since 'gap' handles it now */
 .btn {
-  margin-right: 0; 
+  margin-right: 0;
   margin-bottom: 0;
-}
-
-
-/* === SIDEBAR LAYOUT (For Services & Blog) === */
-.sidebar-page {
-  display: grid;
-  /* Desktop: 260px Sidebar | Rest is Content */
-  grid-template-columns: 260px 1fr; 
-  min-height: calc(100vh - var(--nav-height));
-  max-width: 1400px;
-  margin: 0 auto;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-}
-
-/* Sidebar Styling */
-.page-sidebar {
-  background-color: var(--bg-dark);
-  border-right: 1px solid var(--border);
-  padding: 2rem;
-  position: sticky;
-  top: var(--nav-height);
-  height: calc(100vh - var(--nav-height));
-  overflow-y: auto;
-}
-
-.page-sidebar h3 {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  margin-top: 1.5rem;
-  letter-spacing: 1px;
-}
-
-.page-sidebar ul {
-  list-style: none;
-}
-
-.page-sidebar li {
-  margin-bottom: 0.5rem;
-}
-
-.page-sidebar a {
-  display: block;
-  padding: 8px 12px;
-  color: var(--text-main);
-  border-radius: 4px;
-  transition: all 0.2s;
-  font-size: 0.9rem;
-}
-
-.page-sidebar a:hover, .page-sidebar a.active {
-  background-color: var(--bg-panel);
-  color: var(--accent);
-  border-left: 2px solid var(--accent);
-}
-
-/* Main Content Area */
-.page-content {
-  padding: 3rem 4rem;
-  background-color: var(--bg-dark);
-}
-
-/* Mobile Fix */
-@media (max-width: 768px) {
-  .sidebar-page {
-    grid-template-columns: 1fr;
-  }
-  .page-sidebar {
-    position: relative;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 1rem;
-  }
-  .page-content {
-    padding: 2rem 1rem;
-  }
-}
-
-/* Make sidebar headers that are links look clickable */
-.page-sidebar a h3 {
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.page-sidebar a:hover h3 {
-  color: var(--accent);
-}
-
-/* === STATUS TAGS === */
-.status-tag {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  letter-spacing: 1px;
-  display: inline-block;
-  margin-right: 10px;
-}
-
-/* 🟢 ACTIVE: Green Tech Look */
-.status-active {
-  color: #00ff9d; /* Matrix Green */
-  border-color: #00ff9d;
-  background: rgba(0, 255, 157, 0.1);
-  box-shadow: 0 0 5px rgba(0, 255, 157, 0.2);
-}
-
-/* 🟡 BETA: Warning Yellow/Orange */
-.status-beta {
-  color: #ffb700;
-  border-color: #ffb700;
-  background: rgba(255, 183, 0, 0.1);
-}
-
-/* 🔴 OFFLINE: Error Red */
-.status-offline {
-  color: #ff3333;
-  border-color: #ff3333;
-  background: rgba(255, 51, 51, 0.1);
-  opacity: 0.7;
+}/* === APP MAIN WRAPPER === */
+.app-main {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    /* Double protection */
 }

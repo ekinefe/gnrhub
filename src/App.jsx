@@ -1,43 +1,31 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import Blog from './pages/Blog';
+import MainLayout from './layouts/MainLayout';
 import './App.css';
 
-// Placeholder for Blog
-// const Blog = () => (
-//   <div className="sidebar-layout">
-//     <aside className="context-sidebar">
-//       <h3>Categories</h3>
-//       <a href="#">Tech</a>
-//       <a href="#">Linux</a>
-//       <a href="#">Life</a>
-//     </aside>
-//     <div className="layout-content"><h1>Blog Posts</h1></div>
-//   </div>
-// );
+// Lazy load pages for performance
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Services = lazy(() => import('./pages/Services'));
+const Blog = lazy(() => import('./pages/Blog'));
 
 function App() {
   return (
     <Router>
-      <div className="app-main">
-        <Navbar /> {/* Top Bar is OUTSIDE the Routes */}
-        
+      <Suspense fallback={<div className="container" style={{ padding: '2rem' }}>Loading...</div>}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          
-          {/* The ":id" tells React this part is dynamic */}
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/:id" element={<Services />} />
-          
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<Blog />} />
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/:id" element={<Services />} />
+
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<Blog />} />
+          </Route>
         </Routes>
-      </div>
+      </Suspense>
     </Router>
   );
 }
