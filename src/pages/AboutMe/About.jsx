@@ -1,10 +1,10 @@
 import React from 'react';
-import ProfileHeader from '../components/sections/ProfileHeader';
-import SkillsList from '../components/sections/SkillsList';
-import ExperienceLog from '../components/sections/ExperienceLog';
-import EducationLog from '../components/sections/EducationLog';
-import FeaturedProjects from '../components/sections/FeaturedProjects';
-import Certifications from '../components/sections/Certifications';
+import ProfileHeader from './sections/ProfileHeader';
+import SkillsList from './sections/SkillsList';
+import ExperienceLog from './sections/ExperienceLog';
+import EducationLog from './sections/EducationLog';
+import FeaturedProjects from './sections/FeaturedProjects';
+import Certifications from './sections/Certifications';
 
 function About() {
   return (

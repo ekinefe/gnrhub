@@ -1,3 +1,5 @@
+import ExampleBlog from '../contents/ExampleBlog.jsx';
+
 // === BLOG POSTS ===
 export const posts = [
   // {
@@ -21,4 +23,12 @@ export const posts = [
   //   summary: "Guide to running Llama 3 on consumer hardware without a GPU.",
   //   content: "Detailed guide on using llama.cpp..."
   // }
+  {
+    id: "example-blog",
+    title: "Example Blog: Style & Formatting Showcase",
+    date: "2025-12-11",
+    tag: "DEMO",
+    summary: "A comprehensive guide on formatted content: lists, checkboxes, code blocks (Bash, Java, C++, Python), and image sizing.",
+    content: ExampleBlog
+  }
 ];

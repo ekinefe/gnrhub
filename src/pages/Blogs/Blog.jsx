@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { posts } from '../data/blog_data';
+import { posts } from './data/blog_data';
 
 function Blog() {
   const { id } = useParams();
@@ -8,7 +8,7 @@ function Blog() {
 
   return (
     <div className="sidebar-page">
-      
+
       {/* === SIDEBAR === */}
       <aside className="page-sidebar">
         <h3>/articles</h3>
@@ -28,7 +28,7 @@ function Blog() {
 
       {/* === CONTENT === */}
       <main className="page-content">
-        
+
         {/* VIEW 1: READ ARTICLE */}
         {activePost ? (
           <article className="blog-reader">
@@ -37,15 +37,19 @@ function Blog() {
             </span>
             <h1 style={{ fontSize: '2.5rem', marginTop: '0.5rem' }}>{activePost.title}</h1>
             <hr style={{ border: 0, borderBottom: '1px solid var(--border)', margin: '2rem 0' }} />
-            
+
             {/* Render HTML content safely */}
-            <div 
-              className="article-body"
-              dangerouslySetInnerHTML={{ __html: activePost.content }} 
-            />
+            {/* Render HTML content safely OR render React Component */}
+            <div className="article-body">
+              {typeof activePost.content === 'string' ? (
+                <div dangerouslySetInnerHTML={{ __html: activePost.content }} />
+              ) : (
+                <activePost.content />
+              )}
+            </div>
           </article>
         ) : (
-          
+
           /* VIEW 2: LIST ARTICLES */
           <div>
             <h1>/documentation_log</h1>

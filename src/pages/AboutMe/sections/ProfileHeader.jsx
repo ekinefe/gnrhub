@@ -1,7 +1,7 @@
 import React from 'react';
 
-import profileImg from '../../assets/images/profile.jpg';
-import cvPdf from '../../assets/docs/cv.pdf';
+import profileImg from '../../../assets/images/profile.jpg';
+import cvPdf from '../../../assets/docs/cv.pdf';
 
 const ProfileHeader = () => {
     return (

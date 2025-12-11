@@ -5,9 +5,9 @@ import './App.css';
 
 // Lazy load pages for performance
 const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Services = lazy(() => import('./pages/Services'));
-const Blog = lazy(() => import('./pages/Blog'));
+const About = lazy(() => import('./pages/AboutMe/About'));
+const Services = lazy(() => import('./pages/Services/Services'));
+const Blog = lazy(() => import('./pages/Blogs/Blog'));
 
 function App() {
   return (

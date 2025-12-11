@@ -60,6 +60,7 @@ body {
   background-image: linear-gradient(var(--border) 1px, transparent 1px),
     linear-gradient(90deg, var(--border) 1px, transparent 1px);
   background-size: 50px 50px;
+  /* background-size: 25px 25px; */
   background-position: center top;
   overflow-x: hidden;
   position: relative;
@@ -212,10 +213,142 @@ p {
 .btn {
   margin-right: 0;
   margin-bottom: 0;
-}/* === APP MAIN WRAPPER === */
+}
+
+/* === APP MAIN WRAPPER === */
 .app-main {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-    /* Double protection */
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  /* Double protection */
+}
+
+.layout-content {
+  padding-top: calc(var(--nav-height) + 2rem);
+  /* Ensure content starts well below fixed nav */
+}
+
+/* === SIDEBAR LAYOUT (Global for Services & Blog) === */
+.sidebar-page {
+  display: grid;
+  /* Desktop: 260px Sidebar | Rest is Content */
+  grid-template-columns: 260px 1fr;
+  min-height: calc(100vh - var(--nav-height));
+  max-width: 1400px;
+  margin: 0 auto;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+/* Sidebar Styling */
+.page-sidebar {
+  background-color: var(--bg-dark);
+  border-right: 1px solid var(--border);
+  padding: 2rem;
+}
+
+.page-sidebar h3 {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.page-sidebar ul {
+  list-style: none;
+}
+
+.page-sidebar li {
+  margin-bottom: 0.5rem;
+}
+
+.page-sidebar a {
+  display: block;
+  padding: 8px 12px;
+  color: var(--text-main);
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.page-sidebar a:hover,
+.page-sidebar a.active {
+  background-color: var(--bg-panel);
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
+}
+
+/* Make sidebar headers that are links look clickable */
+.page-sidebar a h3 {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.page-sidebar a:hover h3 {
+  color: var(--accent);
+}
+
+/* Main Content Area */
+.page-content {
+  padding: 3rem 4rem;
+  background-color: var(--bg-dark);
+}
+
+/* === STATUS TAGS === */
+.status-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  letter-spacing: 1px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* 🟢 ACTIVE: Green Tech Look */
+.status-active {
+  color: #00ff9d;
+  /* Matrix Green */
+  border-color: #00ff9d;
+  background: rgba(0, 255, 157, 0.1);
+  box-shadow: 0 0 5px rgba(0, 255, 157, 0.2);
+}
+
+/* 🟡 BETA: Warning Yellow/Orange */
+.status-beta {
+  color: #ffb700;
+  border-color: #ffb700;
+  background: rgba(255, 183, 0, 0.1);
+}
+
+/* 🔴 OFFLINE: Error Red */
+.status-offline {
+  color: #ff3333;
+  border-color: #ff3333;
+  background: rgba(255, 51, 51, 0.1);
+  opacity: 0.7;
+}
+
+/* Mobile Fix */
+@media (max-width: 768px) {
+  .sidebar-page {
+    grid-template-columns: 1fr;
+  }
+
+  .page-sidebar {
+    position: relative;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 1rem;
+    top: 0;
+  }
+
+  .page-content {
+    padding: 2rem 1rem;
+  }
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { projects } from '../data/projects_data';
-import { getStatusClass } from '../utils/statusUtils';
-import './Services.css';
+import { projects } from './data/projects_data';
+import { getStatusClass } from '../../utils/statusUtils';
+
 
 function Services() {
   const { id } = useParams();
