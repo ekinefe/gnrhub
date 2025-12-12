@@ -1,4 +1,5 @@
 import ExampleBlog from '../contents/ExampleBlog.jsx';
+import PythonIntroduction from '../contents/PythonIntroduction/main.jsx';
 
 // === BLOG POSTS ===
 export const posts = [
@@ -30,5 +31,19 @@ export const posts = [
     tag: "DEMO",
     summary: "A comprehensive guide on formatted content: lists, checkboxes, code blocks (Bash, Java, C++, Python), and image sizing.",
     content: ExampleBlog
+  },
+  {
+    id: "python-intro",
+    // title: "Python: Introduction & Setup",
+    title: "Python",
+    date: "2025-12-12",
+    tag: "PYTHON",
+    summary: "Getting started with Python: Installation on Windows, macOS, and Linux.",
+    content: PythonIntroduction,
+    sections: [
+      { id: "download", title: "01_Download" },
+      { id: "ide", title: "02_IDE_Download" },
+      { id: "helloworld", title: "03_Hello_World" }
+    ]
   }
 ];

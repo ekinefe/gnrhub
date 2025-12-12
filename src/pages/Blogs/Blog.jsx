@@ -21,6 +21,25 @@ function Blog() {
               <Link to={`/blog/${post.id}`} className={id === post.id ? "active" : ""}>
                 {post.title}
               </Link>
+              {id === post.id && post.sections && (
+                <ul style={{ marginTop: '0.0rem', marginBottom: '0.5rem', paddingLeft: '1.5rem', listStyle: 'none' }}>
+                  {post.sections.map(section => (
+                    <li key={section.id} style={{ marginBottom: '0.25rem' }}>
+                      <a href={`#${section.id}`} style={{
+                        color: 'var(--text-secondary)',
+                        fontSize: '0.9rem',
+                        textDecoration: 'none',
+                        transition: 'color 0.2s'
+                      }}
+                        onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
+                        onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+                      >
+                        {section.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>
