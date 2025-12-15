@@ -1,27 +1,27 @@
 import React, { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import HowToDownload from './01_pythonDownload';
-import IdeSetup from './02_IDEDownload';
-import HelloWorld from './03_helloWorld';
+import HowToDownload from './01_PythonDownload';
+import IdeSetup from './02_PythonIDEDownload';
+import HelloWorld from './03_PythonHelloWorld';
 import PythonVariables from './04_PythonVariables';
 import PythonMath from './05_PythonMath';
 import PythonInput from './06_PythonInput';
 import PythonConditionals from './07_PythonConditionals';
-// import PythonFunctions from './08_pythonFunctions';
-// import Classes from './09_classes';
-// import Modules from './10_modules';
-// import Packages from './11_packages';
-// import Exceptions from './12_exceptions';
-// import Files from './13_files';
-// import Networking from './14_networking';
-// import GUI from './15_gui';
-// import Web from './16_web';
-// import Data from './17_data';
-// import Security from './18_security';
-// import Performance from './19_performance';
-// import Testing from './20_testing';
-// import Deployment from './21_deployment';
-// import Future from './22_future';
+import PythonFunctions from './08_PythonFunctions';
+import PythonClasses from './09_PythonClasses';
+import PythonModules from './10_PythonModules';
+import PythonPackages from './11_PythonPackages';
+import PythonExceptions from './12_PythonExceptions';
+import PythonFiles from './13_PythonFiles';
+import PythonNetworking from './14_PythonNetworking';
+import PythonGUI from './15_PythonGUI';
+import PythonWEB from './16_PythonWEB';
+import PythonData from './17_PythonData';
+import PythonSecurity from './18_PythonSecurity';
+import PythonPerformance from './19_PythonPerformance';
+import PythonTesting from './20_PythonTesting';
+import PythonDeployment from './21_PythonDeployment';
+import PythonFuture from './22_PythonFuture';
 
 const PythonIntroduction = () => {
     const location = useLocation();
@@ -104,8 +104,174 @@ const PythonIntroduction = () => {
                     <div>
                         <Link to="#" className="btn-back">← Back to Index</Link>
                         <PythonConditionals />
-                        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
                             <Link to="#input" className="btn secondary-btn">← Previous: Input</Link>
+                            <Link to="#functions" className="btn primary-btn">Next: Functions →</Link>
+                        </div>
+                    </div>
+                );
+            case '#functions':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonFunctions />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#conditionals" className="btn secondary-btn">← Previous: Conditionals</Link>
+                            <Link to="#classes" className="btn primary-btn">Next: Classes →</Link>
+                        </div>
+                    </div>
+                );
+            case '#classes':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonClasses />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#functions" className="btn secondary-btn">← Previous: Functions</Link>
+                            <Link to="#modules" className="btn primary-btn">Next: Modules →</Link>
+                        </div>
+                    </div>
+                );
+            case '#modules':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonModules />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#classes" className="btn secondary-btn">← Previous: Classes</Link>
+                            <Link to="#packages" className="btn primary-btn">Next: Packages →</Link>
+                        </div>
+                    </div>
+                );
+            case '#packages':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonPackages />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#modules" className="btn secondary-btn">← Previous: Modules</Link>
+                            <Link to="#exceptions" className="btn primary-btn">Next: Exceptions →</Link>
+                        </div>
+                    </div>
+                );
+            case '#exceptions':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonExceptions />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#packages" className="btn secondary-btn">← Previous: Packages</Link>
+                            <Link to="#files" className="btn primary-btn">Next: Files →</Link>
+                        </div>
+                    </div>
+                );
+            case '#files':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonFiles />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#exceptions" className="btn secondary-btn">← Previous: Exceptions</Link>
+                            <Link to="#networking" className="btn primary-btn">Next: Networking →</Link>
+                        </div>
+                    </div>
+                );
+            case '#networking':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonNetworking />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#files" className="btn secondary-btn">← Previous: Files</Link>
+                            <Link to="#gui" className="btn primary-btn">Next: GUI →</Link>
+                        </div>
+                    </div>
+                );
+            case '#gui':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonGUI />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#networking" className="btn secondary-btn">← Previous: Networking</Link>
+                            <Link to="#web" className="btn primary-btn">Next: Web →</Link>
+                        </div>
+                    </div>
+                );
+            case '#web':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonWEB />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#gui" className="btn secondary-btn">← Previous: GUI</Link>
+                            <Link to="#data" className="btn primary-btn">Next: Data →</Link>
+                        </div>
+                    </div>
+                );
+            case '#data':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonData />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#web" className="btn secondary-btn">← Previous: Web</Link>
+                            <Link to="#security" className="btn primary-btn">Next: Security →</Link>
+                        </div>
+                    </div>
+                );
+            case '#security':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonSecurity />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#data" className="btn secondary-btn">← Previous: Data</Link>
+                            <Link to="#performance" className="btn primary-btn">Next: Performance →</Link>
+                        </div>
+                    </div>
+                );
+            case '#performance':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonPerformance />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#security" className="btn secondary-btn">← Previous: Security</Link>
+                            <Link to="#testing" className="btn primary-btn">Next: Testing →</Link>
+                        </div>
+                    </div>
+                );
+            case '#testing':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonTesting />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#performance" className="btn secondary-btn">← Previous: Performance</Link>
+                            <Link to="#deployment" className="btn primary-btn">Next: Deployment →</Link>
+                        </div>
+                    </div>
+                );
+            case '#deployment':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonDeployment />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#testing" className="btn secondary-btn">← Previous: Testing</Link>
+                            <Link to="#future" className="btn primary-btn">Next: Future →</Link>
+                        </div>
+                    </div>
+                );
+            case '#future':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonFuture />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#deployment" className="btn secondary-btn">← Previous: Deployment</Link>
+                            <Link to="#" className="btn primary-btn">Back to Index (Complete) →</Link>
                         </div>
                     </div>
                 );
@@ -175,6 +341,141 @@ const PythonIntroduction = () => {
                                 <div className="toc-details">
                                     <h4>07_Conditionals</h4>
                                     <p>Control flow with if, elif, and else statements.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#functions" className="toc-item">
+                                <span className="toc-number">08</span>
+                                <div className="toc-details">
+                                    <h4>08_Functions</h4>
+                                    <p>Reusable code blocks, parameters, return values, and scope.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#classes" className="toc-item">
+                                <span className="toc-number">09</span>
+                                <div className="toc-details">
+                                    <h4>09_Classes</h4>
+                                    <p>Object-Oriented Programming: classes, objects, and self.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#modules" className="toc-item">
+                                <span className="toc-number">10</span>
+                                <div className="toc-details">
+                                    <h4>10_Modules</h4>
+                                    <p>Organizing code into separate files and importing them.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#packages" className="toc-item">
+                                <span className="toc-number">11</span>
+                                <div className="toc-details">
+                                    <h4>11_Packages</h4>
+                                    <p>Structuring larger applications with `__init__.py`.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#exceptions" className="toc-item">
+                                <span className="toc-number">12</span>
+                                <div className="toc-details">
+                                    <h4>12_Exceptions</h4>
+                                    <p>Handling errors gracefully with try, except, finally.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#files" className="toc-item">
+                                <span className="toc-number">13</span>
+                                <div className="toc-details">
+                                    <h4>13_Files</h4>
+                                    <p>Reading from and writing to files (I/O).</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#networking" className="toc-item">
+                                <span className="toc-number">14</span>
+                                <div className="toc-details">
+                                    <h4>14_Networking</h4>
+                                    <p>Sockets, HTTP requests, and client-server communication.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#gui" className="toc-item">
+                                <span className="toc-number">15</span>
+                                <div className="toc-details">
+                                    <h4>15_GUI</h4>
+                                    <p>Building desktop applications with Tkinter.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#web" className="toc-item">
+                                <span className="toc-number">16</span>
+                                <div className="toc-details">
+                                    <h4>16_Web</h4>
+                                    <p>Introduction to web development with Python.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#data" className="toc-item">
+                                <span className="toc-number">17</span>
+                                <div className="toc-details">
+                                    <h4>17_Data</h4>
+                                    <p>Data types, structures, and manipulation techniques.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#security" className="toc-item">
+                                <span className="toc-number">18</span>
+                                <div className="toc-details">
+                                    <h4>18_Security</h4>
+                                    <p>Basic security concepts and best practices.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#performance" className="toc-item">
+                                <span className="toc-number">19</span>
+                                <div className="toc-details">
+                                    <h4>19_Performance</h4>
+                                    <p>Optimizing code for speed and efficiency.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#testing" className="toc-item">
+                                <span className="toc-number">20</span>
+                                <div className="toc-details">
+                                    <h4>20_Testing</h4>
+                                    <p>Writing unit tests to ensure code reliability.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#deployment" className="toc-item">
+                                <span className="toc-number">21</span>
+                                <div className="toc-details">
+                                    <h4>21_Deployment</h4>
+                                    <p>Packaging and distributing your Python applications.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#future" className="toc-item">
+                                <span className="toc-number">22</span>
+                                <div className="toc-details">
+                                    <h4>22_Future</h4>
+                                    <p>Exploring advanced topics and the future of Python.</p>
                                 </div>
                                 <span className="toc-arrow">→</span>
                             </Link>

@@ -3,13 +3,13 @@ import React from 'react';
 const PythonFunctions = () => {
   return (
     <div className="blog-article">
-      
+
       {/* === INTRO === */}
       <section style={{ marginBottom: '3rem' }}>
         <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>/module_08: FUNCTIONS_DECONSTRUCTED</h2>
         <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
           As programs grow, code needs to be organized, reusable, and readable. This is **Modular Programming**.
-          <br/><br/>
+          <br /><br />
           A **Function** is a named block of code that only runs when it is called. It allows you to package a sequence of operations into a single unit, which is vital for building complex AI and Data Science pipelines.
         </p>
       </section>
@@ -26,23 +26,23 @@ const PythonFunctions = () => {
         </p>
 
         <div style={{ background: '#000', border: '1px solid #333', padding: '1rem', fontFamily: 'monospace' }}>
-          <span style={{ color: '#569cd6' }}>def</span> <span style={{ color: '#4ec9b0' }}>display_status</span>(): <span style={{ color: '#6a9955' }}># 1. Definition (Name and Parentheses)</span><br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#ce9178' }}>"SYSTEM: Online"</span>)<br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#ce9178' }}>"STATUS: Nominal"</span>)<br/>
-          <br/>
-          <span style={{ color: '#4ec9b0' }}>display_status</span>() <span style={{ color: '#6a9955' }}># 2. Execution (Calling the function)</span><br/>
+          <span style={{ color: '#569cd6' }}>def</span> <span style={{ color: '#4ec9b0' }}>display_status</span>(): <span style={{ color: '#6a9955' }}># 1. Definition (Name and Parentheses)</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#ce9178' }}>"SYSTEM: Online"</span>)<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#ce9178' }}>"STATUS: Nominal"</span>)<br />
+          <br />
+          <span style={{ color: '#4ec9b0' }}>display_status</span>() <span style={{ color: '#6a9955' }}># 2. Execution (Calling the function)</span><br />
           <span style={{ color: '#4ec9b0' }}>display_status</span>() <span style={{ color: '#6a9955' }}># 3. Call it again, reuse the code!</span>
         </div>
 
         {/* OUTPUT */}
         <div style={{ background: '#111', padding: '0.5rem 1rem', borderLeft: '3px solid #4ec9b0', marginTop: '5px', fontFamily: 'monospace', fontSize: '0.85rem', color: '#ccc' }}>
-          &gt; SYSTEM: Online<br/>
-          &gt; STATUS: Nominal<br/>
-          &gt; SYSTEM: Online<br/>
+          &gt; SYSTEM: Online<br />
+          &gt; STATUS: Nominal<br />
+          &gt; SYSTEM: Online<br />
           &gt; STATUS: Nominal
         </div>
       </div>
-      
+
       {/* ================================================= */}
       {/* 2. ARGUMENTS AND PARAMETERS                       */}
       {/* ================================================= */}
@@ -55,17 +55,17 @@ const PythonFunctions = () => {
         </p>
 
         <div style={{ background: '#000', border: '1px solid #333', padding: '1rem', fontFamily: 'monospace' }}>
-          <span style={{ color: '#569cd6' }}>def</span> <span style={{ color: '#dcdcaa' }}>calculate_fuel_cost</span>(<span style={{ color: '#9cdcfe' }}>distance</span>, <span style={{ color: '#9cdcfe' }}>rate</span>): <span style={{ color: '#6a9955' }}># Parameters: distance, rate</span><br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#9cdcfe' }}>cost</span> = <span style={{ color: '#9cdcfe' }}>distance</span> * <span style={{ color: '#9cdcfe' }}>rate</span><br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#ce9178' }}>f"Total Cost: ${cost}"</span>)<br/>
-          <br/>
-          <span style={{ color: '#dcdcaa' }}>calculate_fuel_cost</span>(<span style={{ color: '#b5cea8' }}>1500</span>, <span style={{ color: '#b5cea8' }}>0.25</span>) <span style={{ color: '#6a9955' }}># Arguments: 1500, 0.25</span><br/>
+          <span style={{ color: '#569cd6' }}>def</span> <span style={{ color: '#dcdcaa' }}>calculate_fuel_cost</span>(<span style={{ color: '#9cdcfe' }}>distance</span>, <span style={{ color: '#9cdcfe' }}>rate</span>): <span style={{ color: '#6a9955' }}># Parameters: distance, rate</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#9cdcfe' }}>cost</span> = <span style={{ color: '#9cdcfe' }}>distance</span> * <span style={{ color: '#9cdcfe' }}>rate</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#ce9178' }}>f"Total Cost: ${cost}"</span>)<br />
+          <br />
+          <span style={{ color: '#dcdcaa' }}>calculate_fuel_cost</span>(<span style={{ color: '#b5cea8' }}>1500</span>, <span style={{ color: '#b5cea8' }}>0.25</span>) <span style={{ color: '#6a9955' }}># Arguments: 1500, 0.25</span><br />
           <span style={{ color: '#dcdcaa' }}>calculate_fuel_cost</span>(<span style={{ color: '#b5cea8' }}>400</span>, <span style={{ color: '#b5cea8' }}>0.50</span>)
         </div>
 
         {/* OUTPUT */}
         <div style={{ background: '#111', padding: '0.5rem 1rem', borderLeft: '3px solid #dcdcaa', marginTop: '5px', fontFamily: 'monospace', fontSize: '0.85rem', color: '#ccc' }}>
-          &gt; Total Cost: $375.0<br/>
+          &gt; Total Cost: $375.0<br />
           &gt; Total Cost: $200.0
         </div>
       </div>
@@ -82,11 +82,11 @@ const PythonFunctions = () => {
         </p>
 
         <div style={{ background: '#000', border: '1px solid #333', padding: '1rem', fontFamily: 'monospace' }}>
-          <span style={{ color: '#569cd6' }}>def</span> <span style={{ color: '#c586c0' }}>get_signature</span>(<span style={{ color: '#9cdcfe' }}>name</span>):<br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#9cdcfe' }}>message</span> = <span style={{ color: '#ce9178' }}>"AUTHORISED AGENT: "</span> + <span style={{ color: '#9cdcfe' }}>name</span><br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#c586c0' }}>return</span> <span style={{ color: '#9cdcfe' }}>message</span> <span style={{ color: '#6a9955' }}># Returns the string value</span><br/>
-          <br/>
-          <span style={{ color: '#9cdcfe' }}>header</span> = <span style={{ color: '#c586c0' }}>get_signature</span>(<span style={{ color: '#ce9178' }}>"Ekin"</span>)<br/>
+          <span style={{ color: '#569cd6' }}>def</span> <span style={{ color: '#c586c0' }}>get_signature</span>(<span style={{ color: '#9cdcfe' }}>name</span>):<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#9cdcfe' }}>message</span> = <span style={{ color: '#ce9178' }}>"AUTHORISED AGENT: "</span> + <span style={{ color: '#9cdcfe' }}>name</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#c586c0' }}>return</span> <span style={{ color: '#9cdcfe' }}>message</span> <span style={{ color: '#6a9955' }}># Returns the string value</span><br />
+          <br />
+          <span style={{ color: '#9cdcfe' }}>header</span> = <span style={{ color: '#c586c0' }}>get_signature</span>(<span style={{ color: '#ce9178' }}>"Ekin"</span>)<br />
           <span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#9cdcfe' }}>header</span>)
         </div>
 
@@ -95,7 +95,7 @@ const PythonFunctions = () => {
           &gt; AUTHORISED AGENT: Ekin
         </div>
       </div>
-      
+
       {/* ================================================= */}
       {/* 4. SCOPE (ADVANCED)                               */}
       {/* ================================================= */}
@@ -108,20 +108,20 @@ const PythonFunctions = () => {
         </p>
 
         <div style={{ background: '#000', border: '1px solid #333', padding: '1rem', fontFamily: 'monospace' }}>
-          <span style={{ color: '#9cdcfe' }}>GLOBAL_KEY</span> = <span style={{ color: '#ce9178' }}>"AccessCode1"</span> <span style={{ color: '#6a9955' }}># Global Scope</span><br/>
-          <br/>
-          <span style={{ color: '#569cd6' }}>def</span> <span style={{ color: '#4ec9b0' }}>process_data</span>():<br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#9cdcfe' }}>local_count</span> = <span style={{ color: '#b5cea8' }}>5</span> <span style={{ color: '#6a9955' }}># Local Scope - Dies when function ends</span><br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#9cdcfe' }}>local_count</span>)<br/>
-          <br/>
-          <span style={{ color: '#4ec9b0' }}>process_data</span>()<br/>
-          <span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#9cdcfe' }}>GLOBAL_KEY</span>)<br/>
+          <span style={{ color: '#9cdcfe' }}>GLOBAL_KEY</span> = <span style={{ color: '#ce9178' }}>"AccessCode1"</span> <span style={{ color: '#6a9955' }}># Global Scope</span><br />
+          <br />
+          <span style={{ color: '#569cd6' }}>def</span> <span style={{ color: '#4ec9b0' }}>process_data</span>():<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#9cdcfe' }}>local_count</span> = <span style={{ color: '#b5cea8' }}>5</span> <span style={{ color: '#6a9955' }}># Local Scope - Dies when function ends</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#9cdcfe' }}>local_count</span>)<br />
+          <br />
+          <span style={{ color: '#4ec9b0' }}>process_data</span>()<br />
+          <span style={{ color: '#569cd6' }}>print</span>(<span style={{ color: '#9cdcfe' }}>GLOBAL_KEY</span>)<br />
           <span style={{ color: '#6a9955' }}># print(local_count) - THIS WOULD CAUSE A CRASH (NameError)</span>
         </div>
 
         {/* OUTPUT */}
         <div style={{ background: '#111', padding: '0.5rem 1rem', borderLeft: '3px solid var(--accent)', marginTop: '5px', fontFamily: 'monospace', fontSize: '0.85rem', color: '#ccc' }}>
-          &gt; 5<br/>
+          &gt; 5<br />
           &gt; AccessCode1
         </div>
       </div>
