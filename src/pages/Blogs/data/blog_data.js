@@ -4,15 +4,15 @@ import TerminalUsage from '../contents/TerminalUsage/main.jsx';
 
 // === BLOG POSTS ===
 export const posts = [
-  {
-    id: "example-blog",
-    title: "Example Blog: Style & Formatting Showcase",
-    date: "2025-12-11",
-    tag: "DEMO",
-    summary: "A comprehensive guide on formatted content: lists, checkboxes, code blocks (Bash, Java, C++, Python), and image sizing.",
-    keywords: ["demo", "example", "formatting", "style"],
-    content: ExampleBlog
-  },
+  // {
+  //   id: "example-blog",
+  //   title: "Example Blog: Style & Formatting Showcase",
+  //   date: "2025-12-11",
+  //   tag: "DEMO",
+  //   summary: "A comprehensive guide on formatted content: lists, checkboxes, code blocks (Bash, Java, C++, Python), and image sizing.",
+  //   keywords: ["demo", "example", "formatting", "style"],
+  //   content: ExampleBlog
+  // },
   {
     id: "python-intro",
     // title: "Python: Introduction & Setup",
@@ -49,7 +49,7 @@ export const posts = [
   },
   {
     id: "Basic_of_Terminal",
-    title: "Basic_of_Terminal",
+    title: "Terminal_Basics",
     date: "2025-12-12",
     tag: "TERMINAL",
     summary: "Getting started with Terminal: Navigation, Files, Permissions, Search.",
