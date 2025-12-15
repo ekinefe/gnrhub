@@ -7,7 +7,7 @@ import PythonVariables from './04_PythonVariables';
 import PythonMath from './05_PythonMath';
 import PythonInput from './06_PythonInput';
 import PythonConditionals from './07_PythonConditionals';
-// import Functions from './08_functions';
+// import PythonFunctions from './08_pythonFunctions';
 // import Classes from './09_classes';
 // import Modules from './10_modules';
 // import Packages from './11_packages';
