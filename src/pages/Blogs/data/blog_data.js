@@ -1,6 +1,7 @@
 import ExampleBlog from '../contents/ExampleBlog.jsx';
 import PythonIntroduction from '../contents/PythonIntroduction/main.jsx';
 import TerminalUsage from '../contents/TerminalUsage/main.jsx';
+import BashScripting from '../contents/BashScripting/BashScripting.jsx';
 
 // === BLOG POSTS ===
 export const posts = [
@@ -61,6 +62,23 @@ export const posts = [
       { id: "files", title: "03_Files", keywords: ["touch", "mkdir", "rm"] },
       { id: "permissions", title: "04_Permissions", keywords: ["chmod", "security", "access"] },
       { id: "search", title: "05_Search", keywords: ["grep", "find", "locate"] }
+    ]
+  },
+  {
+    id: "Bash_Scripting",
+    title: "Bash_Scripting",
+    date: "2025-12-15",
+    tag: "BASH",
+    summary: "Getting started with Bash: Variables, Logic, Loops, Functions, Automation.",
+    keywords: ["bash", "scripting", "terminal", "automation"],
+    content: BashScripting,
+    sections: [
+      { id: "intro", title: "01_Intro", keywords: ["bash", "scripting", "terminal"] },
+      { id: "variables", title: "02_Variables", keywords: ["variables", "data types", "int"] },
+      { id: "logic", title: "03_Logic", keywords: ["if", "else", "logic"] },
+      { id: "loops", title: "04_Loops", keywords: ["for", "while", "loop"] },
+      { id: "functions", title: "05_Functions", keywords: ["functions", "parameters", "return"] },
+      { id: "automation", title: "06_Automation", keywords: ["automation", "script", "backup"] }
     ]
   }
 ];
