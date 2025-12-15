@@ -43,7 +43,26 @@ export const posts = [
     sections: [
       { id: "download", title: "01_Download" },
       { id: "ide", title: "02_IDE_Download" },
-      { id: "helloworld", title: "03_Hello_World" }
+      { id: "helloworld", title: "03_Hello_World" },
+      { id: "variables", title: "04_Variables" },
+      { id: "math", title: "05_Math" },
+      { id: "lists", title: "06_Lists" },
+      { id: "dictionaries", title: "07_Dictionaries" },
+      // { id: "functions", title: "08_Functions" },
+      // { id: "classes", title: "09_Classes" },
+      // { id: "modules", title: "10_Modules" },
+      // { id: "packages", title: "11_Packages" },
+      // { id: "exceptions", title: "12_Exceptions" },
+      // { id: "files", title: "13_Files" },
+      // { id: "networking", title: "14_Networking" },
+      // { id: "gui", title: "15_GUI" },
+      // { id: "web", title: "16_Web" },
+      // { id: "data", title: "17_Data" },
+      // { id: "security", title: "18_Security" },
+      // { id: "performance", title: "19_Performance" },
+      // { id: "testing", title: "20_Testing" },
+      // { id: "deployment", title: "21_Deployment" },
+      // { id: "future", title: "22_Future" }
     ]
   }
 ];
