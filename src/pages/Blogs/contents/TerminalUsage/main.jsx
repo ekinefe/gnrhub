@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 
-// Import the sub-modules (We will create these next)
-import TerminalIntro from './contents/LinuxTerminal/01_TerminalIntro';
-import TerminalNav from './contents/LinuxTerminal/02_TerminalNav';
-import TerminalFiles from './contents/LinuxTerminal/03_TerminalFiles';
-import TerminalPermissions from './contents/LinuxTerminal/04_TerminalPermissions';
-import TerminalSearch from './contents/LinuxTerminal/05_TerminalSearch';
+// Import the sub-modules
+import TerminalIntro from './01_TerminalIntro';
+import TerminalNav from './02_TerminalNav';
+import TerminalFiles from './03_TerminalFiles';
+import TerminalPermissions from './04_TerminalPermissions';
+import TerminalSearch from './05_TerminalSearch';
 
-const LinuxTerminal = () => {
+const TerminalUsage = () => {
     const location = useLocation();
     const hash = location.hash;
 
@@ -212,4 +212,4 @@ const LinuxTerminal = () => {
     );
 };
 
-export default LinuxTerminal;
+export default TerminalUsage;
