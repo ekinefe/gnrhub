@@ -134,7 +134,7 @@ const TerminalUsage = () => {
 
     return (
         <div className="blog-content">
-            <h2>/module: LINUX_TERMINAL</h2>
+            <h2>/LINUX_TERMINAL_BASICS</h2>
             <p>
                 The Graphical User Interface (GUI) hides the true power of your machine.
                 To truly own your system, you must master the Shell.

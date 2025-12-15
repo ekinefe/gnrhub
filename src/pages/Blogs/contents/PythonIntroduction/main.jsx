@@ -492,7 +492,7 @@ const PythonIntroduction = () => {
 
     return (
         <div className="blog-content">
-            <h2>Python Introduction</h2>
+            <h2>Python_Introduction</h2>
             <p>
                 Welcome to the Python Introduction series. In this guide, we will cover everything from setting up your environment
                 to writing your first Python program.
