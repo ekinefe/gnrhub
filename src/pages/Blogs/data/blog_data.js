@@ -49,7 +49,7 @@ export const posts = [
       { id: "input", title: "06_Input" },
       { id: "conditionals", title: "07_Conditionals" },
       { id: "functions", title: "08_Functions" },
-      { id: "functions", title: "08_Functions" },
+
       { id: "classes", title: "09_Classes" },
       { id: "modules", title: "10_Modules" },
       { id: "packages", title: "11_Packages" },

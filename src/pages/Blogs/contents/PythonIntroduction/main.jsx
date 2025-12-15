@@ -27,6 +27,10 @@ const PythonIntroduction = () => {
     const location = useLocation();
     const hash = location.hash;
 
+    // DEBUG: Remove after fixing
+    // console.log("Current Hash:", hash);
+
+
     // Scroll to top when hash changes
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -113,6 +117,7 @@ const PythonIntroduction = () => {
             case '#functions':
                 return (
                     <div>
+                        {/* <h2 style={{ color: 'orange' }}>DEBUG: CASE #functions HIT</h2> */}
                         <Link to="#" className="btn-back">← Back to Index</Link>
                         <PythonFunctions />
                         <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
@@ -492,6 +497,9 @@ const PythonIntroduction = () => {
                 Welcome to the Python Introduction series. In this guide, we will cover everything from setting up your environment
                 to writing your first Python program.
             </p>
+            {/* <div style={{ background: '#333', color: '#fff', padding: '10px', marginBottom: '10px' }}>
+                DEBUG INFO: Hash = "{hash}"
+            </div> */}
             <hr />
 
             {renderContent()}
