@@ -35,7 +35,7 @@ export const posts = [
   {
     id: "python-intro",
     // title: "Python: Introduction & Setup",
-    title: "Python",
+    title: "Python_Introduction",
     date: "2025-12-12",
     tag: "PYTHON",
     summary: "Getting started with Python: Installation on Windows, macOS, and Linux.",
