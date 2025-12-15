@@ -50,7 +50,7 @@ export const posts = [
   {
     id: "Basic_of_Terminal",
     title: "Terminal_Basics",
-    date: "2025-12-12",
+    date: "2025-12-15",
     tag: "TERMINAL",
     summary: "Getting started with Terminal: Navigation, Files, Permissions, Search.",
     keywords: ["linux", "terminal", "bash", "shell"],
