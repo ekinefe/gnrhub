@@ -6,7 +6,7 @@ const HelloWorld = () => {
 
             {/* === INTRO === */}
             <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>/init_sequence</h2>
+                <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>/module_03: INIT_SEQUENCE</h2>
                 <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
                     Now that the Python runtime is active, we must verify the environment by executing
                     the standard <span className="accent-text">"Hello, World!"</span> protocol.

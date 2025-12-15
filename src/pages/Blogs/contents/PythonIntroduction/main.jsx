@@ -3,6 +3,25 @@ import { useLocation, Link } from 'react-router-dom';
 import HowToDownload from './01_pythonDownload';
 import IdeSetup from './02_IDEDownload';
 import HelloWorld from './03_helloWorld';
+import PythonVariables from './04_PythonVariables';
+import PythonMath from './05_PythonMath';
+import PythonInput from './06_PythonInput';
+import PythonConditionals from './07_PythonConditionals';
+// import Functions from './08_functions';
+// import Classes from './09_classes';
+// import Modules from './10_modules';
+// import Packages from './11_packages';
+// import Exceptions from './12_exceptions';
+// import Files from './13_files';
+// import Networking from './14_networking';
+// import GUI from './15_gui';
+// import Web from './16_web';
+// import Data from './17_data';
+// import Security from './18_security';
+// import Performance from './19_performance';
+// import Testing from './20_testing';
+// import Deployment from './21_deployment';
+// import Future from './22_future';
 
 const PythonIntroduction = () => {
     const location = useLocation();
@@ -41,8 +60,52 @@ const PythonIntroduction = () => {
                     <div>
                         <Link to="#" className="btn-back">← Back to Index</Link>
                         <HelloWorld />
-                        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
                             <Link to="#ide" className="btn secondary-btn">← Previous: IDE Setup</Link>
+                            <Link to="#variables" className="btn primary-btn">Next: Variables →</Link>
+                        </div>
+                    </div>
+                );
+            case '#variables':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonVariables />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#helloworld" className="btn secondary-btn">← Previous: Hello World</Link>
+                            <Link to="#math" className="btn primary-btn">Next: Math →</Link>
+                        </div>
+                    </div>
+                );
+            case '#math':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonMath />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#variables" className="btn secondary-btn">← Previous: Variables</Link>
+                            <Link to="#input" className="btn primary-btn">Next: Input →</Link>
+                        </div>
+                    </div>
+                );
+            case '#input':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonInput />
+                        <div style={{ marginTop: '2rem', textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to="#math" className="btn secondary-btn">← Previous: Math</Link>
+                            <Link to="#conditionals" className="btn primary-btn">Next: Conditionals →</Link>
+                        </div>
+                    </div>
+                );
+            case '#conditionals':
+                return (
+                    <div>
+                        <Link to="#" className="btn-back">← Back to Index</Link>
+                        <PythonConditionals />
+                        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                            <Link to="#input" className="btn secondary-btn">← Previous: Input</Link>
                         </div>
                     </div>
                 );
@@ -76,6 +139,42 @@ const PythonIntroduction = () => {
                                 <div className="toc-details">
                                     <h4>03_Hello_World</h4>
                                     <p>Writing and running your first Python script.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#variables" className="toc-item">
+                                <span className="toc-number">04</span>
+                                <div className="toc-details">
+                                    <h4>04_Variables</h4>
+                                    <p>Understanding data types: Int, Float, String, and Bool.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#math" className="toc-item">
+                                <span className="toc-number">05</span>
+                                <div className="toc-details">
+                                    <h4>05_Math</h4>
+                                    <p>Arithmetic operations: +, -, *, /, //, %, **.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#input" className="toc-item">
+                                <span className="toc-number">06</span>
+                                <div className="toc-details">
+                                    <h4>06_Input</h4>
+                                    <p>Getting user input and handling type conversions.</p>
+                                </div>
+                                <span className="toc-arrow">→</span>
+                            </Link>
+
+                            <Link to="#conditionals" className="toc-item">
+                                <span className="toc-number">07</span>
+                                <div className="toc-details">
+                                    <h4>07_Conditionals</h4>
+                                    <p>Control flow with if, elif, and else statements.</p>
                                 </div>
                                 <span className="toc-arrow">→</span>
                             </Link>

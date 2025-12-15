@@ -6,6 +6,7 @@ const HowToDownload = () => {
 
             {/* === INTRO === */}
             <section style={{ marginBottom: '3rem' }}>
+                <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>/module_01: DOWNLOAD</h2>
                 <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
                     Python is the engine behind modern AI, Data Science, and Micro-SaaS.
                     Before we write any code, we must ensure your local environment is

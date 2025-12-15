@@ -6,7 +6,7 @@ const IdeSetup = () => {
 
             {/* === INTRO === */}
             <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>/environment_config</h2>
+                <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>/module_02: ENVIRONMENT_CONFIG</h2>
                 <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
                     To maximize throughput, you need an <span className="accent-text">Integrated Development Environment (IDE)</span>.
                     The two industry standards for Python are <b>VS Code</b> (Modular) and <b>PyCharm</b> (Integrated).
@@ -25,6 +25,7 @@ const IdeSetup = () => {
                         <li><b>+</b> Extremely lightweight.</li>
                         <li><b>+</b> Supports every language (Polyglot).</li>
                         <li><b>+</b> Great terminal integration.</li>
+                        <br></br>
                         <li><b>-</b> Requires manual setup of extensions.</li>
                     </ul>
 
@@ -42,6 +43,7 @@ const IdeSetup = () => {
                         <li><b>+</b> "Batteries Included" (No setup).</li>
                         <li><b>+</b> Best-in-class debugger & refactoring.</li>
                         <li><b>+</b> Deep understanding of Python code.</li>
+                        <br></br>
                         <li><b>-</b> Heavy on system resources (RAM).</li>
                     </ul>
 
@@ -73,7 +75,7 @@ const IdeSetup = () => {
                 <div style={{ marginBottom: '2rem' }}>
                     <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>// OS: MACOS</h3>
                     <p>If you have Homebrew installed (Recommended):</p>
-                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace' }}>
+                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                         <span style={{ color: '#00ff9d' }}>$</span> brew install --cask visual-studio-code
                     </div>
                 </div>
@@ -82,7 +84,7 @@ const IdeSetup = () => {
                 <div style={{ marginBottom: '2rem' }}>
                     <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>// OS: LINUX (Debian/Ubuntu/Kali)</h3>
                     <p>Install via the official Microsoft repository and <code>apt</code>:</p>
-                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace', fontSize: '0.85rem', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                         <span style={{ color: '#666' }}># 1. Install dependencies</span><br />
                         <span style={{ color: '#00ff9d' }}>$</span> sudo apt install wget gpg<br /><br />
                         <span style={{ color: '#666' }}># 2. Import Microsoft Key</span><br />
@@ -98,7 +100,7 @@ const IdeSetup = () => {
                 <div>
                     <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>// OS: LINUX (Fedora/RHEL/CentOS)</h3>
                     <p>Import the key and install via <code>dnf</code>:</p>
-                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace', fontSize: '0.85rem', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                         <span style={{ color: '#666' }}># 1. Import Key</span><br />
                         <span style={{ color: '#00ff9d' }}>$</span> sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc<br /><br />
                         <span style={{ color: '#666' }}># 2. Add Repo</span><br />
@@ -134,7 +136,7 @@ const IdeSetup = () => {
                 <div style={{ marginBottom: '2rem' }}>
                     <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>// OS: MACOS</h3>
                     <p>Using Homebrew Cask:</p>
-                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace' }}>
+                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                         <span style={{ color: '#00ff9d' }}>$</span> brew install --cask pycharm-ce
                     </div>
                 </div>
@@ -143,7 +145,7 @@ const IdeSetup = () => {
                 <div style={{ marginBottom: '2rem' }}>
                     <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>// OS: LINUX (Ubuntu/Debian)</h3>
                     <p>The easiest method on Ubuntu is via <code>snap</code> (pre-installed on Ubuntu):</p>
-                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace' }}>
+                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                         <span style={{ color: '#00ff9d' }}>$</span> sudo snap install pycharm-community --classic
                     </div>
                 </div>
@@ -152,7 +154,7 @@ const IdeSetup = () => {
                 <div>
                     <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>// OS: LINUX (Fedora/RHEL)</h3>
                     <p>On Fedora, the cleanest way is via <code>Flatpak</code> (Flathub):</p>
-                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace' }}>
+                    <div style={{ background: '#000', border: '1px solid var(--border)', padding: '1rem', fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                         <span style={{ color: '#00ff9d' }}>$</span> flatpak install flathub com.jetbrains.PyCharm-Community
                     </div>
                     <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', color: '#666' }}>
