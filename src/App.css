@@ -1,30 +1,17 @@
 /* === 1. TECH VARIABLES === */
 :root {
   --bg-dark: #050505;
-  /* Almost Pure Black */
   --bg-panel: #111111;
-  /* Dark Panel Background */
   --text-main: #eeeeee;
-  /* Off-white for less eye strain */
   --text-muted: #888888;
-
-  /* The "Accent" - Change this hex code to swap colors */
   --accent: #FF318C;
   /* Cyber Pink */
-  /* --accent: #38bdf8; */
-  /* Cyan (Alternative) */
-  /* --accent: #F7B955; */
-  /* Orange (Alternative) */
-
   --border: #333333;
-  /* Grid Line Color */
   --nav-height: 70px;
-
-  /* FORCE JetBrains Mono */
   --font-main: 'JetBrains Mono', monospace;
 }
 
-/* === 2. FONT FACES (Ensure these files exist in public/fonts or assets/fonts) === */
+/* === 2. FONT FACES === */
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
@@ -39,13 +26,15 @@
   font-style: normal;
 }
 
-/* === 3. GLOBAL RESET & GRID BACKGROUND === */
+/* === 3. GLOBAL RESET & RESPONSIVE BASE === */
 * {
   box-sizing: border-box;
 }
 
 html {
   overflow-x: hidden;
+  /* Critical: Stops side-scrolling */
+  width: 100%;
 }
 
 body {
@@ -55,17 +44,58 @@ body {
   font-family: var(--font-main);
   min-height: 100vh;
   width: 100%;
+  max-width: 100vw;
+  /* Hard Stop for width */
+  overflow-x: hidden;
 
-  /* The "Graph Paper" Background */
+  /* Graph Paper Background */
   background-image: linear-gradient(var(--border) 1px, transparent 1px),
     linear-gradient(90deg, var(--border) 1px, transparent 1px);
   background-size: 50px 50px;
-  /* background-size: 25px 25px; */
   background-position: center top;
-  overflow-x: hidden;
   position: relative;
 }
 
+/* === GLOBAL TEXT SAFETY (Fixes your screenshot issues) === */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+span,
+div,
+li,
+a {
+  overflow-wrap: break-word;
+  /* Modern browsers */
+  word-wrap: break-word;
+  /* Older browsers */
+  word-break: break-word;
+  /* Catch-all */
+  max-width: 100%;
+}
+
+/* Prevent images from breaking mobile layout */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Fix Code Blocks Globally */
+pre,
+code {
+  white-space: pre-wrap;
+  /* Wraps code text */
+  word-break: break-all;
+  /* Breaks long variables */
+  overflow-x: auto;
+  /* Adds scrollbar if still too long */
+  max-width: 100%;
+}
+
+/* Links */
 a {
   text-decoration: none;
   color: inherit;
@@ -80,11 +110,12 @@ ul {
 
 /* === 5. LAYOUT CONTAINER === */
 .container {
+  width: 100%;
+  /* Ensure it fills space */
   max-width: 1200px;
   margin: 0 auto;
   padding: 4rem 2rem;
   background-color: var(--bg-dark);
-  /* Hides grid behind text */
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
   min-height: 100vh;
@@ -92,14 +123,15 @@ ul {
 
 /* === 6. TYPOGRAPHY === */
 h1 {
-  font-size: 3rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  /* Responsive Font Size */
   margin-bottom: 1rem;
   line-height: 1.1;
   letter-spacing: -1px;
 }
 
 h2 {
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
   margin-bottom: 1.5rem;
   color: var(--text-main);
   border-bottom: 1px solid var(--border);
@@ -125,17 +157,10 @@ p {
 /* === 7. TECH CARDS (Bento Grid) === */
 .grid-layout {
   display: grid;
-  /* CHANGE: This restricts it to 2 columns max on desktop, 1 on mobile */
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  /* CHANGED: 400px was too wide for mobile. 280px is safer. */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
-}
-
-/* Mobile Tweak: Ensure 1 column on phones */
-@media (max-width: 768px) {
-  .grid-layout {
-    grid-template-columns: 1fr;
-  }
 }
 
 .tech-card {
@@ -143,6 +168,8 @@ p {
   border: 1px solid var(--border);
   padding: 2rem;
   transition: border-color 0.2s;
+  overflow: hidden;
+  /* Prevents internal content from spilling out */
 }
 
 .tech-card:hover {
@@ -156,16 +183,27 @@ p {
 }
 
 /* === 8. BUTTONS === */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  /* Center text */
   padding: 1rem 1.5rem;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.85rem;
   border: 1px solid var(--text-main);
   transition: all 0.2s;
-  margin-right: 1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  /* Keep button text on one line */
 }
 
 .primary-btn {
@@ -188,53 +226,25 @@ p {
   border-color: var(--text-main);
 }
 
-/* === MOBILE === */
-@media (max-width: 768px) {
-  .container {
-    border: none;
-    padding: 2rem 1rem;
-  }
-
-  h1 {
-    font-size: 2.2rem;
-  }
-}
-
-/* === BUTTON GROUP CONTAINER === */
-.btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  /* Allows buttons to drop to next line */
-  gap: 1rem;
-  /* Adds 1rem space (horizontal AND vertical) */
-  margin-top: 1.5rem;
-}
-
-.btn {
-  margin-right: 0;
-  margin-bottom: 0;
-}
-
-/* === APP MAIN WRAPPER === */
+/* === APP WRAPPERS === */
 .app-main {
   width: 100%;
-  max-width: 100%;
+  max-width: 100vw;
   overflow-x: hidden;
-  /* Double protection */
 }
 
 .layout-content {
   padding-top: calc(var(--nav-height) + 2rem);
-  /* Ensure content starts well below fixed nav */
+  width: 100%;
 }
 
-/* === SIDEBAR LAYOUT (Global for Services & Blog) === */
+/* === SIDEBAR LAYOUT (Services & Blog) === */
 .sidebar-page {
   display: grid;
-  /* Desktop: 260px Sidebar | Rest is Content */
   grid-template-columns: 260px 1fr;
   min-height: calc(100vh - var(--nav-height));
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
@@ -256,14 +266,6 @@ p {
   letter-spacing: 1px;
 }
 
-.page-sidebar ul {
-  list-style: none;
-}
-
-.page-sidebar li {
-  margin-bottom: 0.5rem;
-}
-
 .page-sidebar a {
   display: block;
   padding: 8px 12px;
@@ -280,20 +282,11 @@ p {
   border-left: 2px solid var(--accent);
 }
 
-/* Make sidebar headers that are links look clickable */
-.page-sidebar a h3 {
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.page-sidebar a:hover h3 {
-  color: var(--accent);
-}
-
-/* Main Content Area */
 .page-content {
   padding: 3rem 4rem;
   background-color: var(--bg-dark);
+  overflow-x: hidden;
+  /* Ensure content doesn't spill */
 }
 
 /* === STATUS TAGS === */
@@ -307,25 +300,22 @@ p {
   letter-spacing: 1px;
   display: inline-block;
   margin-right: 10px;
+  white-space: nowrap;
 }
 
-/* 🟢 ACTIVE: Green Tech Look */
 .status-active {
   color: #00ff9d;
-  /* Matrix Green */
   border-color: #00ff9d;
   background: rgba(0, 255, 157, 0.1);
   box-shadow: 0 0 5px rgba(0, 255, 157, 0.2);
 }
 
-/* 🟡 BETA: Warning Yellow/Orange */
 .status-beta {
   color: #ffb700;
   border-color: #ffb700;
   background: rgba(255, 183, 0, 0.1);
 }
 
-/* 🔴 OFFLINE: Error Red */
 .status-offline {
   color: #ff3333;
   border-color: #ff3333;
@@ -333,22 +323,40 @@ p {
   opacity: 0.7;
 }
 
-/* Mobile Fix */
+/* === MOBILE OVERRIDES (The Critical Part) === */
 @media (max-width: 768px) {
+
+  /* Reset Container */
+  .container {
+    border: none;
+    padding: 2rem 1rem;
+    /* More breathing room */
+    width: 100%;
+  }
+
+  /* Stack Sidebar Layout */
   .sidebar-page {
     grid-template-columns: 1fr;
+    /* Stack vertically */
+    border: none;
   }
 
   .page-sidebar {
-    position: relative;
-    height: auto;
     border-right: none;
     border-bottom: 1px solid var(--border);
     padding: 1rem;
-    top: 0;
+    overflow-x: auto;
+    /* Allow horizontal scroll for tabs if needed */
   }
 
   .page-content {
     padding: 2rem 1rem;
+    /* Reduce padding on mobile */
+  }
+
+  /* Grid Fix */
+  .grid-layout {
+    grid-template-columns: 1fr;
+    /* Force single column */
   }
 }
