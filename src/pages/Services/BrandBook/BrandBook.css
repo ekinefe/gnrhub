@@ -1,0 +1,296 @@
+/* =========================================
+   1. EDITOR INTERFACE (Dark / Cyberpunk Theme)
+   ========================================= */
+
+/* Main Container inherits global font settings */
+.brand-service-container {
+    font-family: var(--font-main);
+    /* 'JetBrains Mono' */
+    color: var(--text-main);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- NEW: FORCE FONT ON ALL BUTTONS --- */
+.brand-service-container button {
+    font-family: var(--font-main);
+    /* Forces JetBrains Mono on all buttons */
+}
+
+/* Card Style */
+.editor-card {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    transition: border-color 0.2s;
+}
+
+.editor-card h3 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Inputs (Dark Mode Style) */
+.text-input {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    padding: 12px 15px;
+
+    /* Ensures it automatically adjusts to window/container size */
+    width: 100%;
+    box-sizing: border-box;
+    /* Prevents padding from breaking the width */
+
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* === NEW: Specific Styles for Text Areas === */
+textarea.text-input {
+    resize: vertical;
+    /* Allows ONLY vertical resizing */
+    min-height: 80px;
+    /* Sets a comfortable default height */
+    line-height: 1.5;
+    /* Better readability for long text */
+}
+
+/* Checkboxes & Labels */
+.skip-checkbox {
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.skip-checkbox:hover {
+    color: var(--text-main);
+}
+
+.skip-checkbox input {
+    accent-color: var(--accent);
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+/* Disabled Section Effect */
+.skipped-section {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+/* =========================================
+   2. FONT SELECTOR GRID
+   ========================================= */
+.font-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.font-card {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.font-card:hover {
+    border-color: var(--text-muted);
+    transform: translateY(-2px);
+}
+
+/* Selected State */
+.font-card.selected {
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.font-name {
+    color: var(--text-main);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.preview-text {
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    margin: 1.5rem 0;
+    line-height: 1.2;
+}
+
+/* Select Button inside Font Card */
+.btn-select {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-main);
+    /* Ensures this specific class uses it */
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    padding: 8px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-select:hover {
+    border-color: var(--text-main);
+    color: var(--text-main);
+}
+
+.btn-select.active {
+    background: var(--accent);
+    color: var(--bg-dark);
+    border-color: var(--accent);
+    font-weight: bold;
+}
+
+/* =========================================
+   3. COLOR PALETTE GRID
+   ========================================= */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.color-box {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 0;
+}
+
+/* =========================================
+   4. PREVIEW SHEET (The "Print" View)
+   ========================================= */
+.paper-sheet {
+    background-color: #ffffff;
+    color: #000000;
+
+    /* CHANGED: Use your website's font variable */
+    font-family: var(--font-main);
+
+    padding: 4rem;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Ensure headings inside the white paper don't try to be white */
+.paper-sheet h1,
+.paper-sheet h2,
+.paper-sheet h3,
+.paper-sheet p,
+.paper-sheet span,
+.paper-sheet strong {
+    color: #111;
+    /* Optional: Force headings to inherit font too, just in case */
+    font-family: var(--font-main);
+}
+
+/* =========================================
+   5. BADGES & TAGS
+   ========================================= */
+.font-header {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.font-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1rem;
+}
+
+.badge {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: var(--font-main);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.license-badge {
+    background-color: rgba(0, 255, 157, 0.15);
+    color: #00ff9d;
+    border: 1px solid rgba(0, 255, 157, 0.3);
+}
+
+.tag-badge {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 0.5rem 0;
+    opacity: 0.5;
+}
+
+/* =========================================
+   6. PRINT STYLES (Hide Sidebar when Printing)
+   ========================================= */
+@media print {
+
+    /* Hide the Website UI */
+    .navbar,
+    .page-sidebar,
+    .footer,
+    button {
+        display: none !important;
+    }
+
+    /* Reset Layout to allow full width print */
+    .sidebar-page {
+        display: block !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    .page-content {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Hide the Grey Background of the Preview */
+    .brand-service-container {
+        background: white !important;
+        padding: 0 !important;
+    }
+
+    /* Ensure the sheet fits perfectly */
+    .paper-sheet {
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+}

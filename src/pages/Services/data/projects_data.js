@@ -1,37 +1,49 @@
 export const projects = [
   {
-    id: "pdf-converter",
-    title: "PDF Converter",
-    category: "Utility",
-    // status: "Active", // <--- NEW
-    status: "Offline",
-    description: "Secure client-side image to PDF conversion. No server uploads required.",
-    content: "Tool loading..."
+    id: 'brand-book',
+    title: 'Brand Book',
+    description: "Generate a professional brand book PDF with your brand's colors and typography.",
+    path: '/services/brand-book',
+    status: 'BETA',      // Options: 'AVAILABLE', 'BETA', 'OFFLINE', 'DEV'
+    icon: '🎨',
+    category: 'Generator'
   },
   {
-    id: "json-formatter",
-    title: "JSON Formatter",
-    category: "DevTool",
-    // status: "Active", // <--- NEW
-    status: "Offline",
-    description: "Validate, prettify, and minify JSON data strings instantly.",
-    content: "Tool loading..."
+    id: 'pdf-converter',
+    title: 'PDF Converter',
+    description: 'Secure client-side image to PDF conversion. No server uploads required.',
+    path: '/services/pdf-converter',
+    status: 'OFFLINE',
+    icon: '📄',
+    category: 'Utility'
   },
   {
-    id: "qr-generator",
-    title: "QR Generator",
-    category: "Marketing",
-    // status: "Beta", // <--- NEW
-    status: "Offline",
-    description: "Generate SVG QR codes for WiFi, Links, and Text.",
-    content: "Tool loading..."
+    id: 'json-formatter',
+    title: 'JSON Formatter',
+    description: 'Validate, prettify, and minify JSON data strings instantly.',
+    path: '/services/json-formatter',
+    status: 'OFFLINE',
+    icon: 'DATA',
+    category: 'DevTool'
   },
   {
-    id: "morse-decoder",
-    title: "Morse Decoder",
-    category: "Audio",
-    status: "Offline", // <--- NEW (Example of inactive tool)
-    description: "Audio-to-text decoder for CW signals.",
-    content: "Tool maintenance..."
+    id: 'morse-decoder',
+    title: 'Morse Decoder',
+    description: 'Audio-to-text decoder for CW signals using Web Audio API.',
+    path: '/services/morse-decoder',
+    status: 'DEV',
+    icon: '📻',
+    category: 'DSP'
   }
 ];
+
+// Helper to get CSS class based on status
+export const getStatusClass = (status) => {
+  switch (status) {
+    case 'AVAILABLE': return 'status-active';
+    case 'BETA': return 'status-beta';
+    case 'OFFLINE': return 'status-offline';
+    case 'DEV': return 'status-offline'; // Or make a purple 'status-dev' class
+    default: return '';
+  }
+};
