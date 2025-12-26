@@ -195,6 +195,61 @@ const BrandPreview = () => {
                         </div>
                     </section>
                 )}
+
+                {/* === NEW: CONTACT & SOCIALS SECTION === */}
+                {!skips.contact && (
+                    <section style={{ marginTop: '4rem', borderTop: '2px solid #eee', paddingTop: '3rem' }}>
+                        <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>Get In Touch</h2>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem', marginTop: '2rem' }}>
+
+                            {/* TOP: Contact Details */}
+                            <div>
+                                <h3 style={{ fontSize: '1rem', textTransform: 'uppercase', color: '#999', marginBottom: '15px' }}>Contact Info</h3>
+                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                    {brandData.contact.email && (
+                                        <li style={{ marginBottom: '10px', fontSize: '1rem', color: '#333' }}>
+                                            <strong style={{ color: '#555' }}>Email:</strong> {brandData.contact.email}
+                                        </li>
+                                    )}
+                                    {brandData.contact.website && (
+                                        <li style={{ marginBottom: '10px', fontSize: '1rem', color: '#333' }}>
+                                            <strong style={{ color: '#555' }}>Web:</strong> {brandData.contact.website}
+                                        </li>
+                                    )}
+                                    {brandData.contact.phone && (
+                                        <li style={{ marginBottom: '10px', fontSize: '1rem', color: '#333' }}>
+                                            <strong style={{ color: '#555' }}>Phone:</strong> {brandData.contact.phone}
+                                        </li>
+                                    )}
+                                    {brandData.contact.address && (
+                                        <li style={{ marginBottom: '10px', fontSize: '1rem', color: '#333' }}>
+                                            <strong style={{ color: '#555' }}>Address:</strong> {brandData.contact.address}
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+
+                            {/* BOTTOM: Social Media */}
+                            <div>
+                                <h3 style={{ fontSize: '1rem', textTransform: 'uppercase', color: '#999', marginBottom: '15px' }}>Social Media</h3>
+                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                    {brandData.socials.map(social => (
+                                        <li key={social.id} style={{ marginBottom: '12px', display: 'flex', alignItems: 'center' }}>
+                                            <span style={{
+                                                display: 'inline-block', width: '8px', height: '8px',
+                                                background: colors.primary, borderRadius: '50%', marginRight: '10px'
+                                            }}></span>
+                                            <strong style={{ color: '#333', marginRight: '5px' }}>{social.platform}:</strong>
+                                            <span style={{ color: colors.secondaryText || '#666' }}>{social.url}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                        </div>
+                    </section>
+                )}
             </div>
         </div>
     );

@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import BrandNameInput from './components/BrandNameInput';
 import ColorPalette from './components/ColorPalette';
 import TypographySelector from './components/TypographySelector';
-import LogoUploader from './components/LogoUploader'; // <--- IMPORT MISSING COMPONENT
-import CompanyProfile from './components/CompanyProfile'; // <--- IMPORT NEW COMPONENT
+import LogoUploader from './components/LogoUploader';
+import CompanyProfile from './components/CompanyProfile';
+import ContactEditor from './components/ContactEditor'; // <--- IMPORT NEW COMPONENT
 import './BrandBook.css';
 
 const BrandEditor = () => {
@@ -25,6 +26,7 @@ const BrandEditor = () => {
 
             {/* NEW SECTION ADDED HERE */}
             <CompanyProfile />
+            <ContactEditor />
 
             <div style={{ textAlign: 'center', marginTop: '4rem', paddingBottom: '3rem' }}>
                 <Link to="/services/brand-book/preview">

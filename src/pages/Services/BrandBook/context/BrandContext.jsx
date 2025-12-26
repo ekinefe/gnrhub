@@ -7,18 +7,15 @@ export const BrandProvider = ({ children }) => {
         brandName: "GNRHUB_",
         brandSlogan: "Innovating the Future",
 
-        // --- COMPANY INFO ---
         company: {
             mission: "To document projects, schematics, code, and notes for the open web.",
             vision: "A world where knowledge and tools are accessible to everyone."
         },
 
-        // --- ASSETS (Fixed Structure) ---
         assets: {
-            logos: [] // Array of { id, preview, label }
+            logos: []
         },
 
-        // --- TEAM MEMBERS ---
         team: [
             {
                 id: 1,
@@ -31,13 +28,24 @@ export const BrandProvider = ({ children }) => {
             }
         ],
 
-        // --- COLORS ---
+        // === NEW: CONTACT & SOCIALS ===
+        contact: {
+            email: "contact@gnrhub.com",
+            phone: "",
+            website: "gnrhub.com",
+            address: ""
+        },
+        socials: [
+            { id: 1, platform: "GitHub", url: "github.com/gnrhub" },
+            { id: 2, platform: "LinkedIn", url: "linkedin.com/company/gnrhub" }
+        ],
+
         colors: {
-            primary: "#FF318C",      // --accent (Cyber Pink)
-            secondary: "#333333",    // --border (Dark Grey)
-            background: "#050505",   // --bg-dark (Black)
-            text: "#eeeeee",         // --text-main (Off-White)
-            secondaryText: "#888888" // Muted text
+            primary: "#FF318C",
+            secondary: "#333333",
+            background: "#050505",
+            text: "#eeeeee",
+            secondaryText: "#888888"
         },
 
         typography: {
@@ -45,13 +53,13 @@ export const BrandProvider = ({ children }) => {
             url: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap'
         },
 
-        // --- SKIPS ---
         skips: {
             brandName: false,
             brandSlogan: false,
             mission: false,
             vision: false,
             team: false,
+            contact: false, // <--- NEW SKIP
             primary: false,
             secondary: false,
             background: false,
@@ -62,112 +70,65 @@ export const BrandProvider = ({ children }) => {
         }
     });
 
-    // --- GENERAL UPDATERS ---
-    const updateBrand = (key, value) => {
-        setBrandData((prev) => ({ ...prev, [key]: value }));
-    };
+    // --- UPDATERS ---
+    const updateBrand = (key, value) => setBrandData(prev => ({ ...prev, [key]: value }));
+    const updateColor = (key, val) => setBrandData(prev => ({ ...prev, colors: { ...prev.colors, [key]: val } }));
+    const updateFont = (font) => setBrandData(prev => ({ ...prev, typography: { fontFamily: font.name, url: font.url } }));
+    const toggleSkip = (key) => setBrandData(prev => ({ ...prev, skips: { ...prev.skips, [key]: !prev.skips[key] } }));
 
-    const updateColor = (colorName, hexValue) => {
-        setBrandData((prev) => ({
-            ...prev, colors: { ...prev.colors, [colorName]: hexValue }
-        }));
-    };
+    // Company
+    const updateCompany = (key, val) => setBrandData(prev => ({ ...prev, company: { ...prev.company, [key]: val } }));
 
-    const updateFont = (fontObj) => {
-        setBrandData((prev) => ({
-            ...prev, typography: { fontFamily: fontObj.name, url: fontObj.url }
-        }));
-    };
-
-    const toggleSkip = (key) => {
-        setBrandData((prev) => ({
-            ...prev, skips: { ...prev.skips, [key]: !prev.skips[key] }
-        }));
-    };
-
-    const updateCompany = (field, value) => {
-        setBrandData(prev => ({
-            ...prev,
-            company: { ...prev.company, [field]: value }
-        }));
-    };
-
-    // --- LOGO ACTIONS (Fixed) ---
+    // Assets
     const addLogo = (file) => {
         if (file) {
             const objectUrl = URL.createObjectURL(file);
-            const newLogo = {
-                id: Date.now(),
-                preview: objectUrl,
-                label: "Primary Logo" // Default label
-            };
-            // Ensure logos array exists before spreading
             setBrandData(prev => ({
                 ...prev,
-                assets: { logos: [...(prev.assets.logos || []), newLogo] }
+                assets: { logos: [...(prev.assets.logos || []), { id: Date.now(), preview: objectUrl, label: "Primary Logo" }] }
             }));
         }
     };
+    const removeLogo = (id) => setBrandData(prev => ({ ...prev, assets: { logos: prev.assets.logos.filter(l => l.id !== id) } }));
+    const updateLogoLabel = (id, label) => setBrandData(prev => ({
+        ...prev, assets: { logos: prev.assets.logos.map(l => l.id === id ? { ...l, label } : l) }
+    }));
 
-    const removeLogo = (id) => {
-        setBrandData(prev => ({
-            ...prev,
-            assets: { logos: prev.assets.logos.filter(l => l.id !== id) }
-        }));
+    // Team
+    const addTeamMember = () => setBrandData(prev => ({
+        ...prev, team: [...prev.team, { id: Date.now(), name: "New Member", title: "Role", bio: "Bio...", Contact: "", link1: "", link2: "" }]
+    }));
+    const removeTeamMember = (id) => setBrandData(prev => ({ ...prev, team: prev.team.filter(m => m.id !== id) }));
+    const updateTeamMember = (id, key, val) => setBrandData(prev => ({
+        ...prev, team: prev.team.map(m => m.id === id ? { ...m, [key]: val } : m)
+    }));
+
+    // === NEW: CONTACT UPDATERS ===
+    const updateContactInfo = (key, val) => {
+        setBrandData(prev => ({ ...prev, contact: { ...prev.contact, [key]: val } }));
     };
 
-    const updateLogoLabel = (id, newLabel) => {
+    const addSocial = () => {
         setBrandData(prev => ({
-            ...prev,
-            assets: {
-                logos: prev.assets.logos.map(l => l.id === id ? { ...l, label: newLabel } : l)
-            }
+            ...prev, socials: [...prev.socials, { id: Date.now(), platform: "Platform", url: "Link" }]
         }));
     };
-
-    // --- TEAM ACTIONS ---
-    const addTeamMember = () => {
-        const newMember = {
-            id: Date.now(),
-            name: "New Member",
-            title: "Role",
-            bio: "Short bio here...",
-            Contact: "",
-            link1: "",
-            link2: ""
-        };
-        setBrandData(prev => ({
-            ...prev, team: [...prev.team, newMember]
-        }));
+    const removeSocial = (id) => {
+        setBrandData(prev => ({ ...prev, socials: prev.socials.filter(s => s.id !== id) }));
     };
-
-    const removeTeamMember = (id) => {
+    const updateSocial = (id, key, val) => {
         setBrandData(prev => ({
-            ...prev, team: prev.team.filter(m => m.id !== id)
-        }));
-    };
-
-    const updateTeamMember = (id, field, value) => {
-        setBrandData(prev => ({
-            ...prev,
-            team: prev.team.map(m => m.id === id ? { ...m, [field]: value } : m)
+            ...prev, socials: prev.socials.map(s => s.id === id ? { ...s, [key]: val } : s)
         }));
     };
 
     return (
         <BrandContext.Provider value={{
-            brandData,
-            updateBrand,
-            updateColor,
-            updateFont,
-            toggleSkip,
-            updateCompany,
-            addTeamMember,
-            removeTeamMember,
-            updateTeamMember,
-            addLogo,
-            removeLogo,
-            updateLogoLabel
+            brandData, updateBrand, updateColor, updateFont, toggleSkip, updateCompany,
+            addTeamMember, removeTeamMember, updateTeamMember,
+            addLogo, removeLogo, updateLogoLabel,
+            // Exports
+            updateContactInfo, addSocial, removeSocial, updateSocial
         }}>
             {children}
         </BrandContext.Provider>
