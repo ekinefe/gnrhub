@@ -28,7 +28,7 @@ const CompanyProfile = () => {
     return (
         <div className="editor-card">
 
-            <h3 style={{ marginBottom: '1.5rem' }}>4. Company Profile</h3>
+            <h3 style={{ marginBottom: '1.5rem' }}>Company Profile</h3>
 
             {/* === MISSION STATEMENT (Independent Skip) === */}
             <div style={{ marginBottom: '1.5rem' }}>

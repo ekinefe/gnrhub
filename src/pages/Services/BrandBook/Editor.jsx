@@ -5,7 +5,8 @@ import ColorPalette from './components/ColorPalette';
 import TypographySelector from './components/TypographySelector';
 import LogoUploader from './components/LogoUploader';
 import CompanyProfile from './components/CompanyProfile';
-import ContactEditor from './components/ContactEditor'; // <--- IMPORT NEW COMPONENT
+import ContactEditor from './components/ContactEditor';
+import ToneEditor from './components/ToneEditor'; // <--- IMPORT NEW COMPONENT
 import './BrandBook.css';
 
 const BrandEditor = () => {
@@ -23,9 +24,8 @@ const BrandEditor = () => {
             <LogoUploader />
             <ColorPalette />
             <TypographySelector />
-
-            {/* NEW SECTION ADDED HERE */}
             <CompanyProfile />
+            <ToneEditor />
             <ContactEditor />
 
             <div style={{ textAlign: 'center', marginTop: '4rem', paddingBottom: '3rem' }}>

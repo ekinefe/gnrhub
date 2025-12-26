@@ -24,7 +24,7 @@ const TypographySelector = () => {
 
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3>3. Typography</h3>
+                <h3>Typography</h3>
                 <label className="skip-checkbox">
                     <input
                         type="checkbox"

@@ -19,7 +19,7 @@ const ColorPalette = () => {
 
     return (
         <div className="editor-card">
-            <h3>2. Color Palette</h3>
+            <h3>Color Palette</h3>
             <p className="section-desc">
                 Select a Primary color to generate a matching theme.
             </p>

@@ -144,6 +144,41 @@ const BrandPreview = () => {
 
                 <hr style={{ border: 0, borderTop: '1px solid #eee', margin: '3rem 0' }} />
 
+                {/* === NEW: TONE OF VOICE === */}
+                {!skips.voice && (
+                    <section style={{ marginBottom: '4rem' }}>
+                        <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>Tone of Voice</h2>
+
+                        <div style={{ marginTop: '2rem', background: '#fcfcfc', border: '1px solid #eee', padding: '2.5rem', borderRadius: '8px' }}>
+
+                            {/* Keywords Grid */}
+                            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '2rem' }}>
+                                {brandData.voice.keywords.split(',').map((word, i) => (
+                                    word.trim() && (
+                                        <span key={i} style={{
+                                            background: colors.primary,
+                                            color: '#fff', // White text on colored bg
+                                            padding: '8px 16px',
+                                            borderRadius: '50px',
+                                            fontSize: '0.9rem',
+                                            fontWeight: 'bold',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '1px'
+                                        }}>
+                                            {word.trim()}
+                                        </span>
+                                    )
+                                ))}
+                            </div>
+
+                            {/* Description */}
+                            <p style={{ fontSize: '1.2rem', lineHeight: 1.6, color: '#444', fontStyle: 'italic' }}>
+                                "{brandData.voice.description}"
+                            </p>
+                        </div>
+                    </section>
+                )}
+
                 {/* === COMPANY PROFILE === */}
                 {(!skips.mission || !skips.vision) && (
                     <section style={{ marginBottom: '4rem' }}>

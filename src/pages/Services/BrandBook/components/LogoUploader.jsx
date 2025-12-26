@@ -16,7 +16,7 @@ const LogoUploader = () => {
     return (
         <div className="editor-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>1. Logo & Iconography</h3>
+                <h3>Logo & Iconography</h3>
                 <label className="skip-checkbox">
                     <input
                         type="checkbox"

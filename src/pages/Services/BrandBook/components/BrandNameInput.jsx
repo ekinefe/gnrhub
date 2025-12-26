@@ -19,7 +19,7 @@ const BrandNameInput = () => {
 
     return (
         <div className="editor-card">
-            <h3 style={{ marginBottom: '1.5rem' }}>1. Brand Identity</h3>
+            <h3 style={{ marginBottom: '1.5rem' }}>Brand Identity</h3>
 
             {/* === BLOCK 1: BRAND NAME === */}
             <div style={{ marginBottom: '1.5rem' }}>

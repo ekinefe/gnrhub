@@ -53,6 +53,11 @@ export const BrandProvider = ({ children }) => {
             url: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap'
         },
 
+        voice: {
+            keywords: "Futuristic, Technical, Open-Source", // Default values
+            description: "We prioritize clarity and code over marketing fluff. Our voice is direct, educational, and empowers builders."
+        },
+
         skips: {
             brandName: false,
             brandSlogan: false,
@@ -66,7 +71,8 @@ export const BrandProvider = ({ children }) => {
             text: false,
             secondaryText: false,
             typography: false,
-            logo: false
+            logo: false,
+            voice: false
         }
     });
 
@@ -121,14 +127,20 @@ export const BrandProvider = ({ children }) => {
             ...prev, socials: prev.socials.map(s => s.id === id ? { ...s, [key]: val } : s)
         }));
     };
+    const updateVoice = (key, val) => {
+        setBrandData(prev => ({
+            ...prev,
+            voice: { ...prev.voice, [key]: val }
+        }));
+    };
 
     return (
         <BrandContext.Provider value={{
             brandData, updateBrand, updateColor, updateFont, toggleSkip, updateCompany,
             addTeamMember, removeTeamMember, updateTeamMember,
             addLogo, removeLogo, updateLogoLabel,
-            // Exports
-            updateContactInfo, addSocial, removeSocial, updateSocial
+            updateContactInfo, addSocial, removeSocial, updateSocial,
+            updateVoice
         }}>
             {children}
         </BrandContext.Provider>

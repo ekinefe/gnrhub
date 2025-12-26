@@ -18,7 +18,7 @@ const ContactEditor = () => {
         <div className="editor-card">
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>6. Contact & Socials</h3>
+                <h3>Contact & Socials</h3>
                 <label className="skip-checkbox">
                     <input
                         type="checkbox"
