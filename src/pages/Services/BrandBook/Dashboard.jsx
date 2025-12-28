@@ -25,4 +25,4 @@ const BrandDashboard = () => {
     );
 };
 
-export default BrandDashboard; // <--- THIS LINE WAS MISSING
+export default BrandDashboard;
