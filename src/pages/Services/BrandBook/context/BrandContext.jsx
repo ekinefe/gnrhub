@@ -58,6 +58,11 @@ export const BrandProvider = ({ children }) => {
             description: "We prioritize clarity and code over marketing fluff. Our voice is direct, educational, and empowers builders."
         },
 
+        ui: {
+            borderRadius: '4px', // Default small roundness
+            style: 'modern'      // Just a placeholder for now
+        },
+
         skips: {
             brandName: false,
             brandSlogan: false,
@@ -72,7 +77,8 @@ export const BrandProvider = ({ children }) => {
             secondaryText: false,
             typography: false,
             logo: false,
-            voice: false
+            voice: false,
+            ui: false,
         }
     });
 
@@ -133,6 +139,12 @@ export const BrandProvider = ({ children }) => {
             voice: { ...prev.voice, [key]: val }
         }));
     };
+    const updateUI = (key, val) => {
+        setBrandData(prev => ({
+            ...prev,
+            ui: { ...prev.ui, [key]: val }
+        }));
+    };
 
     return (
         <BrandContext.Provider value={{
@@ -140,7 +152,7 @@ export const BrandProvider = ({ children }) => {
             addTeamMember, removeTeamMember, updateTeamMember,
             addLogo, removeLogo, updateLogoLabel,
             updateContactInfo, addSocial, removeSocial, updateSocial,
-            updateVoice
+            updateVoice, updateUI
         }}>
             {children}
         </BrandContext.Provider>

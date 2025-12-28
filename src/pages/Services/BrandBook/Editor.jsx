@@ -7,6 +7,7 @@ import LogoUploader from './components/LogoUploader';
 import CompanyProfile from './components/CompanyProfile';
 import ContactEditor from './components/ContactEditor';
 import ToneEditor from './components/ToneEditor'; // <--- IMPORT NEW COMPONENT
+import UIEditor from './components/UIEditor'; // <--- ADDED MISSING IMPORT
 import './BrandBook.css';
 
 const BrandEditor = () => {
@@ -23,6 +24,7 @@ const BrandEditor = () => {
             <BrandNameInput />
             <LogoUploader />
             <ColorPalette />
+            <UIEditor />
             <TypographySelector />
             <CompanyProfile />
             <ToneEditor />

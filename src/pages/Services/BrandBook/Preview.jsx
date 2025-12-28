@@ -179,6 +179,128 @@ const BrandPreview = () => {
                     </section>
                 )}
 
+                {/* === NEW: UI SYSTEM === */}
+                {!skips.ui && (
+                    <section style={{ marginBottom: '4rem' }}>
+                        <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>UI System</h2>
+
+                        <div style={{ marginTop: '2rem', display: 'grid', gap: '3rem' }}>
+
+                            {/* 1. BUTTONS */}
+                            <div>
+                                <h3 style={{ fontSize: '0.9rem', textTransform: 'uppercase', color: '#999', marginBottom: '1rem' }}>Buttons</h3>
+                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                    {/* Primary Button */}
+                                    <button style={{
+                                        background: colors.primary,
+                                        color: '#fff',
+                                        border: 'none',
+                                        padding: '12px 24px',
+                                        borderRadius: brandData.ui.borderRadius,
+                                        fontFamily: typography.fontFamily,
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer'
+                                    }}>
+                                        Primary Action
+                                    </button>
+
+                                    {/* Secondary Button */}
+                                    <button style={{
+                                        background: 'transparent',
+                                        color: '#333',
+                                        border: `2px solid #ddd`,
+                                        padding: '12px 24px',
+                                        borderRadius: brandData.ui.borderRadius,
+                                        fontFamily: typography.fontFamily,
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer'
+                                    }}>
+                                        Secondary
+                                    </button>
+
+                                    {/* Text Link */}
+                                    <button style={{
+                                        background: 'transparent',
+                                        color: colors.primary,
+                                        border: 'none',
+                                        padding: '12px 24px',
+                                        fontFamily: typography.fontFamily,
+                                        textDecoration: 'underline',
+                                        cursor: 'pointer'
+                                    }}>
+                                        Text Link
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* 2. FORM ELEMENTS */}
+                            <div>
+                                <h3 style={{ fontSize: '0.9rem', textTransform: 'uppercase', color: '#999', marginBottom: '1rem' }}>Form Elements</h3>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                                    {/* Active Input */}
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.8rem', color: '#555', fontFamily: typography.fontFamily }}>
+                                            Active Input
+                                        </label>
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            value="Focused state example"
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px',
+                                                borderRadius: brandData.ui.borderRadius,
+                                                border: `2px solid ${colors.primary}`, // Uses Brand Color
+                                                fontFamily: typography.fontFamily,
+                                                outline: 'none',
+                                                color: '#333'
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Inactive Input */}
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.8rem', color: '#555', fontFamily: typography.fontFamily }}>
+                                            Inactive Input
+                                        </label>
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            placeholder="Placeholder text..."
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px',
+                                                borderRadius: brandData.ui.borderRadius,
+                                                border: `1px solid #ddd`,
+                                                fontFamily: typography.fontFamily,
+                                                outline: 'none',
+                                                background: '#fafafa'
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 3. ALERTS / CARDS */}
+                            <div>
+                                <h3 style={{ fontSize: '0.9rem', textTransform: 'uppercase', color: '#999', marginBottom: '1rem' }}>Components</h3>
+                                <div style={{
+                                    borderLeft: `4px solid ${colors.primary}`,
+                                    background: '#f8f9fa',
+                                    padding: '1.5rem',
+                                    borderRadius: `0 ${brandData.ui.borderRadius} ${brandData.ui.borderRadius} 0`
+                                }}>
+                                    <strong style={{ display: 'block', marginBottom: '5px', color: '#333', fontFamily: typography.fontFamily }}>Feature Card / Alert Box</strong>
+                                    <p style={{ margin: 0, color: colors.secondaryText || '#666', fontSize: '0.9rem', lineHeight: 1.5, fontFamily: typography.fontFamily }}>
+                                        This component demonstrates how the primary color is used for emphasis on borders, while secondary text colors are used for the body content to maintain hierarchy.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                )}
+
                 {/* === COMPANY PROFILE === */}
                 {(!skips.mission || !skips.vision) && (
                     <section style={{ marginBottom: '4rem' }}>
