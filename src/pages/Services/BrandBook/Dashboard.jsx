@@ -12,6 +12,10 @@ const BrandDashboard = () => {
                 Define your visual identity once. Generate a professional PDF instantly.
             </p>
 
+            <p style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+                We recomand o use desktop for the best experience.
+            </p>
+
             <Link to="/services/brand-book/editor">
                 <button className="btn primary-btn" style={{ padding: '15px 30px', fontSize: '1.1rem' }}>
                     Start New Project
