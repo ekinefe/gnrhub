@@ -5,7 +5,7 @@ const BrandContext = createContext();
 export const BrandProvider = ({ children }) => {
     const [brandData, setBrandData] = useState({
         brandName: "GNRHUB_",
-        brandSlogan: "Innovating the Future",
+        brandSlogan: "",
 
         company: {
             mission: "To document projects, schematics, code, and notes for the open web.",
@@ -19,25 +19,25 @@ export const BrandProvider = ({ children }) => {
         team: [
             {
                 id: 1,
-                name: "Ekin Efe Gungor",
-                title: "Full Stack Developer",
-                bio: "CS student & maker focused on AI, Data Science, and embedded systems.",
-                Contact: "contact@gnrhub.com",
-                link1: "github.com/ekinefegungor",
-                link2: "gnrhub.com"
+                name: "",
+                title: "",
+                bio: "",
+                Contact: "",
+                link1: "",
+                link2: ""
             }
         ],
 
         // === NEW: CONTACT & SOCIALS ===
         contact: {
-            email: "contact@gnrhub.com",
+            email: "",
             phone: "",
-            website: "gnrhub.com",
+            website: "",
             address: ""
         },
         socials: [
-            { id: 1, platform: "GitHub", url: "github.com/gnrhub" },
-            { id: 2, platform: "LinkedIn", url: "linkedin.com/company/gnrhub" }
+            { id: 1, platform: "instagram", url: "" },
+            { id: 2, platform: "LinkedIn", url: "" }
         ],
 
         colors: {
@@ -59,8 +59,8 @@ export const BrandProvider = ({ children }) => {
         },
 
         ui: {
-            borderRadius: '4px', // Default small roundness
-            style: 'modern'      // Just a placeholder for now
+            borderRadius: '0px', // Default small roundness
+            style: 'flat'      // Just a placeholder for now
         },
 
         skips: {
