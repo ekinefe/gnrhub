@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; // <--- Added useState
 import { Link } from 'react-router-dom';
 import { useBrand } from './context/BrandContext';
 import './BrandBook.css';
@@ -7,6 +7,54 @@ const BrandPreview = () => {
     const { brandData } = useBrand();
     const { colors, typography, brandName, brandSlogan, skips, assets } = brandData;
     const logos = assets.logos || []; // Safe access
+
+    // === NEW: Sending State ===
+    const [isSending, setIsSending] = useState(false);
+
+    // === NEW: Handle Send to Hub Logic ===
+    const handleSendToHub = () => {
+        setIsSending(true);
+
+        // 1. Format the data into a readable string
+        const emailBody = `
+=== BRAND BOOK SUBMISSION ===
+Brand Name: ${brandName}
+Slogan: ${brandSlogan || 'N/A'}
+
+--- COLORS ---
+Primary: ${colors.primary}
+Secondary: ${colors.secondary}
+Background: ${colors.background}
+Text: ${colors.text}
+
+--- TYPOGRAPHY ---
+Font: ${typography.fontFamily}
+
+--- COMPANY ---
+Mission: ${brandData.company.mission}
+Vision: ${brandData.company.vision}
+
+--- TEAM ---
+Members: ${brandData.team.length}
+
+--- CONTACT ---
+Email: ${brandData.contact.email}
+Website: ${brandData.contact.website}
+
+(Sent via GNRHUB Brand Tool)
+        `;
+
+        // 2. Construct Mailto Link
+        const subject = encodeURIComponent(`Brand Book Submission: ${brandName}`);
+        const body = encodeURIComponent(emailBody);
+        const recipient = "contact@gnrhub.com";
+
+        // 3. Open Email Client
+        window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+
+        // 4. Reset Button after delay
+        setTimeout(() => setIsSending(false), 2000);
+    };
 
     const getLabel = (key) => {
         switch (key) {
@@ -19,13 +67,35 @@ const BrandPreview = () => {
     return (
         <div className="brand-service-container" style={{ background: '#525659', minHeight: '100%', padding: '2rem' }}>
 
+            {/* === NAVIGATION BAR === */}
             <nav style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', maxWidth: '800px', margin: '0 auto 2rem auto' }}>
-                <Link to="/services/brand-book/editor" style={{ color: 'white', fontWeight: 'bold' }}>
+                <Link to="/services/brand-book/editor" style={{ color: 'white', fontWeight: 'bold', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                     ← Back to Editor
                 </Link>
-                <button className="btn primary-btn" onClick={() => window.print()}>
-                    Export to PDF
-                </button>
+
+                <div style={{ display: 'flex', gap: '1rem' }}>
+
+                    {/* === NEW BUTTON: SEND TO HUB === */}
+                    <button
+                        className="btn"
+                        onClick={handleSendToHub}
+                        disabled={isSending}
+                        style={{
+                            background: 'transparent',
+                            border: '1px solid white',
+                            color: 'white',
+                            cursor: 'pointer',
+                            opacity: isSending ? 0.7 : 1
+                        }}
+                    >
+                        {isSending ? 'Opening Mail...' : '📨 Send to GNRHUB'}
+                    </button>
+
+                    {/* EXISTING EXPORT BUTTON */}
+                    <button className="btn primary-btn" onClick={() => window.print()}>
+                        Export to PDF
+                    </button>
+                </div>
             </nav>
 
             <div className="paper-sheet">
@@ -95,8 +165,6 @@ const BrandPreview = () => {
                     </section>
                 )}
 
-                {/* ... (Color Palette, Typography, etc. remain unchanged) ... */}
-
                 {/* === COLOR PALETTE === */}
                 <section style={{ marginBottom: '4rem' }}>
                     <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>Color Palette</h2>
@@ -144,7 +212,7 @@ const BrandPreview = () => {
 
                 <hr style={{ border: 0, borderTop: '1px solid #eee', margin: '3rem 0' }} />
 
-                {/* === NEW: TONE OF VOICE === */}
+                {/* === TONE OF VOICE === */}
                 {!skips.voice && (
                     <section style={{ marginBottom: '4rem' }}>
                         <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>Tone of Voice</h2>
@@ -179,7 +247,7 @@ const BrandPreview = () => {
                     </section>
                 )}
 
-                {/* === NEW: UI SYSTEM === */}
+                {/* === UI SYSTEM === */}
                 {!skips.ui && (
                     <section style={{ marginBottom: '4rem' }}>
                         <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>UI System</h2>
@@ -306,7 +374,7 @@ const BrandPreview = () => {
                     <section style={{ marginBottom: '4rem' }}>
                         <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>Company Profile</h2>
 
-                        {/* CHANGED: gridTemplateColumns to '1fr' to stack them vertically */}
+                        {/* Stacks vertically (1fr) */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '3rem', marginTop: '2rem' }}>
                             {!skips.mission && (
                                 <div>
@@ -329,23 +397,44 @@ const BrandPreview = () => {
                     <section>
                         <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>Meet the Team</h2>
 
-                        {/* CHANGED: gridTemplateColumns from 'repeat(2, 1fr)' to '1fr' */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', marginTop: '2rem' }}>
                             {brandData.team.map(member => (
                                 <div key={member.id} style={{
-                                    border: '1px solid #eee', padding: '1.5rem', borderRadius: '8px', background: '#fafafa'
+                                    border: '1px solid #eee', padding: '1.5rem', borderRadius: '8px', background: '#fafafa',
+                                    display: 'flex', gap: '1.5rem', alignItems: 'flex-start'
                                 }}>
-                                    <h3 style={{ margin: 0, color: colors.primary, fontSize: '1.4rem' }}>{member.name}</h3>
-                                    <span style={{ display: 'block', fontSize: '0.9rem', color: '#666', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                                        {member.title}
-                                    </span>
-                                    <p style={{ fontStyle: 'italic', color: '#444', marginBottom: '1.5rem', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                                        {member.bio}
-                                    </p>
-                                    <div style={{ borderTop: '1px solid #eee', paddingTop: '10px', fontSize: '0.85rem' }}>
-                                        {(member.Contact || member.contact) && <div style={{ color: '#666', marginBottom: '5px' }}>📧 {member.Contact || member.contact}</div>}
-                                        {member.link1 && <div style={{ color: '#666', marginBottom: '5px' }}>🔗 {member.link1}</div>}
-                                        {member.link2 && <div style={{ color: '#666' }}>🌐 {member.link2}</div>}
+
+                                    {/* PROFILE PHOTO */}
+                                    {member.photo && (
+                                        <div style={{ flexShrink: 0 }}>
+                                            <img
+                                                src={member.photo}
+                                                alt={member.name}
+                                                style={{
+                                                    width: '100px',
+                                                    height: '100px',
+                                                    borderRadius: '50%',
+                                                    objectFit: 'cover',
+                                                    border: `3px solid ${colors.primary}`
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* Content Container */}
+                                    <div style={{ flexGrow: 1 }}>
+                                        <h3 style={{ margin: 0, color: colors.primary, fontSize: '1.4rem' }}>{member.name}</h3>
+                                        <span style={{ display: 'block', fontSize: '0.9rem', color: '#666', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                            {member.title}
+                                        </span>
+                                        <p style={{ fontStyle: 'italic', color: '#444', marginBottom: '1.5rem', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                                            {member.bio}
+                                        </p>
+                                        <div style={{ borderTop: '1px solid #eee', paddingTop: '10px', fontSize: '0.85rem' }}>
+                                            {(member.Contact || member.contact) && <div style={{ color: '#666', marginBottom: '5px' }}>📧 {member.Contact || member.contact}</div>}
+                                            {member.link1 && <div style={{ color: '#666', marginBottom: '5px' }}>🔗 {member.link1}</div>}
+                                            {member.link2 && <div style={{ color: '#666' }}>🌐 {member.link2}</div>}
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -353,14 +442,14 @@ const BrandPreview = () => {
                     </section>
                 )}
 
-                {/* === NEW: CONTACT & SOCIALS SECTION === */}
+                {/* === CONTACT & SOCIALS === */}
                 {!skips.contact && (
                     <section style={{ marginTop: '4rem', borderTop: '2px solid #eee', paddingTop: '3rem' }}>
                         <h2 style={{ borderLeft: `5px solid ${colors.primary}`, paddingLeft: '15px', color: '#333' }}>Get In Touch</h2>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem', marginTop: '2rem' }}>
 
-                            {/* TOP: Contact Details */}
+                            {/* Contact Details */}
                             <div>
                                 <h3 style={{ fontSize: '1rem', textTransform: 'uppercase', color: '#999', marginBottom: '15px' }}>Contact Info</h3>
                                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
@@ -387,7 +476,7 @@ const BrandPreview = () => {
                                 </ul>
                             </div>
 
-                            {/* BOTTOM: Social Media */}
+                            {/* Social Media */}
                             <div>
                                 <h3 style={{ fontSize: '1rem', textTransform: 'uppercase', color: '#999', marginBottom: '15px' }}>Social Media</h3>
                                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>

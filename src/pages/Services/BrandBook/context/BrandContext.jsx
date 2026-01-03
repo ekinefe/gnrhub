@@ -108,7 +108,7 @@ export const BrandProvider = ({ children }) => {
 
     // Team
     const addTeamMember = () => setBrandData(prev => ({
-        ...prev, team: [...prev.team, { id: Date.now(), name: "New Member", title: "Role", bio: "Bio...", Contact: "", link1: "", link2: "" }]
+        ...prev, team: [...prev.team, { id: Date.now(), name: "New Member", title: "Role", bio: "Bio...", photo: null, Contact: "", link1: "", link2: "" }]
     }));
     const removeTeamMember = (id) => setBrandData(prev => ({ ...prev, team: prev.team.filter(m => m.id !== id) }));
     const updateTeamMember = (id, key, val) => setBrandData(prev => ({
