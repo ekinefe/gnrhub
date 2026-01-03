@@ -23,5 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
 # Project specific - STRUCTURE
 structure.md

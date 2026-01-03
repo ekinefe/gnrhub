@@ -1,22 +1,36 @@
-import React, { useState } from 'react'; // <--- Added useState
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useBrand } from './context/BrandContext';
+import emailjs from '@emailjs/browser'; // <--- IMPORT THIS
 import './BrandBook.css';
 
 const BrandPreview = () => {
     const { brandData } = useBrand();
     const { colors, typography, brandName, brandSlogan, skips, assets } = brandData;
-    const logos = assets.logos || []; // Safe access
+    const logos = assets.logos || [];
 
-    // === NEW: Sending State ===
     const [isSending, setIsSending] = useState(false);
+    const [sendStatus, setSendStatus] = useState(null); // 'success' or 'error'
 
-    // === NEW: Handle Send to Hub Logic ===
-    const handleSendToHub = () => {
+    // === NEW: DIRECT SEND FUNCTION ===
+    const handleSendToHub = (e) => {
+        e.preventDefault();
+
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+        if (!serviceId || !templateId || !publicKey) {
+            console.error("Missing EmailJS environment variables");
+            alert("Configuration Error: Email service is not properly configured.");
+            return;
+        }
+
         setIsSending(true);
+        setSendStatus(null);
 
-        // 1. Format the data into a readable string
-        const emailBody = `
+        // 1. Prepare the Data String
+        const messageBody = `
 === BRAND BOOK SUBMISSION ===
 Brand Name: ${brandName}
 Slogan: ${brandSlogan || 'N/A'}
@@ -40,20 +54,29 @@ Members: ${brandData.team.length}
 --- CONTACT ---
 Email: ${brandData.contact.email}
 Website: ${brandData.contact.website}
-
-(Sent via GNRHUB Brand Tool)
         `;
 
-        // 2. Construct Mailto Link
-        const subject = encodeURIComponent(`Brand Book Submission: ${brandName}`);
-        const body = encodeURIComponent(emailBody);
-        const recipient = "contact@gnrhub.com";
+        // 2. Prepare EmailJS Parameters
+        // These keys must match variables in your EmailJS Template (e.g. {{brand_name}})
+        const templateParams = {
+            brand_name: brandName,
+            message: messageBody,
+            to_email: "ekinefegnr@gmail.com" // If you made this dynamic in EmailJS
+        };
 
-        // 3. Open Email Client
-        window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
-
-        // 4. Reset Button after delay
-        setTimeout(() => setIsSending(false), 2000);
+        // 3. Send via EmailJS
+        emailjs.send(serviceId, templateId, templateParams, publicKey)
+            .then((result) => {
+                console.log('SUCCESS!', result.text);
+                setIsSending(false);
+                setSendStatus('success');
+                // Hide success message after 3 seconds
+                setTimeout(() => setSendStatus(null), 3000);
+            }, (error) => {
+                console.log('FAILED...', error.text);
+                setIsSending(false);
+                setSendStatus('error');
+            });
     };
 
     const getLabel = (key) => {
@@ -63,7 +86,6 @@ Website: ${brandData.contact.website}
             default: return key;
         }
     };
-
     return (
         <div className="brand-service-container" style={{ background: '#525659', minHeight: '100%', padding: '2rem' }}>
 
@@ -84,11 +106,11 @@ Website: ${brandData.contact.website}
                             background: 'transparent',
                             border: '1px solid white',
                             color: 'white',
-                            cursor: 'pointer',
+                            cursor: isSending ? 'not-allowed' : 'pointer',
                             opacity: isSending ? 0.7 : 1
                         }}
                     >
-                        {isSending ? 'Opening Mail...' : '📨 Send to GNRHUB'}
+                        {isSending ? 'Sending...' : sendStatus === 'success' ? 'Sent!' : '📨 Send to GNRHUB'}
                     </button>
 
                     {/* EXISTING EXPORT BUTTON */}
