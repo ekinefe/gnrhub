@@ -12,6 +12,8 @@ import BrandDashboard from './pages/Services/BrandBook/Dashboard';
 import BrandEditor from './pages/Services/BrandBook/Editor';
 import BrandPreview from './pages/Services/BrandBook/Preview';
 
+import SignInPage from './components/auth/SignInPage';
+
 // Lazy Pages
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/AboutMe/About'));
@@ -36,6 +38,8 @@ function App() {
         <Route path="/blog/*" element={
           <Suspense fallback={<div>Loading...</div>}><Blog /></Suspense>
         } />
+
+        <Route path="/sign-in" element={<SignInPage />} />
 
         {/* LEVEL 2: SERVICES LAYOUT (Sidebar + Content) */}
         <Route path="/services" element={<ServicesLayout />}>
