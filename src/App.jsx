@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout';
 import ServicesLayout from './layouts/ServicesLayout';
 import './App.css';
 import ProtectedRoute from './components/auth/ProtectedRoute'; // <--- Imported
+import SignUpPage from './components/auth/SignUpPage'; // <--- Import this
 
 // Context
 import { BrandProvider } from './pages/Services/BrandBook/context/BrandContext';
@@ -42,6 +43,7 @@ function App() {
           } />
 
           <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
 
           {/* LEVEL 2: SERVICES LAYOUT (PROTECTED) */}
           {/* FIX: Wrap ServicesLayout with ProtectedRoute */}

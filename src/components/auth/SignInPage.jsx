@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 const SignInPage = () => {
     const [email, setEmail] = useState("");
@@ -30,6 +31,7 @@ const SignInPage = () => {
     return (
         <div className="container" style={{ textAlign: 'center', paddingTop: '4rem' }}>
             <h1>/AUTHENTICATION</h1>
+            <p>Sign in to access your account & services</p>
             <form onSubmit={handleLogin} style={{ maxWidth: '300px', margin: '0 auto' }}>
                 <input
                     className="text-input"
@@ -47,6 +49,9 @@ const SignInPage = () => {
                 <button className="btn primary-btn" style={{ width: '100%' }}>
                     LOGIN
                 </button>
+
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '1.5rem' }}>                    New user? <Link to="/sign-up" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Sign Up</Link>
+                </div>
             </form>
         </div>
     );
