@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ children, requiredRole = 'user' }) => {
+const ProtectedRoute = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthorized, setIsAuthorized] = useState(false);
     const navigate = useNavigate();
@@ -11,19 +11,10 @@ const ProtectedRoute = ({ children, requiredRole = 'user' }) => {
             try {
                 // Ask the backend if we are logged in
                 const res = await fetch('/api/auth/me');
-
                 if (res.ok) {
-                    const data = await res.json();
-
-                    // Optional: Check Access Level (e.g., if page requires 'admin')
-                    if (requiredRole === 'admin' && data.user.access_level !== 'admin') {
-                        alert("Access Denied: Admins only.");
-                        navigate('/'); // Kick them out
-                    } else {
-                        setIsAuthorized(true);
-                    }
+                    setIsAuthorized(true);
                 } else {
-                    navigate('/sign-in'); // Not logged in
+                    navigate('/sign-in');
                 }
             } catch (err) {
                 navigate('/sign-in');
@@ -31,9 +22,8 @@ const ProtectedRoute = ({ children, requiredRole = 'user' }) => {
                 setIsLoading(false);
             }
         };
-
         checkSession();
-    }, [navigate, requiredRole]);
+    }, [navigate]);
 
     if (isLoading) {
         return (

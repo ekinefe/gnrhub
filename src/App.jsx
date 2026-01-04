@@ -1,8 +1,9 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
-import ServicesLayout from './layouts/ServicesLayout'; // <--- Import New Layout
+import ServicesLayout from './layouts/ServicesLayout';
 import './App.css';
+import ProtectedRoute from './components/auth/ProtectedRoute'; // <--- Imported
 
 // Context
 import { BrandProvider } from './pages/Services/BrandBook/context/BrandContext';
@@ -17,59 +18,63 @@ import SignInPage from './components/auth/SignInPage';
 // Lazy Pages
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/AboutMe/About'));
-const Services = lazy(() => import('./pages/Services/Services')); // This is now just the GRID
+const Services = lazy(() => import('./pages/Services/Services'));
 const Blog = lazy(() => import('./pages/Blogs/Blog'));
 
 function App() {
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>      <Routes>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <Routes>
 
-      {/* LEVEL 1: MAIN LAYOUT (Navbar + Footer) */}
-      <Route element={<MainLayout />}>
+        {/* LEVEL 1: MAIN LAYOUT */}
+        <Route element={<MainLayout />}>
 
-        <Route path="/" element={
-          <Suspense fallback={<div>Loading...</div>}><Home /></Suspense>
-        } />
-
-        <Route path="/about" element={
-          <Suspense fallback={<div>Loading...</div>}><About /></Suspense>
-        } />
-
-        <Route path="/blog/*" element={
-          <Suspense fallback={<div>Loading...</div>}><Blog /></Suspense>
-        } />
-
-        <Route path="/sign-in" element={<SignInPage />} />
-
-        {/* LEVEL 2: SERVICES LAYOUT (Sidebar + Content) */}
-        <Route path="/services" element={<ServicesLayout />}>
-
-          {/* The Grid Dashboard (Default /services) */}
-          <Route index element={
-            <Suspense fallback={<div>Loading...</div>}><Services /></Suspense>
+          <Route path="/" element={
+            <Suspense fallback={<div>Loading...</div>}><Home /></Suspense>
           } />
 
-          {/* BRAND BOOK TOOLS (Nested inside Services Layout) */}
-          <Route path="brand-book" element={
-            <BrandProvider><BrandDashboard /></BrandProvider>
+          <Route path="/about" element={
+            <Suspense fallback={<div>Loading...</div>}><About /></Suspense>
           } />
 
-          <Route path="brand-book/editor" element={
-            <BrandProvider><BrandEditor /></BrandProvider>
+          <Route path="/blog/*" element={
+            <Suspense fallback={<div>Loading...</div>}><Blog /></Suspense>
           } />
 
-          {/* Note: Preview is here too, but ServicesLayout hides sidebar for it */}
-          <Route path="brand-book/preview" element={
-            <BrandProvider><BrandPreview /></BrandProvider>
-          } />
+          <Route path="/sign-in" element={<SignInPage />} />
 
+          {/* LEVEL 2: SERVICES LAYOUT (PROTECTED) */}
+          {/* FIX: Wrap ServicesLayout with ProtectedRoute */}
+          <Route path="/services" element={
+            <ProtectedRoute>
+              <ServicesLayout />
+            </ProtectedRoute>
+          }>
+
+            {/* The Grid Dashboard */}
+            <Route index element={
+              <Suspense fallback={<div>Loading...</div>}><Services /></Suspense>
+            } />
+
+            {/* Brand Book Tools */}
+            <Route path="brand-book" element={
+              <BrandProvider><BrandDashboard /></BrandProvider>
+            } />
+
+            <Route path="brand-book/editor" element={
+              <BrandProvider><BrandEditor /></BrandProvider>
+            } />
+
+            <Route path="brand-book/preview" element={
+              <BrandProvider><BrandPreview /></BrandProvider>
+            } />
+
+          </Route>
         </Route>
-      </Route>
 
-    </Routes>
+      </Routes>
     </Router>
   );
 }
 
 export default App;
-// this is a test

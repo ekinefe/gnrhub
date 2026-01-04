@@ -1,53 +1,53 @@
-import React from 'react';
-import { SignIn } from '@clerk/clerk-react';
-import '../../App.css'; // Use your global CSS variables
-
-const handleLogin = async (e) => {
-    e.preventDefault();
-
-    const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    });
-
-    if (res.ok) {
-        // Success! Browser automatically saves the HttpOnly cookie.
-        // We just redirect.
-        window.location.href = '/services'; // Force reload to ensure state updates
-    } else {
-        alert("ACCESS DENIED: Invalid Credentials");
-    }
-};
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignInPage = () => {
-    return (
-        <div className="container" style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '80vh',
-            flexDirection: 'column',
-            textAlign: 'center'
-        }}>
-            <h1 style={{ marginBottom: '1rem', fontSize: '2rem' }}>/IDENTIFY_USER</h1>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
-                &gt; AWAITING CREDENTIALS...
-            </p>
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-            <div style={{
-                border: '1px solid var(--accent)',
-                padding: '2rem',
-                background: 'var(--bg-panel)',
-                boxShadow: '0 0 20px rgba(255, 49, 140, 0.2)'
-            }}>
-                <SignIn
-                    path="/sign-in"
-                    routing="path"
-                    signUpUrl="/sign-up"
-                    forceRedirectUrl="/services" // Where to go after login
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (res.ok) {
+                // Success! Force reload to update ProtectedRoute state
+                window.location.href = '/services';
+            } else {
+                alert("ACCESS DENIED: Invalid Credentials");
+            }
+        } catch (error) {
+            alert("Connection Error. Please check your network.");
+        }
+    };
+
+    return (
+        <div className="container" style={{ textAlign: 'center', paddingTop: '4rem' }}>
+            <h1>/AUTHENTICATION</h1>
+            <form onSubmit={handleLogin} style={{ maxWidth: '300px', margin: '0 auto' }}>
+                <input
+                    className="text-input"
+                    placeholder="Email"
+                    onChange={e => setEmail(e.target.value)}
+                    style={{ marginBottom: '1rem', width: '100%' }}
                 />
-            </div>
+                <input
+                    type="password"
+                    className="text-input"
+                    placeholder="Password"
+                    onChange={e => setPassword(e.target.value)}
+                    style={{ marginBottom: '1rem', width: '100%' }}
+                />
+                <button className="btn primary-btn" style={{ width: '100%' }}>
+                    LOGIN
+                </button>
+            </form>
         </div>
     );
 };
