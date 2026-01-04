@@ -3,13 +3,20 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const SignUpPage = () => {
     const navigate = useNavigate();
+
+    // 1. Form State
     const [formData, setFormData] = useState({
+        username: '',
         name: '',
         surname: '',
         email: '',
         password: '',
         confirmPassword: ''
     });
+
+    // 2. New State for the Checkbox
+    const [agreed, setAgreed] = useState(false);
+
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -22,19 +29,26 @@ const SignUpPage = () => {
         setError('');
         setIsLoading(true);
 
-        // 1. Basic Validation
+        // 3. Validation: Check Password Match
         if (formData.password !== formData.confirmPassword) {
             setError("Passwords do not match.");
             setIsLoading(false);
             return;
         }
 
+        // 4. Validation: Check Legal Consent
+        if (!agreed) {
+            setError("You must agree to the Terms & Privacy Policy.");
+            setIsLoading(false);
+            return;
+        }
+
         try {
-            // 2. Send to Cloudflare Backend
             const res = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    username: formData.username,
                     name: formData.name,
                     surname: formData.surname,
                     email: formData.email,
@@ -45,14 +59,13 @@ const SignUpPage = () => {
             const data = await res.json();
 
             if (res.ok) {
-                // Success! Redirect to Login
-                alert("Account created! Please log in.");
+                alert("Account created successfully! Please log in.");
                 navigate('/sign-in');
             } else {
                 setError(data.error || "Registration failed");
             }
         } catch (err) {
-            setError("Network Error. Please try again.");
+            setError("Network Error. Please check your connection.");
         } finally {
             setIsLoading(false);
         }
@@ -66,12 +79,22 @@ const SignUpPage = () => {
 
             <form onSubmit={handleRegister} style={{ maxWidth: '350px', width: '100%' }}>
 
-                {/* Name Fields Row */}
+                <input
+                    name="username"
+                    placeholder="Username (e.g. Neo)"
+                    className="text-input"
+                    style={{ marginBottom: '1rem', width: '100%' }}
+                    value={formData.username}
+                    onChange={handleChange}
+                    required
+                />
+
                 <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
                     <input
                         name="name"
                         placeholder="Name"
                         className="text-input"
+                        value={formData.name}
                         onChange={handleChange}
                         required
                     />
@@ -79,6 +102,7 @@ const SignUpPage = () => {
                         name="surname"
                         placeholder="Surname"
                         className="text-input"
+                        value={formData.surname}
                         onChange={handleChange}
                         required
                     />
@@ -90,6 +114,7 @@ const SignUpPage = () => {
                     placeholder="Email Address"
                     className="text-input"
                     style={{ marginBottom: '1rem', width: '100%' }}
+                    value={formData.email}
                     onChange={handleChange}
                     required
                 />
@@ -100,6 +125,7 @@ const SignUpPage = () => {
                     placeholder="Password"
                     className="text-input"
                     style={{ marginBottom: '1rem', width: '100%' }}
+                    value={formData.password}
                     onChange={handleChange}
                     required
                 />
@@ -110,9 +136,32 @@ const SignUpPage = () => {
                     placeholder="Confirm Password"
                     className="text-input"
                     style={{ marginBottom: '1rem', width: '100%' }}
+                    value={formData.confirmPassword}
                     onChange={handleChange}
                     required
                 />
+
+                {/* --- 5. NEW LEGAL CHECKBOX SECTION --- */}
+                <div style={{
+                    textAlign: 'left',
+                    marginBottom: '1.5rem',
+                    display: 'flex',
+                    alignItems: 'start',
+                    gap: '0.5rem',
+                    fontSize: '0.85rem',
+                    color: 'var(--text-muted)'
+                }}>
+                    <input
+                        type="checkbox"
+                        id="legal-consent"
+                        checked={agreed}
+                        onChange={(e) => setAgreed(e.target.checked)}
+                        style={{ marginTop: '3px', cursor: 'pointer' }}
+                    />
+                    <label htmlFor="legal-consent" style={{ cursor: 'pointer', lineHeight: '1.4' }}>
+                        I agree to the <Link to="/terms" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Terms of Service</Link> and <Link to="/privacy" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Privacy Policy</Link>. I understand that my data will be processed securely.
+                    </label>
+                </div>
 
                 {error && (
                     <div style={{ color: '#ff4444', marginBottom: '1rem', border: '1px solid #ff4444', padding: '0.5rem', fontSize: '0.9rem' }}>

@@ -16,6 +16,9 @@ import BrandPreview from './pages/Services/BrandBook/Preview';
 
 import SignInPage from './components/auth/SignInPage';
 
+import TermsPage from './pages/Legal/TermsPage';
+import PrivacyPage from './pages/Legal/PrivacyPage';
+
 import AdminDashboard from './pages/Admin/AdminDashboard'; // <--- Import
 
 // Lazy Pages
@@ -52,6 +55,10 @@ function App() {
               <AdminDashboard />
             </ProtectedRoute>
           } />
+
+          {/* LEGAL ROUTES (Publicly Accessible) */}
+          <Route path="/terms" element={<TermsPage />} />       {/* <--- Add Route */}
+          <Route path="/privacy" element={<PrivacyPage />} />   {/* <--- Add Route */}
 
           {/* LEVEL 2: SERVICES LAYOUT (PROTECTED) */}
           {/* FIX: Wrap ServicesLayout with ProtectedRoute */}
