@@ -16,6 +16,8 @@ import BrandPreview from './pages/Services/BrandBook/Preview';
 
 import SignInPage from './components/auth/SignInPage';
 
+import AdminDashboard from './pages/Admin/AdminDashboard'; // <--- Import
+
 // Lazy Pages
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/AboutMe/About'));
@@ -44,6 +46,12 @@ function App() {
 
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
+
+          <Route path="/admin" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
 
           {/* LEVEL 2: SERVICES LAYOUT (PROTECTED) */}
           {/* FIX: Wrap ServicesLayout with ProtectedRoute */}
