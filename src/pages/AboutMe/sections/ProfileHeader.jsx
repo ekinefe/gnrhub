@@ -46,7 +46,7 @@ const ProfileHeader = () => {
 
                 <div className="btn-group">
                     <a href="mailto:ekinefegnr@gmail.com" className="btn primary-btn">Email_Me</a>
-                    <a href="https://linkedin.com/in/ekin-efe-gungor" target="_blank" rel="noreferrer" className="btn secondary-btn">LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/ekin-efe-gungor-18336a20a/" target="_blank" rel="noreferrer" className="btn secondary-btn">LinkedIn</a>
                     <a href="https://github.com/ekinefe" target="_blank" rel="noreferrer" className="btn secondary-btn">GitHub</a>
                     <a href={cvPdf} target="_blank" className="btn secondary-btn">Download_CV</a>
                 </div>
