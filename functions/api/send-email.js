@@ -26,7 +26,7 @@ export async function onRequestPost(context) {
             personalizations: [{
                 to: [{ email: recipientEmail, name: variables.name || "User" }]
             }],
-            from: { email: "no-reply@gnrhub.com", name: "GNRHUB System" },
+            from: { email: "ekinefegnr@gmail.com", name: "GNRHUB System" },
             subject: emailData.subject,
             content: [{
                 type: "text/html",
