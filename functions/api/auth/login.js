@@ -29,6 +29,11 @@ export async function onRequestPost(context) {
             return new Response("Invalid credentials", { status: 401 });
         }
 
+        // --- NEW: UPDATE LAST_LOGIN TIMESTAMP ---
+        await db.prepare('UPDATE users SET last_login = datetime("now") WHERE id = ?')
+            .bind(user.id).run();
+        // ----------------------------------------
+
         // 4. CREATE SESSION (Cookie)
         const sessionData = JSON.stringify({
             id: user.id,
