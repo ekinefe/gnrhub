@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Services from './pages/Services/Services';
 import About from './pages/AboutMe/About';
 import Blog from './pages/Blogs/Blog';
+import VerifyEmailPage from './pages/Auth/VerifyEmailPage'; // Adjust path if needed
 
 // Micro-Services
 import BrandBook from './pages/Services/BrandBook/Dashboard';
@@ -52,6 +53,7 @@ function App() {
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
 
           {/* 2. SERVICES DASHBOARD (Public List) */}
           {/* We wrap this in ServicesLayout to keep styling consistent, but NO protection */}

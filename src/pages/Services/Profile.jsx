@@ -10,6 +10,10 @@ const Profile = () => {
     const [passData, setPassData] = useState({ current: '', new: '' });
     const [passMsg, setPassMsg] = useState('');
 
+    // Delete Account State
+    const [deleteData, setDeleteData] = useState({ password: '' });
+    const [deleteMsg, setDeleteMsg] = useState('');
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -60,6 +64,32 @@ const Profile = () => {
         }
     };
 
+    const handleDeleteAccount = async (e) => {
+        e.preventDefault();
+
+        const confirmDelete = window.confirm("WARNING: This action is irreversible. Are you sure you want to delete your account?");
+        if (!confirmDelete) return;
+
+        setDeleteMsg('Processing...');
+        try {
+            const res = await fetch('/api/auth/delete-account', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: deleteData.password })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                setDeleteMsg('SUCCESS: Account Deleted');
+                window.location.href = '/sign-in';
+            } else {
+                setDeleteMsg(`ERROR: ${data.error}`);
+            }
+        } catch (err) {
+            setDeleteMsg('ERROR: Network failure');
+        }
+    };
+
     if (loading) return <div className="container" style={{ paddingTop: '4rem' }}>/LOADING_PROFILE...</div>;
 
     if (!user) {
@@ -94,6 +124,7 @@ const Profile = () => {
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/IDENTITY</h3>
                     <div style={{ marginTop: '1rem', display: 'grid', gap: '0.5rem' }}>
+                        <div><small style={{ color: '#666' }}>USERNAME</small><div>{user.username}</div></div>
                         <div><small style={{ color: '#666' }}>FULL NAME</small><div>{user.name} {user.surname}</div></div>
                         <div><small style={{ color: '#666' }}>EMAIL LINK</small><div style={{ color: 'var(--accent)' }}>{user.email}</div></div>
                         <div><small style={{ color: '#666' }}>ACCESS</small><div style={{ display: 'inline-block', padding: '2px 6px', background: '#333', borderRadius: '4px', fontSize: '0.8rem' }}>{user.role?.toUpperCase()}</div></div>
@@ -108,6 +139,18 @@ const Profile = () => {
                         <input type="password" placeholder="New Password" className="text-input" style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={passData.new} onChange={e => setPassData({ ...passData, new: e.target.value })} required />
                         {passMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: passMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{passMsg}</div>}
                         <button className="btn" style={{ width: '100%', background: '#222', color: '#fff' }}>UPDATE CREDENTIALS</button>
+                    </form>
+                </div>
+                {/* DELETE ACCOUNT CARD */}
+                <div className="tech-card" style={{ borderColor: '#ff4444' }}>
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#ff4444' }}>/DELETE_ACCOUNT</h3>
+                    <form onSubmit={handleDeleteAccount} style={{ marginTop: '1rem' }}>
+                        <p style={{ fontSize: '0.8rem', color: '#888', marginBottom: '1rem' }}>
+                            To permanently delete your account, please confirm your password.
+                        </p>
+                        <input type="password" placeholder="Confirm Password" className="text-input" style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={deleteData.password} onChange={e => setDeleteData({ ...deleteData, password: e.target.value })} required />
+                        {deleteMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: deleteMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{deleteMsg}</div>}
+                        <button className="btn" style={{ width: '100%', background: '#300', color: '#ff4444', borderColor: '#ff4444' }}>DELETE ACCOUNT</button>
                     </form>
                 </div>
             </div>

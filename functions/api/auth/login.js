@@ -23,6 +23,10 @@ export async function onRequestPost(context) {
             return new Response("Invalid credentials", { status: 401 });
         }
 
+        if (user.is_verified === 0) {
+            return new Response("Account not verified. Please check your email.", { status: 403 });
+        }
+
         // 3. CHECK PASSWORD
         const isValid = await bcrypt.compare(password, user.password_hash);
         if (!isValid) {

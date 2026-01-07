@@ -52,14 +52,15 @@ const SignUpPage = () => {
                     name: formData.name,
                     surname: formData.surname,
                     email: formData.email,
-                    password: formData.password
+                    password: formData.password,
+                    origin: window.location.origin
                 })
             });
 
             const data = await res.json();
 
             if (res.ok) {
-                alert("Account created successfully! Please log in.");
+                alert("Registration successful! Please check your inbox to verify your email.");
                 navigate('/sign-in');
             } else {
                 setError(data.error || "Registration failed");
