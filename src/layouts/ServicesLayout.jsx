@@ -18,6 +18,11 @@ const ServicesLayout = () => {
                             _Dashboard
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/services/profile" className={({ isActive }) => isActive ? "active" : ""}>
+                            _Profile
+                        </NavLink>
+                    </li>
 
                     <li style={{ marginTop: '1rem', borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
                         <span style={{ color: '#666', fontSize: '0.8rem' }}>TOOLS_LIST</span>

@@ -9,6 +9,15 @@ export const projects = [
     category: 'Generator'
   },
   {
+    id: 'gym-tracker',
+    title: 'Gym Tracker',
+    description: 'Log your workouts and track progress. Data is private and isolated per user.',
+    path: '/services/gym-tracker',
+    status: 'BETA',
+    icon: '💪',
+    category: 'Health'
+  },
+  {
     id: 'pdf-converter',
     title: 'PDF Converter',
     description: 'Secure client-side image to PDF conversion. No server uploads required.',
