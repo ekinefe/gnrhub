@@ -24,10 +24,10 @@ export async function onRequestPost(context) {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
 
-        // 3. Generate Token (THIS IS THE CRITICAL FIX)
+        // 3. Generate Token
         const token = crypto.randomUUID();
 
-        // 4. Insert User (Default is_verified = 0)
+        // 4. Insert User
         const result = await db.prepare(
             'INSERT INTO users (email, username, password_hash, name, surname, is_verified, verification_token) VALUES (?, ?, ?, ?, ?, 0, ?)'
         ).bind(cleanEmail, cleanUsername, hash, name, surname, token).run();
@@ -36,28 +36,27 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ error: "Database error" }), { status: 500 });
         }
 
-        // 5. Trigger Verification Email (Awaited for Debugging)
+        // 5. Trigger Email (Background Process)
         const url = new URL(context.request.url);
         const emailApiUrl = `${url.origin}/api/send-email`;
 
-        const emailRes = await fetch(emailApiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                templateId: 'verify_email',
-                recipientEmail: cleanEmail,
-                variables: {
-                    username: cleanUsername,
-                    token: token,
-                    origin: origin || url.origin
-                }
+        // We wrap this in waitUntil so the user gets a "Success" response immediately
+        // Cloudflare will keep the script running in the background to send the email
+        context.waitUntil(
+            fetch(emailApiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    templateId: 'verify_email',
+                    recipientEmail: cleanEmail,
+                    variables: {
+                        username: cleanUsername,
+                        token: token,
+                        origin: origin || url.origin
+                    }
+                })
             })
-        });
-
-        if (!emailRes.ok) {
-            const errorText = await emailRes.text();
-            throw new Error(`Email Service Failed: ${errorText}`);
-        }
+        );
 
         return new Response(JSON.stringify({ message: "Registration successful. Please check your email." }), { status: 201 });
 

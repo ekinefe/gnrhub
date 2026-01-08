@@ -46,10 +46,25 @@ export async function onRequestPost(context) {
         });
         const token = btoa(sessionData);
 
+        // Determine Environment for Cookie Security
+        const url = new URL(context.request.url);
+        const isProduction = url.hostname !== 'localhost' && url.hostname !== '127.0.0.1';
+
+        // Construct Cookie Options
+        // Localhost: Secure=False (HTTP) | Production: Secure=True (HTTPS)
+        const cookieOptions = [
+            `auth_token=${token}`,
+            'HttpOnly',
+            'Path=/',
+            'SameSite=Strict',
+            'Max-Age=86400',
+            isProduction ? 'Secure' : ''
+        ].filter(Boolean).join('; ');
+
         return new Response(JSON.stringify({ message: "Login Success" }), {
             status: 200,
             headers: {
-                "Set-Cookie": `auth_token=${token}; HttpOnly; Secure; Path=/; SameSite=Strict; Max-Age=86400`,
+                "Set-Cookie": cookieOptions,
                 "Content-Type": "application/json"
             }
         });
