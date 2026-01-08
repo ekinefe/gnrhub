@@ -45,7 +45,10 @@ export async function onRequestPost(context) {
             username: user.username,
             name: user.name,
             surname: user.surname,
-            role: user.access_level || 'user'
+            // role: user.access_level || 'user'
+            role: user.access_level,
+            created_at: user.created_at,
+            last_login: user.last_login,
         });
         const token = btoa(sessionData);
 

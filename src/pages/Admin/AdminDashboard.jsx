@@ -98,7 +98,8 @@ const AdminDashboard = () => {
                             <tr key={user.id} style={{ borderBottom: '1px solid #222' }}>
                                 <td style={{ padding: '1rem', fontFamily: 'monospace', color: '#555' }}>#{user.id}</td>
                                 <td style={{ padding: '1rem' }}>
-                                    <div style={{ fontWeight: 'bold' }}>{user.username || '---'}</div>
+                                    {/* <div style={{ fontWeight: 'bold' }}>{user.username || '---'}</div> */}
+                                    <div style={{ fontWeight: 'bold' }}>{user.username}</div>
                                     <div style={{ fontSize: '0.8rem', color: '#888' }}>{user.name} {user.surname}</div>
                                 </td>
                                 <td style={{ padding: '1rem', color: 'var(--accent)' }}>{user.email}</td>
