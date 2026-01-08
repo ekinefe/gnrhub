@@ -6,13 +6,18 @@ const Profile = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // 1. UPDATE STATE: Added 'confirm' field
+    // Password Change State
     const [passData, setPassData] = useState({ current: '', new: '', confirm: '' });
     const [passMsg, setPassMsg] = useState('');
 
     // Delete Account State
     const [deleteData, setDeleteData] = useState({ password: '' });
     const [deleteMsg, setDeleteMsg] = useState('');
+
+    // --- NEW: Role Application State ---
+    const [appData, setAppData] = useState({ role: 'TESTER', customRole: '', reason: '' });
+    const [appMsg, setAppMsg] = useState('');
+    // -----------------------------------
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -41,14 +46,11 @@ const Profile = () => {
 
     const handlePassChange = async (e) => {
         e.preventDefault();
-        setPassMsg(''); // Clear previous messages
-
-        // 2. VALIDATION: Check if passwords match
+        setPassMsg('');
         if (passData.new !== passData.confirm) {
             setPassMsg("ERROR: New passwords do not match.");
             return;
         }
-
         setPassMsg('Processing...');
         try {
             const res = await fetch('/api/auth/change-password', {
@@ -59,7 +61,6 @@ const Profile = () => {
             const data = await res.json();
             if (res.ok) {
                 setPassMsg('SUCCESS: Password Updated');
-                // Clear all fields on success
                 setPassData({ current: '', new: '', confirm: '' });
                 setTimeout(() => setPassMsg(''), 3000);
             } else {
@@ -72,10 +73,8 @@ const Profile = () => {
 
     const handleDeleteAccount = async (e) => {
         e.preventDefault();
-
         const confirmDelete = window.confirm("WARNING: This action is irreversible. Are you sure you want to delete your account?");
         if (!confirmDelete) return;
-
         setDeleteMsg('Processing...');
         try {
             const res = await fetch('/api/auth/delete-account', {
@@ -84,7 +83,6 @@ const Profile = () => {
                 body: JSON.stringify({ password: deleteData.password })
             });
             const data = await res.json();
-
             if (res.ok) {
                 setDeleteMsg('SUCCESS: Account Deleted');
                 window.location.href = '/sign-in';
@@ -95,6 +93,36 @@ const Profile = () => {
             setDeleteMsg('ERROR: Network failure');
         }
     };
+
+    // --- NEW: Handle Role Application ---
+    const handleRoleApply = async (e) => {
+        e.preventDefault();
+        setAppMsg('Transmitting Application...');
+
+        try {
+            const res = await fetch('/api/user/apply-role', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: user.id, // Sending ID so backend can fetch details
+                    appliedRole: appData.role,
+                    customRoleName: appData.customRole,
+                    reason: appData.reason
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                setAppMsg('SUCCESS: Application Sent to Admin.');
+                setAppData({ role: 'TESTER', customRole: '', reason: '' }); // Reset form
+            } else {
+                setAppMsg(`ERROR: ${data.error}`);
+            }
+        } catch (err) {
+            setAppMsg('ERROR: Network transmission failed.');
+        }
+    };
+    // ------------------------------------
 
     if (loading) return <div className="container" style={{ paddingTop: '4rem' }}>/LOADING_PROFILE...</div>;
 
@@ -126,80 +154,94 @@ const Profile = () => {
             {/* CONTENT GRID */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
 
-                {/* IDENTITY CARD */}
+                {/* 1. IDENTITY CARD */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/IDENTITY</h3>
                     <div style={{ marginTop: '1rem', display: 'grid', gap: '0.5rem' }}>
-                        <div><small style={{ color: '#666' }}>USERNAME:</small>
-                            <div>{user.username}</div>
-                        </div>
-                        <div><small style={{ color: '#666' }}>FULL NAME:</small>
-                            <div>{user.name} {user.surname}</div>
-                        </div>
-                        <div><small style={{ color: '#666' }}>EMAIL:</small>
-                            <div style={{ color: 'var(--accent)' }}>{user.email}</div>
-                        </div>
-                        <div><small style={{ color: '#666' }}>ROLE: </small>
+                        <div><small style={{ color: '#666' }}>USERNAME:</small><div>{user.username}</div></div>
+                        <div><small style={{ color: '#666' }}>FULL NAME:</small><div>{user.name} {user.surname}</div></div>
+                        <div><small style={{ color: '#666' }}>EMAIL:</small><div style={{ color: 'var(--accent)' }}>{user.email}</div></div>
+                        <div><small style={{ color: '#666' }}>ROLE:</small>
                             <div style={{ display: 'inline-block', padding: '2px 6px', background: '#333', borderRadius: '4px', fontSize: '0.8rem' }}>{user.role?.toUpperCase()}</div>
                         </div>
                     </div>
                 </div>
 
-                {/* SECURITY CARD */}
+                {/* 2. ROLE APPLICATION CARD (NEW) */}
+                <div className="tech-card" style={{ borderColor: '#0f0' }}>
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#0f0' }}>/ROLE_APPLICATION</h3>
+                    <form onSubmit={handleRoleApply} style={{ marginTop: '1rem' }}>
+
+                        {/* Role Selector */}
+                        <div style={{ marginBottom: '0.5rem' }}>
+                            <label style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '5px' }}>TARGET ROLE</label>
+                            <select
+                                className="text-input"
+                                style={{ width: '100%', background: '#000', color: '#fff', border: '1px solid #333', padding: '0.5rem' }}
+                                value={appData.role}
+                                onChange={(e) => setAppData({ ...appData, role: e.target.value })}
+                            >
+                                <option value="TESTER">TESTER</option>
+                                <option value="ADMIN">ADMINISTRATOR</option>
+                                <option value="MODERATOR">MODERATOR</option>
+                                <option value="SPECIAL">SPECIAL / RECOMMENDATION</option>
+                            </select>
+                        </div>
+
+                        {/* Custom Role Input (Only shows if SPECIAL is selected) */}
+                        {appData.role === 'SPECIAL' && (
+                            <input
+                                type="text"
+                                placeholder="Specify Recommended Role"
+                                className="text-input"
+                                style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
+                                value={appData.customRole}
+                                onChange={e => setAppData({ ...appData, customRole: e.target.value })}
+                                required
+                            />
+                        )}
+
+                        {/* Reason Textarea */}
+                        <textarea
+                            placeholder="Statement of Intent: Why are you applying for this role?"
+                            className="text-input"
+                            style={{ width: '100%', minHeight: '80px', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem', fontFamily: 'monospace' }}
+                            value={appData.reason}
+                            onChange={e => setAppData({ ...appData, reason: e.target.value })}
+                            required
+                        />
+
+                        {appMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: appMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{appMsg}</div>}
+
+                        <button className="btn" style={{ width: '100%', background: '#030', color: '#0f0', borderColor: '#0f0' }}>
+                            SUBMIT APPLICATION
+                        </button>
+                    </form>
+                </div>
+
+                {/* 3. SECURITY CARD */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/SECURITY</h3>
                     <form onSubmit={handlePassChange} style={{ marginTop: '1rem' }}>
-
-                        {/* Current Password */}
-                        <input
-                            type="password"
-                            placeholder="Current Password"
-                            className="text-input"
-                            style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
-                            value={passData.current}
-                            onChange={e => setPassData({ ...passData, current: e.target.value })}
-                            required
-                        />
-
-                        {/* New Password */}
-                        <input
-                            type="password"
-                            placeholder="New Password"
-                            className="text-input"
-                            style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
-                            value={passData.new}
-                            onChange={e => setPassData({ ...passData, new: e.target.value })}
-                            required
-                        />
-
-                        {/* 3. UI UPDATE: Confirm Password Input */}
-                        <input
-                            type="password"
-                            placeholder="Confirm New Password"
-                            className="text-input"
-                            style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
-                            value={passData.confirm}
-                            onChange={e => setPassData({ ...passData, confirm: e.target.value })}
-                            required
-                        />
-
+                        <input type="password" placeholder="Current Password" className="text-input" style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={passData.current} onChange={e => setPassData({ ...passData, current: e.target.value })} required />
+                        <input type="password" placeholder="New Password" className="text-input" style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={passData.new} onChange={e => setPassData({ ...passData, new: e.target.value })} required />
+                        <input type="password" placeholder="Confirm New Password" className="text-input" style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={passData.confirm} onChange={e => setPassData({ ...passData, confirm: e.target.value })} required />
                         {passMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: passMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{passMsg}</div>}
                         <button className="btn" style={{ width: '100%', background: '#222', color: '#fff' }}>UPDATE CREDENTIALS</button>
                     </form>
                 </div>
 
-                {/* DELETE ACCOUNT CARD */}
+                {/* 4. DELETE ACCOUNT CARD */}
                 <div className="tech-card" style={{ borderColor: '#ff4444' }}>
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#ff4444' }}>/DELETE_ACCOUNT</h3>
                     <form onSubmit={handleDeleteAccount} style={{ marginTop: '1rem' }}>
-                        <p style={{ fontSize: '0.8rem', color: '#888', marginBottom: '1rem' }}>
-                            To permanently delete your account, please confirm your password.
-                        </p>
+                        <p style={{ fontSize: '0.8rem', color: '#888', marginBottom: '1rem' }}>To permanently delete your account, please confirm your password.</p>
                         <input type="password" placeholder="Confirm Password" className="text-input" style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={deleteData.password} onChange={e => setDeleteData({ ...deleteData, password: e.target.value })} required />
                         {deleteMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: deleteMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{deleteMsg}</div>}
                         <button className="btn" style={{ width: '100%', background: '#300', color: '#ff4444', borderColor: '#ff4444' }}>DELETE ACCOUNT</button>
                     </form>
                 </div>
+
             </div>
         </div>
     );
