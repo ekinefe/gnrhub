@@ -127,9 +127,9 @@ const Profile = () => {
                         <div><small style={{ color: '#666' }}>USERNAME:</small>
                             <div>{user.username}</div>
                         </div>
-                        <div><small style={{ color: '#666' }}>USER ID:</small>
+                        {/* <div><small style={{ color: '#666' }}>USER ID:</small>
                             <div>{user.id}</div>
-                        </div>
+                        </div> */}
                         <div><small style={{ color: '#666' }}>FULL NAME:</small>
                             <div>{user.name} {user.surname}</div>
                         </div>

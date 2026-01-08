@@ -1,6 +1,7 @@
 import { welcomeTemplate } from '../templates/welcome.js';
 import { brandBookTemplate } from '../templates/brand_book.js';
 import { verifyEmailTemplate } from '../templates/verify_email.js';
+import { passwordResetTemplate } from '../templates/password_reset.js';
 
 export async function onRequestPost(context) {
     try {
@@ -26,6 +27,7 @@ export async function onRequestPost(context) {
             case 'welcome': emailData = welcomeTemplate(variables); break;
             case 'brand_book': emailData = brandBookTemplate(variables); break;
             case 'verify_email': emailData = verifyEmailTemplate(variables); break;
+            case 'password_reset': emailData = passwordResetTemplate(variables); break;
             default:
                 return new Response(JSON.stringify({ error: "Invalid Template ID" }), { status: 400 });
         }
