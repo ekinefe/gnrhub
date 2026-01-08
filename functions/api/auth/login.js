@@ -42,7 +42,10 @@ export async function onRequestPost(context) {
         const sessionData = JSON.stringify({
             id: user.id,
             email: user.email,
-            role: user.access_level
+            username: user.username,
+            name: user.name,
+            surname: user.surname,
+            role: user.access_level || 'user'
         });
         const token = btoa(sessionData);
 
