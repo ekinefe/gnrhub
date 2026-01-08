@@ -54,6 +54,8 @@ function App() {
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
 
           {/* 2. SERVICES DASHBOARD (Public List) */}
           {/* We wrap this in ServicesLayout to keep styling consistent, but NO protection */}

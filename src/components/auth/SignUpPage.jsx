@@ -178,8 +178,17 @@ const SignUpPage = () => {
                     {isLoading ? 'PROCESSING...' : 'REGISTER IDENTITY'}
                 </button>
 
-                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                    Already have access? <Link to="/sign-in" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Login here</Link>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div>
+                        Already have access? <Link to="/sign-in" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Login here</Link>
+                    </div>
+
+                    {/* --- ADDED FORGOT PASSWORD LINK HERE --- */}
+                    <div>
+                        <Link to="/forgot-password" style={{ color: '#666', textDecoration: 'none', fontSize: '0.8rem' }}>
+                            &gt; RECOVER_LOST_CREDENTIALS
+                        </Link>
+                    </div>
                 </div>
             </form>
         </div>
