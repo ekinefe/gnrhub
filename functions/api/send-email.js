@@ -30,7 +30,10 @@ export async function onRequestPost(context) {
             personalizations: [{
                 to: [{ email: recipientEmail, name: variables.name || "User" }]
             }],
-            from: { email: "ekinefegnr@gmail.com", name: "GNRHUB System" },
+            from: {
+                email: "no-reply@gnrhub.pages.dev",
+                name: "GNRHUB System"
+            },
             subject: emailData.subject,
             content: [{
                 type: "text/html",
