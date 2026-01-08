@@ -23,6 +23,8 @@ import Profile from './pages/Services/Profile';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import SignInPage from './components/auth/SignInPage';
 import SignUpPage from './components/auth/SignUpPage';
+import ForgotPasswordPage from './components/auth/ForgotPasswordPage';
+import ResetPasswordPage from './components/auth/ResetPasswordPage';
 
 // Admin
 import AdminDashboard from './pages/Admin/AdminDashboard';
