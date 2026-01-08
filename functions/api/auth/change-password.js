@@ -1,3 +1,4 @@
+import { parse } from 'cookie';
 import bcrypt from 'bcryptjs';
 
 export async function onRequestPost(context) {
@@ -5,12 +6,18 @@ export async function onRequestPost(context) {
 
     // 1. Validate Session (Cookie)
     const cookieHeader = context.request.headers.get("Cookie");
-    if (!cookieHeader || !cookieHeader.includes("auth_token=")) {
+    if (!cookieHeader) {
         return new Response("Unauthorized", { status: 401 });
     }
 
     try {
-        const token = cookieHeader.split('auth_token=')[1].split(';')[0];
+        const cookies = parse(cookieHeader);
+        const token = cookies.auth_token;
+
+        if (!token) {
+            return new Response("Unauthorized", { status: 401 });
+        }
+
         const sessionData = JSON.parse(atob(token));
         const userId = sessionData.id;
 
