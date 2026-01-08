@@ -139,7 +139,7 @@ const Profile = () => {
                         <div><small style={{ color: '#666' }}>EMAIL:</small>
                             <div style={{ color: 'var(--accent)' }}>{user.email}</div>
                         </div>
-                        <div><small style={{ color: '#666' }}>ROLE:</small>
+                        <div><small style={{ color: '#666' }}>ROLE: </small>
                             <div style={{ display: 'inline-block', padding: '2px 6px', background: '#333', borderRadius: '4px', fontSize: '0.8rem' }}>{user.role?.toUpperCase()}</div>
                         </div>
                     </div>
