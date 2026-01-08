@@ -6,6 +6,39 @@ const AdminDashboard = () => {
     const [stats, setStats] = useState({ counts: { total: 0, online: 0, admins: 0 }, services: [] });
     const [loading, setLoading] = useState(true);
 
+    // Helper to determine badge colors
+    const getRoleStyle = (role) => {
+        const r = role ? role.toLowerCase() : 'user';
+
+        switch (r) {
+            case 'admin':
+                return {
+                    color: 'var(--accent)',
+                    border: '1px solid var(--accent)',
+                    background: 'rgba(255, 49, 140, 0.2)'
+                };
+            case 'tester':
+                return {
+                    color: '#0f0',
+                    border: '1px solid #0f0',
+                    background: 'rgba(0, 255, 0, 0.2)'
+                };
+            case 'moderator':
+            case 'mod':
+                return {
+                    color: '#ff4444',
+                    border: '1px solid #ff4444',
+                    background: 'rgba(255, 68, 68, 0.2)'
+                };
+            default: // 'user' and others
+                return {
+                    color: '#888',
+                    border: '1px solid #333',
+                    background: '#111'
+                };
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -95,36 +128,47 @@ const AdminDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user => (
-                            <tr key={user.id} style={{ borderBottom: '1px solid #222' }}>
-                                <td style={{ padding: '1rem', fontFamily: 'monospace', color: '#555' }}>#{user.id}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    {/* <div style={{ fontWeight: 'bold' }}>{user.username || '---'}</div> */}
-                                    <div style={{ fontWeight: 'bold' }}>{user.username}</div>
-                                    <div style={{ fontSize: '0.8rem', color: '#888' }}>{user.name} {user.surname}</div>
-                                </td>
-                                <td style={{ padding: '1rem', color: 'var(--accent)' }}>{user.email}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    <span style={{
-                                        padding: '4px 8px',
-                                        borderRadius: '4px',
-                                        background: user.access_level === 'admin' ? 'rgba(255, 49, 140, 0.2)' : '#222',
-                                        color: user.access_level === 'admin' ? 'var(--accent)' : '#ccc',
-                                        fontSize: '0.75rem',
-                                        fontWeight: 'bold',
-                                        border: user.access_level === 'admin' ? '1px solid var(--accent)' : '1px solid #444'
-                                    }}>
-                                        {user.access_level.toUpperCase()}
-                                    </span>
-                                </td>
-                                <td style={{ padding: '1rem', fontSize: '0.85rem', color: '#888', fontFamily: 'monospace' }}>
-                                    {user.last_login ? new Date(user.last_login).toLocaleString() : 'Never'}
-                                </td>
-                                <td style={{ padding: '1rem', fontSize: '0.85rem', color: '#888', fontFamily: 'monospace' }}>
-                                    {user.created_at ? new Date(user.created_at).toLocaleString() : 'Never'}
-                                </td>
-                            </tr>
-                        ))}
+                        {users.map(user => {
+                            // 1. Get the specific style for this user's role
+                            const roleStyle = getRoleStyle(user.access_level);
+
+                            return (
+                                <tr key={user.id} style={{ borderBottom: '1px solid #222' }}>
+                                    <td style={{ padding: '1rem', fontFamily: 'monospace', color: '#555', verticalAlign: 'middle' }}>
+                                        #{user.id}
+                                    </td>
+                                    <td style={{ padding: '1rem', verticalAlign: 'middle' }}>
+                                        <div style={{ fontWeight: 'bold', color: '#fff' }}>{user.username}</div>
+                                        <div style={{ fontSize: '0.8rem', color: '#888' }}>{user.name} {user.surname}</div>
+                                    </td>
+                                    <td style={{ padding: '1rem', color: 'var(--accent)', verticalAlign: 'middle' }}>
+                                        {user.email}
+                                    </td>
+                                    <td style={{ padding: '1rem', verticalAlign: 'middle' }}>
+
+                                        {/* 2. APPLY THE DYNAMIC STYLE HERE */}
+                                        <span style={{
+                                            display: 'inline-block',
+                                            whiteSpace: 'nowrap',
+                                            padding: '4px 8px',
+                                            borderRadius: '4px',
+                                            fontSize: '0.75rem',
+                                            fontWeight: 'bold',
+                                            ...roleStyle // <--- Spreads the color/border/bg from the helper
+                                        }}>
+                                            {user.access_level ? user.access_level.toUpperCase() : 'USER'}
+                                        </span>
+
+                                    </td>
+                                    <td style={{ padding: '1rem', fontSize: '0.85rem', color: '#888', fontFamily: 'monospace', verticalAlign: 'middle' }}>
+                                        {user.last_login ? new Date(user.last_login).toLocaleString() : 'Never'}
+                                    </td>
+                                    <td style={{ padding: '1rem', fontSize: '0.85rem', color: '#555', fontFamily: 'monospace', verticalAlign: 'middle' }}>
+                                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : '-'}
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
