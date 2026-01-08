@@ -24,7 +24,7 @@ export async function onRequestGet(context) {
 
         // 4. FETCH ALL USERS (Only runs if the check above passes)
         const { results } = await db.prepare(
-            'SELECT id, name, surname, email, access_level, created_at FROM users ORDER BY created_at DESC'
+            'SELECT id, username, name, surname, email, access_level, created_at, last_login FROM users ORDER BY created_at DESC'
         ).all();
 
         // Return the list to the frontend

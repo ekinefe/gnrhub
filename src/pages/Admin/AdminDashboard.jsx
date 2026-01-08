@@ -91,6 +91,7 @@ const AdminDashboard = () => {
                             <th style={{ padding: '1rem' }}>CONTACT</th>
                             <th style={{ padding: '1rem' }}>ACCESS</th>
                             <th style={{ padding: '1rem' }}>LAST SEEN</th>
+                            <th style={{ padding: '1rem' }}>CREATED AT</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,6 +119,9 @@ const AdminDashboard = () => {
                                 </td>
                                 <td style={{ padding: '1rem', fontSize: '0.85rem', color: '#888', fontFamily: 'monospace' }}>
                                     {user.last_login ? new Date(user.last_login).toLocaleString() : 'Never'}
+                                </td>
+                                <td style={{ padding: '1rem', fontSize: '0.85rem', color: '#888', fontFamily: 'monospace' }}>
+                                    {user.created_at ? new Date(user.created_at).toLocaleString() : 'Never'}
                                 </td>
                             </tr>
                         ))}
