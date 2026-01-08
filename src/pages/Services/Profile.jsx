@@ -6,8 +6,8 @@ const Profile = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Password Change State
-    const [passData, setPassData] = useState({ current: '', new: '' });
+    // 1. UPDATE STATE: Added 'confirm' field
+    const [passData, setPassData] = useState({ current: '', new: '', confirm: '' });
     const [passMsg, setPassMsg] = useState('');
 
     // Delete Account State
@@ -22,10 +22,7 @@ const Profile = () => {
                     const data = await res.json();
                     setUser(data);
                 } else {
-                    // If not logged in, redirect to login or show guest?
-                    // Profile page should probably be protected or show login prompt
                     setUser(null);
-                    // navigate('/sign-in'); // Optional: redirect if this page is strictly private
                 }
             } catch (err) {
                 console.error("Failed to load profile");
@@ -44,6 +41,14 @@ const Profile = () => {
 
     const handlePassChange = async (e) => {
         e.preventDefault();
+        setPassMsg(''); // Clear previous messages
+
+        // 2. VALIDATION: Check if passwords match
+        if (passData.new !== passData.confirm) {
+            setPassMsg("ERROR: New passwords do not match.");
+            return;
+        }
+
         setPassMsg('Processing...');
         try {
             const res = await fetch('/api/auth/change-password', {
@@ -54,7 +59,8 @@ const Profile = () => {
             const data = await res.json();
             if (res.ok) {
                 setPassMsg('SUCCESS: Password Updated');
-                setPassData({ current: '', new: '' });
+                // Clear all fields on success
+                setPassData({ current: '', new: '', confirm: '' });
                 setTimeout(() => setPassMsg(''), 3000);
             } else {
                 setPassMsg(`ERROR: ${data.error}`);
@@ -127,9 +133,6 @@ const Profile = () => {
                         <div><small style={{ color: '#666' }}>USERNAME:</small>
                             <div>{user.username}</div>
                         </div>
-                        {/* <div><small style={{ color: '#666' }}>USER ID:</small>
-                            <div>{user.id}</div>
-                        </div> */}
                         <div><small style={{ color: '#666' }}>FULL NAME:</small>
                             <div>{user.name} {user.surname}</div>
                         </div>
@@ -146,12 +149,45 @@ const Profile = () => {
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/SECURITY</h3>
                     <form onSubmit={handlePassChange} style={{ marginTop: '1rem' }}>
-                        <input type="password" placeholder="Current Password" className="text-input" style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={passData.current} onChange={e => setPassData({ ...passData, current: e.target.value })} required />
-                        <input type="password" placeholder="New Password" className="text-input" style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={passData.new} onChange={e => setPassData({ ...passData, new: e.target.value })} required />
+
+                        {/* Current Password */}
+                        <input
+                            type="password"
+                            placeholder="Current Password"
+                            className="text-input"
+                            style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
+                            value={passData.current}
+                            onChange={e => setPassData({ ...passData, current: e.target.value })}
+                            required
+                        />
+
+                        {/* New Password */}
+                        <input
+                            type="password"
+                            placeholder="New Password"
+                            className="text-input"
+                            style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
+                            value={passData.new}
+                            onChange={e => setPassData({ ...passData, new: e.target.value })}
+                            required
+                        />
+
+                        {/* 3. UI UPDATE: Confirm Password Input */}
+                        <input
+                            type="password"
+                            placeholder="Confirm New Password"
+                            className="text-input"
+                            style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
+                            value={passData.confirm}
+                            onChange={e => setPassData({ ...passData, confirm: e.target.value })}
+                            required
+                        />
+
                         {passMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: passMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{passMsg}</div>}
                         <button className="btn" style={{ width: '100%', background: '#222', color: '#fff' }}>UPDATE CREDENTIALS</button>
                     </form>
                 </div>
+
                 {/* DELETE ACCOUNT CARD */}
                 <div className="tech-card" style={{ borderColor: '#ff4444' }}>
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#ff4444' }}>/DELETE_ACCOUNT</h3>

@@ -103,7 +103,7 @@ const Services = () => {
               </div>
 
               {/* SECURITY CARD */}
-              <div className="tech-card">
+              {/* <div className="tech-card">
                 <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/SECURITY</h3>
                 <form onSubmit={handlePassChange} style={{ marginTop: '1rem' }}>
                   <input type="password" placeholder="Current Password" className="text-input" style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={passData.current} onChange={e => setPassData({ ...passData, current: e.target.value })} required />
@@ -111,7 +111,7 @@ const Services = () => {
                   {passMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: passMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{passMsg}</div>}
                   <button className="btn" style={{ width: '100%', background: '#222', color: '#fff' }}>UPDATE CREDENTIALS</button>
                 </form>
-              </div>
+              </div> */}
             </div>
           ) : (
             /* GUEST: Show Login Prompt (Full Width) */
