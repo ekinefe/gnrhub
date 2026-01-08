@@ -124,10 +124,21 @@ const Profile = () => {
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/IDENTITY</h3>
                     <div style={{ marginTop: '1rem', display: 'grid', gap: '0.5rem' }}>
-                        <div><small style={{ color: '#666' }}>USERNAME:</small><div>{user.username}</div></div>
-                        <div><small style={{ color: '#666' }}>FULL NAME:</small><div>{user.name} {user.surname}</div></div>
-                        <div><small style={{ color: '#666' }}>EMAIL:</small><div style={{ color: 'var(--accent)' }}>{user.email}</div></div>
-                        <div><small style={{ color: '#666' }}>ACCESS:</small><div style={{ display: 'inline-block', padding: '2px 6px', background: '#333', borderRadius: '4px', fontSize: '0.8rem' }}>{user.role?.toUpperCase()}</div></div>
+                        <div><small style={{ color: '#666' }}>USERNAME:</small>
+                            <div>{user.username}</div>
+                        </div>
+                        <div><small style={{ color: '#666' }}>USER ID:</small>
+                            <div>{user.userid}</div>
+                        </div>
+                        <div><small style={{ color: '#666' }}>FULL NAME:</small>
+                            <div>{user.name} {user.surname}</div>
+                        </div>
+                        <div><small style={{ color: '#666' }}>EMAIL:</small>
+                            <div style={{ color: 'var(--accent)' }}>{user.email}</div>
+                        </div>
+                        <div><small style={{ color: '#666' }}>ROLE:</small>
+                            <div style={{ display: 'inline-block', padding: '2px 6px', background: '#333', borderRadius: '4px', fontSize: '0.8rem' }}>{user.role?.toUpperCase()}</div>
+                        </div>
                     </div>
                 </div>
 
