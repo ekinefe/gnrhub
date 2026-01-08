@@ -24,10 +24,8 @@ export async function onRequestPost(context) {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
 
-        // --- 3. FIX: GENERATE TOKEN ---
-        // This was the missing line causing your error!
+        // 3. Generate Token (THIS IS THE CRITICAL FIX)
         const token = crypto.randomUUID();
-        // ------------------------------
 
         // 4. Insert User (Default is_verified = 0)
         const result = await db.prepare(
@@ -39,11 +37,9 @@ export async function onRequestPost(context) {
         }
 
         // 5. Trigger Verification Email
-        // We use an internal fetch to call our own send-email API
         const url = new URL(context.request.url);
         const emailApiUrl = `${url.origin}/api/send-email`;
 
-        // We don't await this fetch so it doesn't block the UI if email is slow
         context.waitUntil(
             fetch(emailApiUrl, {
                 method: 'POST',
