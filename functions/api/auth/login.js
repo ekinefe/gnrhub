@@ -56,7 +56,7 @@ export async function onRequestPost(context) {
             `auth_token=${token}`,
             'HttpOnly',
             'Path=/',
-            'SameSite=Strict',
+            'SameSite=Lax', // Changed to Lax for better redirect handling
             'Max-Age=86400',
             isProduction ? 'Secure' : ''
         ].filter(Boolean).join('; ');
