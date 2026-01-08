@@ -35,9 +35,38 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ error: "Database error" }), { status: 500 });
         }
 
-        return new Response(JSON.stringify({ message: "User created successfully" }), { status: 201 });
+        // 5. DEBUGGING: Trigger Verification Email
+        console.log(`[REGISTER DEBUG] Attempting to send email to ${cleanEmail}`);
+
+        // Construct the absolute URL for the email API
+        const url = new URL(context.request.url);
+        const emailApiUrl = `${url.origin}/api/send-email`;
+
+        const emailReq = await fetch(emailApiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                templateId: 'verify_email',
+                recipientEmail: cleanEmail,
+                variables: {
+                    username: cleanUsername,
+                    token: token,
+                    origin: origin || url.origin
+                }
+            })
+        });
+
+        if (emailReq.ok) {
+            console.log("[REGISTER DEBUG] Email sent successfully");
+        } else {
+            const errorText = await emailReq.text();
+            console.error(`[REGISTER ERROR] Email failed: ${emailReq.status} - ${errorText}`);
+        }
+
+        return new Response(JSON.stringify({ message: "Registration successful. Please check your email." }), { status: 201 });
 
     } catch (err) {
+        console.error(`[REGISTER CRITICAL ERROR] ${err.message}`);
         return new Response(JSON.stringify({ error: err.message }), { status: 500 });
     }
 }
