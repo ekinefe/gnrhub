@@ -36,25 +36,28 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ error: "Database error" }), { status: 500 });
         }
 
-        // 5. Trigger Verification Email
+        // 5. Trigger Verification Email (Awaited for Debugging)
         const url = new URL(context.request.url);
         const emailApiUrl = `${url.origin}/api/send-email`;
 
-        context.waitUntil(
-            fetch(emailApiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    templateId: 'verify_email',
-                    recipientEmail: cleanEmail,
-                    variables: {
-                        username: cleanUsername,
-                        token: token,
-                        origin: origin || url.origin
-                    }
-                })
+        const emailRes = await fetch(emailApiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                templateId: 'verify_email',
+                recipientEmail: cleanEmail,
+                variables: {
+                    username: cleanUsername,
+                    token: token,
+                    origin: origin || url.origin
+                }
             })
-        );
+        });
+
+        if (!emailRes.ok) {
+            const errorText = await emailRes.text();
+            throw new Error(`Email Service Failed: ${errorText}`);
+        }
 
         return new Response(JSON.stringify({ message: "Registration successful. Please check your email." }), { status: 201 });
 
