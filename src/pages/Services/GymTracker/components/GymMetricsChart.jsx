@@ -41,7 +41,7 @@ const GymMetricsChart = ({ sessions }) => {
 
     return (
         // 1. HARD-CODED HEIGHT HERE TO FIX "height(-1)" ERROR
-        <div className="tech-card" style={{ marginBottom: '2rem', height: '350px', display: 'flex', flexDirection: 'column' }}>
+        <div className="tech-card" style={{ marginBottom: '2rem', height: '350px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
 
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid #333', paddingBottom: '1rem', flexShrink: 0 }}>
