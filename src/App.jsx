@@ -83,8 +83,13 @@ function App() {
               <Route path="/services/brand-book/preview" element={<BrandPreview />} />
             </Route>
 
+            {/* GYM TRACKER */}
             <Route path="/services/gym-tracker" element={<GymTracker />} />
+
+            {/* PROFILE */}
             <Route path="/services/profile" element={<Profile />} />
+
+            {/* ADMIN */}
             <Route path="/admin" element={<AdminDashboard />} />
           </Route>
 
