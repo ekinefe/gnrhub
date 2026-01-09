@@ -19,6 +19,11 @@ import Editor from './pages/Services/BrandBook/Editor';
 import BrandPreview from './pages/Services/BrandBook/Preview'; // Changed Component Name to match file export
 import { BrandProvider } from './pages/Services/BrandBook/context/BrandContext'; // Import Context Provider
 
+// GYM TRACKER IMPORTS
+import { GymProvider } from './pages/Services/GymTracker/context/GymContext';
+import GymDashboard from './pages/Services/GymTracker/components/GymDashboard';
+import GymSessionDetail from './pages/Services/GymTracker/components/GymSessionDetail';
+import GymMetricsChart from './pages/Services/GymTracker/components/GymMetricsChart';
 import GymTracker from './pages/Services/GymTracker/GymTracker';
 import Profile from './pages/Services/Profile';
 
@@ -83,9 +88,14 @@ function App() {
               <Route path="/services/brand-book/preview" element={<BrandPreview />} />
             </Route>
 
-            {/* GYM TRACKER */}
-            <Route path="/services/gym-tracker" element={<GymTracker />} />
+            {/* GYM TRACKER SUITE (NEW SEPARATED MAPPING) */}
+            <Route element={<GymContextWrapper />}>
+              {/* 1. Dashboard (The List) */}
+              <Route path="/services/gym-tracker" element={<GymDashboard />} />
 
+              {/* 2. Specific Session Page (The Details) */}
+              <Route path="/services/gym-tracker/session/:id" element={<GymSessionDetail />} />
+            </Route>
             {/* PROFILE */}
             <Route path="/services/profile" element={<Profile />} />
 
