@@ -6,19 +6,32 @@ const GymMetricsChart = ({ sessions }) => {
 
     // Process Data
     const chartData = useMemo(() => {
+        if (!sessions || sessions.length === 0) return [];
+
         const data = [...sessions]
-            .reverse() // Sort Oldest -> Newest
+            .reverse() // Sort Oldest -> Newest (assuming input is Newest -> Oldest)
             .map(s => {
-                // 1. FORCE NUMBER CONVERSION (The Fix)
-                const val = parseFloat(s[metric]);
+                // 1. DATA SANITIZATION
+                let rawVal = s[metric];
+
+                // Handle potential null/undefined
+                if (rawVal === null || rawVal === undefined) rawVal = 0;
+
+                // Force conversion to float
+                const val = parseFloat(rawVal);
+
+                // Create clean data point
                 return {
                     date: new Date(s.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
-                    originalDate: new Date(s.created_at), // For sorting if needed
+                    fullDate: s.created_at, // useful for tooltips if needed
                     value: isNaN(val) ? 0 : val
                 };
             })
-            // 2. Filter out bad data (0 or null)
+            // 2. FILTER INVALID DATA (remove 0s or NaNs to avoid flatlining at 0)
             .filter(point => point.value > 0);
+
+        // 3. DEBUG LOG
+        console.log(`[GymMetricsChart] Rendered ${metric}:`, data);
 
         return data;
     }, [sessions, metric]);
@@ -82,7 +95,7 @@ const GymMetricsChart = ({ sessions }) => {
                 </div>
             </div>
 
-            {/* The Chart */}
+            {/* The Chart Container */}
             <div style={{ height: '250px', width: '100%' }}>
                 {chartData.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
@@ -125,7 +138,7 @@ const GymMetricsChart = ({ sessions }) => {
                     <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', color: '#444' }}>
                         <div style={{ fontSize: '2rem', marginBottom: '10px' }}>📉</div>
                         <div>NO_DATA_LOGGED</div>
-                        <div style={{ fontSize: '0.8rem', marginTop: '5px' }}>Add metrics to your sessions to see the graph.</div>
+                        <div style={{ fontSize: '0.8rem', marginTop: '5px' }}>Add {getLabel()} to your sessions to see the graph.</div>
                     </div>
                 )}
             </div>
