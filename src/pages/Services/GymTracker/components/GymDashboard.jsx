@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import '../../../../App.css'; // Go up 4 levels to reach src/App.css
+import '../../../../App.css';
+import GymMetricsChart from './GymMetricsChart'; // <--- IMPORT THIS
 
 const GymDashboard = ({ sessions, onOpenSession, onRefresh }) => {
     // Local State for Creating
@@ -24,7 +25,7 @@ const GymDashboard = ({ sessions, onOpenSession, onRefresh }) => {
 
             if (res.ok) {
                 setNewSessionName('');
-                onRefresh(); // Tell parent to reload data
+                onRefresh();
             }
         } catch (err) {
             console.error("Error creating session");
@@ -60,14 +61,13 @@ const GymDashboard = ({ sessions, onOpenSession, onRefresh }) => {
 
             if (res.ok) {
                 setEditingSessionId(null);
-                onRefresh(); // Tell parent to reload data
+                onRefresh();
             }
         } catch (err) {
             console.error("Update failed");
         }
     };
 
-    // Helper
     const formatDate = (isoString) => {
         if (!isoString) return '';
         return new Date(isoString).toLocaleDateString();
@@ -76,7 +76,11 @@ const GymDashboard = ({ sessions, onOpenSession, onRefresh }) => {
     return (
         <div className="container" style={{ paddingTop: '4rem' }}>
             <h1 style={{ color: 'var(--accent)' }}>/GYM_LOGS</h1>
-            <p style={{ color: 'var(--text-muted)' }}>Manage training protocols and session history.</p>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>Manage training protocols and session history.</p>
+
+            {/* --- NEW: METRICS CHART --- */}
+            {sessions.length > 0 && <GymMetricsChart sessions={sessions} />}
+            {/* -------------------------- */}
 
             <div className="grid-layout">
                 {/* CREATE NEW SESSION */}
@@ -106,7 +110,7 @@ const GymDashboard = ({ sessions, onOpenSession, onRefresh }) => {
                         onClick={() => onOpenSession(session)}
                     >
                         {editingSessionId === session.id ? (
-                            // === EDIT MODE ===
+                            // EDIT MODE
                             <div onClick={(e) => e.stopPropagation()}>
                                 <input
                                     type="text"
@@ -126,7 +130,7 @@ const GymDashboard = ({ sessions, onOpenSession, onRefresh }) => {
                                 </div>
                             </div>
                         ) : (
-                            // === VIEW MODE ===
+                            // VIEW MODE
                             <>
                                 <div style={{ position: 'absolute', top: '10px', right: '10px', display: 'flex', gap: '10px', alignItems: 'center' }}>
                                     <span style={{ fontSize: '0.8rem', color: '#666' }}>{formatDate(session.created_at)}</span>
@@ -139,6 +143,14 @@ const GymDashboard = ({ sessions, onOpenSession, onRefresh }) => {
                                     </button>
                                 </div>
                                 <h3 style={{ marginRight: '30px' }}>{session.name.toUpperCase()}</h3>
+
+                                {/* METRIC SNAPSHOT (New Addition) */}
+                                {session.body_weight && (
+                                    <div style={{ fontSize: '0.8rem', color: '#0f0', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                                        {session.body_weight} KG
+                                    </div>
+                                )}
+
                                 <div style={{ marginTop: '1rem', color: '#888', fontSize: '0.9rem' }}>
                                     <div>VOL: {session.exercises ? session.exercises.length : 0} sets</div>
                                     <div style={{ marginTop: '0.5rem', color: 'var(--accent)' }}>&gt; ACCESS_LOGS</div>
