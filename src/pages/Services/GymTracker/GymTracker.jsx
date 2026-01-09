@@ -12,6 +12,11 @@ const GymTracker = () => {
     const [newSessionName, setNewSessionName] = useState('');
     const [exerciseForm, setExerciseForm] = useState({ name: 'Bench Press', kg: '', reps: '' });
 
+    // === EDITING STATES ===
+    const [isEditingSession, setIsEditingSession] = useState(false); // Toggle session name input
+    const [sessionNameEdit, setSessionNameEdit] = useState('');      // Temp holder for new name
+    const [editingLogId, setEditingLogId] = useState(null);          // ID of log being edited (null = new mode)
+
     // === PREDEFINED EXERCISES ===
     const exerciseOptions = [
         { category: "CHEST", moves: ["Bench Press", "Incline Dumbbell Press", "Cable Fly"] },
@@ -47,11 +52,10 @@ const GymTracker = () => {
 
     // === ACTIONS ===
 
-    // 1. Create New Session (DB)
+    // 1. Create New Session
     const handleCreateSession = async (e) => {
         e.preventDefault();
         if (!newSessionName) return;
-
         const dateStr = new Date().toISOString();
 
         try {
@@ -73,37 +77,92 @@ const GymTracker = () => {
     // 2. Open a Session
     const openSession = (session) => {
         setActiveSession(session);
+        setSessionNameEdit(session.name); // Pre-fill edit input
         setView('session_detail');
+        // Reset edit states
+        setIsEditingSession(false);
+        setEditingLogId(null);
+        setExerciseForm({ name: 'Bench Press', kg: '', reps: '' });
     };
 
-    // 3. Add Exercise (DB)
-    const handleAddExercise = async (e) => {
+    // 3. Update Session Name (NEW)
+    const handleUpdateSessionName = async () => {
+        if (!sessionNameEdit) return;
+        try {
+            const res = await fetch('/api/gym/sessions', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: activeSession.id, name: sessionNameEdit })
+            });
+            if (res.ok) {
+                setIsEditingSession(false);
+                fetchSessions();
+            }
+        } catch (err) {
+            console.error("Update failed");
+        }
+    };
+
+    // 4. Add OR Update Exercise (MODIFIED)
+    const handleSubmitExercise = async (e) => {
         e.preventDefault();
         if (!exerciseForm.kg || !exerciseForm.reps) return;
 
         try {
-            const res = await fetch('/api/gym/logs', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    session_id: activeSession.id,
-                    name: exerciseForm.name,
-                    kg: exerciseForm.kg,
-                    reps: exerciseForm.reps
-                })
-            });
+            let res;
+            if (editingLogId) {
+                // UPDATE EXISTING
+                res = await fetch('/api/gym/logs', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: editingLogId,
+                        session_id: activeSession.id,
+                        name: exerciseForm.name,
+                        kg: exerciseForm.kg,
+                        reps: exerciseForm.reps
+                    })
+                });
+            } else {
+                // CREATE NEW
+                res = await fetch('/api/gym/logs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_id: activeSession.id,
+                        name: exerciseForm.name,
+                        kg: exerciseForm.kg,
+                        reps: exerciseForm.reps
+                    })
+                });
+            }
 
             if (res.ok) {
+                // Reset form to default state
                 setExerciseForm({ ...exerciseForm, kg: '', reps: '' });
+                setEditingLogId(null); // Exit edit mode
                 fetchSessions();
             }
         } catch (err) {
-            console.error("Error logging exercise");
+            console.error("Error submitting exercise");
         }
     };
 
-    // 4. Delete Exercise (DB)
+    // 5. Prep Log for Editing (NEW)
+    const startEditingLog = (log) => {
+        setEditingLogId(log.id);
+        setExerciseForm({
+            name: log.exercise_name,
+            kg: log.weight_kg,
+            reps: log.reps
+        });
+        // Scroll to form (optional, good for mobile)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // 6. Delete Exercise
     const handleDeleteExercise = async (logId) => {
+        if (!window.confirm("Delete this set?")) return;
         try {
             const res = await fetch('/api/gym/logs', {
                 method: 'DELETE',
@@ -111,7 +170,14 @@ const GymTracker = () => {
                 body: JSON.stringify({ id: logId })
             });
 
-            if (res.ok) fetchSessions();
+            if (res.ok) {
+                // If we were editing this exact log, cancel edit mode
+                if (editingLogId === logId) {
+                    setEditingLogId(null);
+                    setExerciseForm({ ...exerciseForm, kg: '', reps: '' });
+                }
+                fetchSessions();
+            }
         } catch (err) {
             console.error("Error deleting log");
         }
@@ -176,27 +242,47 @@ const GymTracker = () => {
     // === VIEW 2: SESSION DETAIL ===
     return (
         <div className="container" style={{ paddingTop: '4rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+
+            {/* TOP BAR: BACK & EDIT TITLE */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
                 <div>
-                    {/* --- FIXED: Added correct font family and style --- */}
                     <button
                         onClick={() => setView('dashboard')}
                         style={{
-                            background: 'none',
-                            border: 'none',
-                            color: '#666',
-                            cursor: 'pointer',
-                            fontSize: '0.9rem',
-                            marginBottom: '0.5rem',
-                            fontFamily: 'var(--font-main)', // <--- FIX 1
-                            textTransform: 'uppercase',     // <--- FIX 2
-                            fontWeight: 'bold',
-                            letterSpacing: '1px'
+                            background: 'none', border: 'none', color: '#666', cursor: 'pointer',
+                            fontSize: '0.9rem', marginBottom: '0.5rem', fontFamily: 'var(--font-main)',
+                            textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: '1px'
                         }}
                     >
                         &lt; RETURN_TO_DASHBOARD
                     </button>
-                    <h1>/{activeSession.name.toUpperCase()}</h1>
+
+                    {/* --- SESSION NAME EDITING LOGIC --- */}
+                    {isEditingSession ? (
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                            <input
+                                value={sessionNameEdit}
+                                onChange={(e) => setSessionNameEdit(e.target.value)}
+                                style={{
+                                    background: '#000', color: 'var(--accent)', border: '1px solid var(--accent)',
+                                    fontSize: '2rem', fontFamily: 'var(--font-main)', padding: '5px', width: '300px'
+                                }}
+                            />
+                            <button onClick={handleUpdateSessionName} className="btn primary-btn" style={{ padding: '5px 10px' }}>SAVE</button>
+                            <button onClick={() => setIsEditingSession(false)} className="btn secondary-btn" style={{ padding: '5px 10px' }}>X</button>
+                        </div>
+                    ) : (
+                        <h1 style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            /{activeSession.name.toUpperCase()}
+                            <button
+                                onClick={() => setIsEditingSession(true)}
+                                style={{ background: 'none', border: 'none', color: '#444', cursor: 'pointer', fontSize: '1rem' }}
+                                title="Rename Session"
+                            >
+                                ✎
+                            </button>
+                        </h1>
+                    )}
                 </div>
                 <div style={{ textAlign: 'right', color: '#666', fontFamily: 'monospace' }}>
                     {formatDate(activeSession.created_at)}
@@ -205,10 +291,12 @@ const GymTracker = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
 
-                {/* INPUT FORM */}
-                <div className="tech-card" style={{ height: 'fit-content' }}>
-                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/LOG_VECTOR</h3>
-                    <form onSubmit={handleAddExercise} style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
+                {/* INPUT FORM (Used for Create AND Edit) */}
+                <div className="tech-card" style={{ height: 'fit-content', borderColor: editingLogId ? 'var(--accent)' : '#333' }}>
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: editingLogId ? 'var(--accent)' : 'inherit' }}>
+                        {editingLogId ? '/UPDATE_VECTOR' : '/LOG_VECTOR'}
+                    </h3>
+                    <form onSubmit={handleSubmitExercise} style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
 
                         <div>
                             <label style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '5px' }}>MOVEMENT SELECTOR</label>
@@ -231,11 +319,8 @@ const GymTracker = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                             <div>
                                 <label style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '5px' }}>LOAD (KG)</label>
-                                {/* --- FIXED: Added step="0.1" for decimals --- */}
                                 <input
-                                    type="number"
-                                    step="0.1" // <--- FIX 3
-                                    placeholder="0.0"
+                                    type="number" step="0.1" placeholder="0.0"
                                     className="text-input"
                                     style={{ width: '100%', background: '#000', color: '#fff', border: '1px solid #333', padding: '10px' }}
                                     value={exerciseForm.kg}
@@ -245,8 +330,7 @@ const GymTracker = () => {
                             <div>
                                 <label style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '5px' }}>REPS</label>
                                 <input
-                                    type="number"
-                                    placeholder="0"
+                                    type="number" placeholder="0"
                                     className="text-input"
                                     style={{ width: '100%', background: '#000', color: '#fff', border: '1px solid #333', padding: '10px' }}
                                     value={exerciseForm.reps}
@@ -255,7 +339,21 @@ const GymTracker = () => {
                             </div>
                         </div>
 
-                        <button className="btn primary-btn" style={{ width: '100%' }}>CONFIRM SET</button>
+                        {/* --- BUTTON CHANGES BASED ON MODE --- */}
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <button className="btn primary-btn" style={{ width: '100%' }}>
+                                {editingLogId ? 'UPDATE SET' : 'CONFIRM SET'}
+                            </button>
+                            {editingLogId && (
+                                <button
+                                    type="button"
+                                    onClick={() => { setEditingLogId(null); setExerciseForm({ ...exerciseForm, kg: '', reps: '' }); }}
+                                    className="btn secondary-btn"
+                                >
+                                    CANCEL
+                                </button>
+                            )}
+                        </div>
                     </form>
                 </div>
 
@@ -277,14 +375,28 @@ const GymTracker = () => {
                             </thead>
                             <tbody>
                                 {activeSession.exercises.map((ex) => (
-                                    <tr key={ex.id} style={{ borderBottom: '1px solid #222' }}>
+                                    <tr key={ex.id} style={{
+                                        borderBottom: '1px solid #222',
+                                        background: editingLogId === ex.id ? '#111' : 'transparent',
+                                        color: editingLogId === ex.id ? 'var(--accent)' : 'inherit'
+                                    }}>
                                         <td style={{ padding: '0.8rem 0.5rem', fontWeight: 'bold' }}>{ex.exercise_name}</td>
-                                        <td style={{ padding: '0.5rem', fontFamily: 'monospace', color: 'var(--accent)' }}>{ex.weight_kg}</td>
+                                        <td style={{ padding: '0.5rem', fontFamily: 'monospace' }}>{ex.weight_kg}</td>
                                         <td style={{ padding: '0.5rem', fontFamily: 'monospace' }}>{ex.reps}</td>
-                                        <td style={{ padding: '0.5rem', textAlign: 'right' }}>
+                                        <td style={{ padding: '0.5rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                                            {/* EDIT BUTTON */}
+                                            <button
+                                                onClick={() => startEditingLog(ex)}
+                                                style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', marginRight: '10px' }}
+                                                title="Edit"
+                                            >
+                                                ✎
+                                            </button>
+                                            {/* DELETE BUTTON */}
                                             <button
                                                 onClick={() => handleDeleteExercise(ex.id)}
                                                 style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer' }}
+                                                title="Delete"
                                             >
                                                 ×
                                             </button>
