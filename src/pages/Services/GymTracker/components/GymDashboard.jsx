@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useGym } from '../context/GymContext'; // Import Context
+import { Link } from 'react-router-dom';
+import { useGym } from '../context/GymContext';
 import GymMetricsChart from './GymMetricsChart';
 import '../../../../App.css';
 
 const GymDashboard = () => {
     // 1. Get Data from Context
     const { sessions, fetchSessions } = useGym();
-    const navigate = useNavigate();
 
     // Local State
     const [newSessionName, setNewSessionName] = useState('');
@@ -29,7 +28,7 @@ const GymDashboard = () => {
 
             if (res.ok) {
                 setNewSessionName('');
-                fetchSessions(); // Refresh Context
+                fetchSessions();
             }
         } catch (err) {
             console.error("Error creating session");
@@ -38,7 +37,7 @@ const GymDashboard = () => {
 
     // Start Editing
     const startEditingSession = (e, session) => {
-        e.preventDefault(); // Prevent Link click
+        e.preventDefault();
         e.stopPropagation();
         setEditingSessionId(session.id);
         const dateObj = new Date(session.created_at);
@@ -65,10 +64,32 @@ const GymDashboard = () => {
 
             if (res.ok) {
                 setEditingSessionId(null);
-                fetchSessions(); // Refresh Context
+                fetchSessions();
             }
         } catch (err) {
             console.error("Update failed");
+        }
+    };
+
+    // --- NEW: DELETE SESSION ---
+    const handleDeleteSession = async (e, sessionId) => {
+        e.preventDefault();
+        e.stopPropagation(); // Stop click from opening the session
+
+        if (!window.confirm("Are you sure? This will delete the session and all its logs.")) return;
+
+        try {
+            const res = await fetch('/api/gym/sessions', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: sessionId })
+            });
+
+            if (res.ok) {
+                fetchSessions(); // Refresh list
+            }
+        } catch (err) {
+            console.error("Delete failed", err);
         }
     };
 
@@ -105,7 +126,6 @@ const GymDashboard = () => {
 
                 {/* SESSIONS LIST */}
                 {sessions.map(session => (
-                    // WRAP CARD IN LINK FOR NAVIGATION
                     <Link
                         to={`/services/gym-tracker/session/${session.id}`}
                         key={session.id}
@@ -142,6 +162,8 @@ const GymDashboard = () => {
                                 <>
                                     <div style={{ position: 'absolute', top: '10px', right: '10px', display: 'flex', gap: '10px', alignItems: 'center' }}>
                                         <span style={{ fontSize: '0.8rem', color: '#666' }}>{formatDate(session.created_at)}</span>
+
+                                        {/* EDIT BUTTON */}
                                         <button
                                             onClick={(e) => startEditingSession(e, session)}
                                             style={{ background: 'none', border: 'none', color: '#444', cursor: 'pointer', fontSize: '1.2rem', padding: 0 }}
@@ -149,8 +171,18 @@ const GymDashboard = () => {
                                         >
                                             ✎
                                         </button>
+
+                                        {/* --- DELETE BUTTON (NEW) --- */}
+                                        <button
+                                            onClick={(e) => handleDeleteSession(e, session.id)}
+                                            style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: '1.5rem', padding: 0, lineHeight: 0.5 }}
+                                            title="Delete Session"
+                                        >
+                                            ×
+                                        </button>
                                     </div>
-                                    <h3 style={{ marginRight: '30px', color: '#fff' }}>{session.name.toUpperCase()}</h3>
+
+                                    <h3 style={{ marginRight: '60px', color: '#fff' }}>{session.name.toUpperCase()}</h3>
 
                                     {session.body_weight && (
                                         <div style={{ fontSize: '0.8rem', color: '#0f0', marginBottom: '0.5rem', fontWeight: 'bold' }}>

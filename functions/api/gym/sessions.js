@@ -104,3 +104,26 @@ export async function onRequestPut(context) {
         return new Response(JSON.stringify({ error: err.message }), { status: 500 });
     }
 }
+
+// 4. DELETE: Remove a session and its logs
+export async function onRequestDelete(context) {
+    const db = context.env.DB;
+    const cookieHeader = context.request.headers.get("Cookie");
+
+    // Auth Check
+    if (!cookieHeader || !cookieHeader.includes("auth_token=")) return new Response("Unauthorized", { status: 401 });
+
+    try {
+        const { id } = await context.request.json();
+
+        // 1. Delete associated logs first (Clean up)
+        await db.prepare('DELETE FROM gym_logs WHERE session_id = ?').bind(id).run();
+
+        // 2. Delete the session itself
+        await db.prepare('DELETE FROM gym_sessions WHERE id = ?').bind(id).run();
+
+        return new Response(JSON.stringify({ message: "Deleted" }), { status: 200 });
+    } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+    }
+}
