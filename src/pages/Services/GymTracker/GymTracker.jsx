@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../../../App.css'; // Ensure we use global styles
+import '../../../App.css'; // <--- FIXED: Removed one "../" (3 levels up, not 4)
 
 const GymTracker = () => {
     // === STATE ===
@@ -11,7 +11,7 @@ const GymTracker = () => {
     const [newSessionName, setNewSessionName] = useState('');
     const [exerciseForm, setExerciseForm] = useState({ name: 'Bench Press', kg: '', reps: '' });
 
-    // === PREDEFINED EXERCISES (The "Toggle Selection") ===
+    // === PREDEFINED EXERCISES ===
     const exerciseOptions = [
         { category: "CHEST", moves: ["Bench Press", "Incline Dumbbell Press", "Cable Fly"] },
         { category: "BACK", moves: ["Deadlift", "Pull Up", "Lat Pulldown", "Barbell Row"] },
@@ -31,7 +31,7 @@ const GymTracker = () => {
             id: Date.now(),
             name: newSessionName,
             date: new Date().toLocaleDateString(),
-            exercises: [] // Start empty
+            exercises: []
         };
 
         setSessions([newSession, ...sessions]);
@@ -54,13 +54,11 @@ const GymTracker = () => {
             ...exerciseForm
         };
 
-        // Update the active session AND the main sessions list
         const updatedSession = { ...activeSession, exercises: [...activeSession.exercises, newLog] };
 
         setActiveSession(updatedSession);
         setSessions(sessions.map(s => s.id === activeSession.id ? updatedSession : s));
 
-        // Reset form (keep name same for convenience, clear numbers)
         setExerciseForm({ ...exerciseForm, kg: '', reps: '' });
     };
 
