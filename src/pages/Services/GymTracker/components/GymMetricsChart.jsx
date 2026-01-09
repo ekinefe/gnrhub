@@ -2,37 +2,28 @@ import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const GymMetricsChart = ({ sessions }) => {
-    const [metric, setMetric] = useState('body_weight'); // 'body_weight', 'bmi', 'bfi'
+    const [metric, setMetric] = useState('body_weight');
 
     // Process Data
     const chartData = useMemo(() => {
         if (!sessions || sessions.length === 0) return [];
 
         const data = [...sessions]
-            .reverse() // Sort Oldest -> Newest (assuming input is Newest -> Oldest)
+            .reverse() // Sort Oldest -> Newest
             .map(s => {
-                // 1. DATA SANITIZATION
-                let rawVal = s[metric];
+                // FORCE NUMBER CONVERSION
+                const rawVal = s[metric];
+                const numVal = parseFloat(rawVal);
 
-                // Handle potential null/undefined
-                if (rawVal === null || rawVal === undefined) rawVal = 0;
-
-                // Force conversion to float
-                const val = parseFloat(rawVal);
-
-                // Create clean data point
                 return {
                     date: new Date(s.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
-                    fullDate: s.created_at, // useful for tooltips if needed
-                    value: isNaN(val) ? 0 : val
+                    // If parsing fails or is 0, return null so Recharts ignores it
+                    value: (!isNaN(numVal) && numVal > 0) ? numVal : null
                 };
             })
-            // 2. FILTER INVALID DATA (remove 0s or NaNs to avoid flatlining at 0)
-            .filter(point => point.value > 0);
+            .filter(point => point.value !== null); // Remove invalid points
 
-        // 3. DEBUG LOG
         console.log(`[GymMetricsChart] Rendered ${metric}:`, data);
-
         return data;
     }, [sessions, metric]);
 
@@ -50,95 +41,68 @@ const GymMetricsChart = ({ sessions }) => {
     };
 
     return (
-        <div className="tech-card" style={{ marginBottom: '2rem', minHeight: '350px' }}>
+        <div className="tech-card" style={{ marginBottom: '2rem' }}>
 
-            {/* Header & Controls */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #333', paddingBottom: '1rem' }}>
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid #333', paddingBottom: '1rem' }}>
                 <h3 style={{ margin: 0, color: getColor() }}>/ {getLabel()}</h3>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button
-                        onClick={() => setMetric('body_weight')}
-                        style={{
-                            background: metric === 'body_weight' ? 'rgba(255, 49, 140, 0.1)' : 'transparent',
-                            color: metric === 'body_weight' ? '#FF318C' : '#666',
-                            border: '1px solid',
-                            borderColor: metric === 'body_weight' ? '#FF318C' : '#333',
-                            padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
-                        }}
-                    >
-                        KG
-                    </button>
-                    <button
-                        onClick={() => setMetric('bmi')}
-                        style={{
-                            background: metric === 'bmi' ? 'rgba(0, 255, 157, 0.1)' : 'transparent',
-                            color: metric === 'bmi' ? '#00ff9d' : '#666',
-                            border: '1px solid',
-                            borderColor: metric === 'bmi' ? '#00ff9d' : '#333',
-                            padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
-                        }}
-                    >
-                        BMI
-                    </button>
-                    <button
-                        onClick={() => setMetric('bfi')}
-                        style={{
-                            background: metric === 'bfi' ? 'rgba(0, 208, 255, 0.1)' : 'transparent',
-                            color: metric === 'bfi' ? '#00d0ff' : '#666',
-                            border: '1px solid',
-                            borderColor: metric === 'bfi' ? '#00d0ff' : '#333',
-                            padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
-                        }}
-                    >
-                        BFI
-                    </button>
+                    {['body_weight', 'bmi', 'bfi'].map((m) => (
+                        <button
+                            key={m}
+                            onClick={() => setMetric(m)}
+                            style={{
+                                background: metric === m ? `${getColor()}20` : 'transparent',
+                                color: metric === m ? getColor() : '#666',
+                                border: `1px solid ${metric === m ? getColor() : '#333'}`,
+                                padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
+                            }}
+                        >
+                            {m === 'body_weight' ? 'KG' : m.toUpperCase()}
+                        </button>
+                    ))}
                 </div>
             </div>
 
-            {/* The Chart Container */}
-            <div style={{ height: '250px', width: '100%' }}>
+            {/* CRITICAL FIX: 
+               1. Removed flex styles from parent 
+               2. Added explicit height: 300px to this wrapper div 
+            */}
+            <div style={{ width: '100%', height: '300px' }}>
                 {chartData.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                        <LineChart data={chartData}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
                             <XAxis
                                 dataKey="date"
                                 stroke="#666"
                                 tick={{ fontSize: 10, fill: '#666' }}
                                 tickMargin={10}
-                                axisLine={false}
-                                tickLine={false}
                             />
                             <YAxis
                                 stroke="#666"
-                                domain={['auto', 'auto']}
+                                domain={['dataMin - 1', 'dataMax + 1']} // Auto scale based on data
                                 tick={{ fontSize: 10, fill: '#666' }}
                                 width={30}
-                                axisLine={false}
-                                tickLine={false}
                             />
                             <Tooltip
                                 contentStyle={{ backgroundColor: '#000', border: `1px solid ${getColor()}` }}
                                 itemStyle={{ color: getColor() }}
-                                labelStyle={{ color: '#888', marginBottom: '0.2rem' }}
-                                cursor={{ stroke: '#333', strokeWidth: 1 }}
                             />
                             <Line
                                 type="monotone"
                                 dataKey="value"
                                 stroke={getColor()}
-                                strokeWidth={2}
+                                strokeWidth={3}
                                 dot={{ fill: '#000', stroke: getColor(), strokeWidth: 2, r: 4 }}
                                 activeDot={{ r: 6, fill: getColor() }}
-                                isAnimationActive={true}
+                                isAnimationActive={false} // Disable animation to debug easier
                             />
                         </LineChart>
                     </ResponsiveContainer>
                 ) : (
-                    <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', color: '#444' }}>
-                        <div style={{ fontSize: '2rem', marginBottom: '10px' }}>📉</div>
-                        <div>NO_DATA_LOGGED</div>
-                        <div style={{ fontSize: '0.8rem', marginTop: '5px' }}>Add {getLabel()} to your sessions to see the graph.</div>
+                    <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
+                        [NO_DATA_AVAILABLE]
                     </div>
                 )}
             </div>
