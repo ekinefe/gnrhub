@@ -69,7 +69,8 @@ const GymMetricsChart = ({ sessions }) => {
 
             {/* The Chart */}
             <div style={{ height: '250px', width: '100%' }}>
-                {chartData.length > 1 ? (
+                {/* --- FIXED: Changed > 1 to > 0 so single points show up --- */}
+                {chartData.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#222" />
@@ -102,7 +103,7 @@ const GymMetricsChart = ({ sessions }) => {
                     </ResponsiveContainer>
                 ) : (
                     <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
-                        [INSUFFICIENT_DATA_FOR_GRAPH]
+                        [NO_DATA_LOGGED]
                     </div>
                 )}
             </div>
