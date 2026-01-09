@@ -67,7 +67,7 @@ export async function onRequestPost(context) {
     }
 }
 
-// 3. PUT: Rename a session
+// 3. PUT: Rename session AND update date
 export async function onRequestPut(context) {
     const db = context.env.DB;
     const cookieHeader = context.request.headers.get("Cookie");
@@ -76,11 +76,17 @@ export async function onRequestPut(context) {
     if (!cookieHeader || !cookieHeader.includes("auth_token=")) return new Response("Unauthorized", { status: 401 });
 
     try {
-        const { id, name } = await context.request.json();
+        // Now extracting 'date' as well
+        const { id, name, date } = await context.request.json();
 
-        // Update Session Name
-        await db.prepare('UPDATE gym_sessions SET name = ? WHERE id = ?')
-            .bind(name, id).run();
+        // If date is provided, update both. If not, just update name (fallback)
+        if (date) {
+            await db.prepare('UPDATE gym_sessions SET name = ?, created_at = ? WHERE id = ?')
+                .bind(name, date, id).run();
+        } else {
+            await db.prepare('UPDATE gym_sessions SET name = ? WHERE id = ?')
+                .bind(name, id).run();
+        }
 
         return new Response(JSON.stringify({ message: "Updated" }), { status: 200 });
     } catch (err) {
