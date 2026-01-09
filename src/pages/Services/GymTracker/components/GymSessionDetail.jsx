@@ -2,12 +2,23 @@ import React, { useState } from 'react';
 import '../../../../App.css';
 
 const GymSessionDetail = ({ session, onBack, onRefresh }) => {
-    // Form State
+    // Form State for Exercises
     const [exerciseForm, setExerciseForm] = useState({ name: 'Bench Press', kg: '', sets: '1', reps: '' });
 
-    // Edit States
+    // Edit States (Session Title)
     const [isEditingSessionTitle, setIsEditingSessionTitle] = useState(false);
     const [sessionNameEdit, setSessionNameEdit] = useState(session.name);
+
+    // Edit States (Metrics)
+    const [isEditingMetrics, setIsEditingMetrics] = useState(false);
+    const [metricsData, setMetricsData] = useState({
+        body_weight: session.body_weight || '',
+        bmi: session.bmi || '',
+        bfi: session.bfi || '',
+        calories_burned: session.calories_burned || '',
+        duration_minutes: session.duration_minutes || ''
+    });
+
     const [editingLogId, setEditingLogId] = useState(null);
 
     // Options
@@ -19,7 +30,7 @@ const GymSessionDetail = ({ session, onBack, onRefresh }) => {
         { category: "ARMS", moves: ["Barbell Curl", "Tricep Extension", "Hammer Curl"] }
     ];
 
-    // 1. Update Session Name (Title)
+    // 1. Update Session Name
     const handleUpdateSessionName = async () => {
         if (!sessionNameEdit) return;
         try {
@@ -37,7 +48,27 @@ const GymSessionDetail = ({ session, onBack, onRefresh }) => {
         }
     };
 
-    // 2. Add or Update Exercise
+    // 2. Update Session Metrics (NEW)
+    const handleUpdateMetrics = async () => {
+        try {
+            const res = await fetch('/api/gym/sessions', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: session.id,
+                    ...metricsData
+                })
+            });
+            if (res.ok) {
+                setIsEditingMetrics(false);
+                onRefresh();
+            }
+        } catch (err) {
+            console.error("Metrics update failed");
+        }
+    };
+
+    // 3. Add or Update Exercise
     const handleSubmitExercise = async (e) => {
         e.preventDefault();
         if (!exerciseForm.kg || !exerciseForm.reps) return;
@@ -62,7 +93,7 @@ const GymSessionDetail = ({ session, onBack, onRefresh }) => {
                     onRefresh();
                 }
             } else {
-                // CREATE (Loop for sets)
+                // CREATE
                 const numSets = parseInt(exerciseForm.sets) || 1;
                 const requests = [];
                 for (let i = 0; i < numSets; i++) {
@@ -88,7 +119,6 @@ const GymSessionDetail = ({ session, onBack, onRefresh }) => {
         }
     };
 
-    // 3. Delete
     const handleDeleteExercise = async (logId) => {
         if (!window.confirm("Delete this set?")) return;
         try {
@@ -109,7 +139,6 @@ const GymSessionDetail = ({ session, onBack, onRefresh }) => {
         }
     };
 
-    // 4. Prep Edit
     const startEditingLog = (log) => {
         setEditingLogId(log.id);
         setExerciseForm({
@@ -172,6 +201,73 @@ const GymSessionDetail = ({ session, onBack, onRefresh }) => {
                 <div style={{ textAlign: 'right', color: '#666', fontFamily: 'monospace' }}>
                     {formatDate(session.created_at)}
                 </div>
+            </div>
+
+            {/* === NEW: METRICS CARD === */}
+            <div className="tech-card" style={{ marginBottom: '2rem', borderColor: isEditingMetrics ? 'var(--accent)' : '#333' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #333', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
+                    <h3 style={{ margin: 0, color: isEditingMetrics ? 'var(--accent)' : 'inherit' }}>/METRICS</h3>
+                    {!isEditingMetrics && (
+                        <button
+                            onClick={() => setIsEditingMetrics(true)}
+                            style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: '0.8rem' }}
+                        >
+                            [EDIT_STATS]
+                        </button>
+                    )}
+                </div>
+
+                {isEditingMetrics ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1rem' }}>
+                        <div>
+                            <label style={{ fontSize: '0.7rem', color: '#888' }}>WEIGHT (KG)</label>
+                            <input type="number" step="0.1" className="text-input" style={{ width: '100%' }} value={metricsData.body_weight} onChange={e => setMetricsData({ ...metricsData, body_weight: e.target.value })} />
+                        </div>
+                        <div>
+                            <label style={{ fontSize: '0.7rem', color: '#888' }}>BMI</label>
+                            <input type="number" step="0.1" className="text-input" style={{ width: '100%' }} value={metricsData.bmi} onChange={e => setMetricsData({ ...metricsData, bmi: e.target.value })} />
+                        </div>
+                        <div>
+                            <label style={{ fontSize: '0.7rem', color: '#888' }}>BFI (%)</label>
+                            <input type="number" step="0.1" className="text-input" style={{ width: '100%' }} value={metricsData.bfi} onChange={e => setMetricsData({ ...metricsData, bfi: e.target.value })} />
+                        </div>
+                        <div>
+                            <label style={{ fontSize: '0.7rem', color: '#888' }}>TIME (MIN)</label>
+                            <input type="number" className="text-input" style={{ width: '100%' }} value={metricsData.duration_minutes} onChange={e => setMetricsData({ ...metricsData, duration_minutes: e.target.value })} />
+                        </div>
+                        <div>
+                            <label style={{ fontSize: '0.7rem', color: '#888' }}>KCAL</label>
+                            <input type="number" className="text-input" style={{ width: '100%' }} value={metricsData.calories_burned} onChange={e => setMetricsData({ ...metricsData, calories_burned: e.target.value })} />
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'end', gap: '0.5rem' }}>
+                            <button onClick={handleUpdateMetrics} className="btn primary-btn" style={{ padding: '8px', fontSize: '0.8rem', width: '100%' }}>SAVE</button>
+                            <button onClick={() => setIsEditingMetrics(false)} className="btn secondary-btn" style={{ padding: '8px', fontSize: '0.8rem' }}>X</button>
+                        </div>
+                    </div>
+                ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '1rem', textAlign: 'center' }}>
+                        <div>
+                            <div style={{ fontSize: '0.7rem', color: '#666' }}>WEIGHT</div>
+                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{session.body_weight || '--'} <span style={{ fontSize: '0.8rem', color: '#444' }}>kg</span></div>
+                        </div>
+                        <div>
+                            <div style={{ fontSize: '0.7rem', color: '#666' }}>BMI</div>
+                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent)' }}>{session.bmi || '--'}</div>
+                        </div>
+                        <div>
+                            <div style={{ fontSize: '0.7rem', color: '#666' }}>BFI</div>
+                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{session.bfi ? session.bfi + '%' : '--'}</div>
+                        </div>
+                        <div>
+                            <div style={{ fontSize: '0.7rem', color: '#666' }}>TIME</div>
+                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{session.duration_minutes ? session.duration_minutes + 'm' : '--'}</div>
+                        </div>
+                        <div>
+                            <div style={{ fontSize: '0.7rem', color: '#666' }}>BURNED</div>
+                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#0f0' }}>{session.calories_burned || '--'} <span style={{ fontSize: '0.8rem', color: '#444' }}>kcal</span></div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>

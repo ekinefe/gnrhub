@@ -67,26 +67,37 @@ export async function onRequestPost(context) {
     }
 }
 
-// 3. PUT: Rename session AND update date
+// 3. PUT: Update Session Details (Name, Date, Metrics)
 export async function onRequestPut(context) {
     const db = context.env.DB;
     const cookieHeader = context.request.headers.get("Cookie");
 
-    // Auth Check
     if (!cookieHeader || !cookieHeader.includes("auth_token=")) return new Response("Unauthorized", { status: 401 });
 
     try {
-        // Now extracting 'date' as well
-        const { id, name, date } = await context.request.json();
+        const data = await context.request.json();
+        const { id, name, date, body_weight, bfi, bmi, calories_burned, duration_minutes } = data;
 
-        // If date is provided, update both. If not, just update name (fallback)
-        if (date) {
-            await db.prepare('UPDATE gym_sessions SET name = ?, created_at = ? WHERE id = ?')
-                .bind(name, date, id).run();
-        } else {
-            await db.prepare('UPDATE gym_sessions SET name = ? WHERE id = ?')
-                .bind(name, id).run();
-        }
+        // Dynamic Query Building (Only update what is sent)
+        // This is a safer way to handle partial updates
+        let query = 'UPDATE gym_sessions SET ';
+        const params = [];
+        const updates = [];
+
+        if (name) { updates.push('name = ?'); params.push(name); }
+        if (date) { updates.push('created_at = ?'); params.push(date); }
+        if (body_weight !== undefined) { updates.push('body_weight = ?'); params.push(body_weight); }
+        if (bfi !== undefined) { updates.push('bfi = ?'); params.push(bfi); }
+        if (bmi !== undefined) { updates.push('bmi = ?'); params.push(bmi); }
+        if (calories_burned !== undefined) { updates.push('calories_burned = ?'); params.push(calories_burned); }
+        if (duration_minutes !== undefined) { updates.push('duration_minutes = ?'); params.push(duration_minutes); }
+
+        if (updates.length === 0) return new Response(JSON.stringify({ message: "No changes detected" }), { status: 200 });
+
+        query += updates.join(', ') + ' WHERE id = ?';
+        params.push(id);
+
+        await db.prepare(query).bind(...params).run();
 
         return new Response(JSON.stringify({ message: "Updated" }), { status: 200 });
     } catch (err) {
