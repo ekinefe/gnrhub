@@ -4,15 +4,23 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const GymMetricsChart = ({ sessions }) => {
     const [metric, setMetric] = useState('body_weight'); // 'body_weight', 'bmi', 'bfi'
 
-    // Process Data: Sort by Date Ascending & Filter empty values
+    // Process Data
     const chartData = useMemo(() => {
-        return [...sessions]
-            .reverse() // API sends DESC, we need ASC for time series
-            .filter(s => s[metric] && s[metric] > 0) // Remove empty entries
-            .map(s => ({
-                date: new Date(s.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
-                value: s[metric]
-            }));
+        const data = [...sessions]
+            .reverse() // Sort Oldest -> Newest
+            .map(s => {
+                // 1. FORCE NUMBER CONVERSION (The Fix)
+                const val = parseFloat(s[metric]);
+                return {
+                    date: new Date(s.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+                    originalDate: new Date(s.created_at), // For sorting if needed
+                    value: isNaN(val) ? 0 : val
+                };
+            })
+            // 2. Filter out bad data (0 or null)
+            .filter(point => point.value > 0);
+
+        return data;
     }, [sessions, metric]);
 
     const getLabel = () => {
@@ -22,13 +30,14 @@ const GymMetricsChart = ({ sessions }) => {
     };
 
     const getColor = () => {
-        if (metric === 'body_weight') return '#FF318C'; // Accent Pink
-        if (metric === 'bmi') return '#00ff9d'; // Tech Green
-        if (metric === 'bfi') return '#00d0ff'; // Cyan
+        if (metric === 'body_weight') return '#FF318C';
+        if (metric === 'bmi') return '#00ff9d';
+        if (metric === 'bfi') return '#00d0ff';
+        return '#fff';
     };
 
     return (
-        <div className="tech-card" style={{ marginBottom: '2rem', minHeight: '300px' }}>
+        <div className="tech-card" style={{ marginBottom: '2rem', minHeight: '350px' }}>
 
             {/* Header & Controls */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #333', paddingBottom: '1rem' }}>
@@ -37,9 +46,11 @@ const GymMetricsChart = ({ sessions }) => {
                     <button
                         onClick={() => setMetric('body_weight')}
                         style={{
-                            background: metric === 'body_weight' ? '#FF318C' : 'transparent',
-                            color: metric === 'body_weight' ? '#000' : '#666',
-                            border: '1px solid #FF318C', padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
+                            background: metric === 'body_weight' ? 'rgba(255, 49, 140, 0.1)' : 'transparent',
+                            color: metric === 'body_weight' ? '#FF318C' : '#666',
+                            border: '1px solid',
+                            borderColor: metric === 'body_weight' ? '#FF318C' : '#333',
+                            padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
                         }}
                     >
                         KG
@@ -47,9 +58,11 @@ const GymMetricsChart = ({ sessions }) => {
                     <button
                         onClick={() => setMetric('bmi')}
                         style={{
-                            background: metric === 'bmi' ? '#00ff9d' : 'transparent',
-                            color: metric === 'bmi' ? '#000' : '#666',
-                            border: '1px solid #00ff9d', padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
+                            background: metric === 'bmi' ? 'rgba(0, 255, 157, 0.1)' : 'transparent',
+                            color: metric === 'bmi' ? '#00ff9d' : '#666',
+                            border: '1px solid',
+                            borderColor: metric === 'bmi' ? '#00ff9d' : '#333',
+                            padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
                         }}
                     >
                         BMI
@@ -57,9 +70,11 @@ const GymMetricsChart = ({ sessions }) => {
                     <button
                         onClick={() => setMetric('bfi')}
                         style={{
-                            background: metric === 'bfi' ? '#00d0ff' : 'transparent',
-                            color: metric === 'bfi' ? '#000' : '#666',
-                            border: '1px solid #00d0ff', padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
+                            background: metric === 'bfi' ? 'rgba(0, 208, 255, 0.1)' : 'transparent',
+                            color: metric === 'bfi' ? '#00d0ff' : '#666',
+                            border: '1px solid',
+                            borderColor: metric === 'bfi' ? '#00d0ff' : '#333',
+                            padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem'
                         }}
                     >
                         BFI
@@ -69,27 +84,31 @@ const GymMetricsChart = ({ sessions }) => {
 
             {/* The Chart */}
             <div style={{ height: '250px', width: '100%' }}>
-                {/* --- FIXED: Changed > 1 to > 0 so single points show up --- */}
                 {chartData.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#222" />
+                        <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
                             <XAxis
                                 dataKey="date"
                                 stroke="#666"
-                                tick={{ fontSize: 10 }}
+                                tick={{ fontSize: 10, fill: '#666' }}
                                 tickMargin={10}
+                                axisLine={false}
+                                tickLine={false}
                             />
                             <YAxis
                                 stroke="#666"
                                 domain={['auto', 'auto']}
-                                tick={{ fontSize: 10 }}
+                                tick={{ fontSize: 10, fill: '#666' }}
                                 width={30}
+                                axisLine={false}
+                                tickLine={false}
                             />
                             <Tooltip
                                 contentStyle={{ backgroundColor: '#000', border: `1px solid ${getColor()}` }}
                                 itemStyle={{ color: getColor() }}
-                                labelStyle={{ color: '#888', marginBottom: '0.5rem' }}
+                                labelStyle={{ color: '#888', marginBottom: '0.2rem' }}
+                                cursor={{ stroke: '#333', strokeWidth: 1 }}
                             />
                             <Line
                                 type="monotone"
@@ -98,12 +117,15 @@ const GymMetricsChart = ({ sessions }) => {
                                 strokeWidth={2}
                                 dot={{ fill: '#000', stroke: getColor(), strokeWidth: 2, r: 4 }}
                                 activeDot={{ r: 6, fill: getColor() }}
+                                isAnimationActive={true}
                             />
                         </LineChart>
                     </ResponsiveContainer>
                 ) : (
-                    <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
-                        [NO_DATA_LOGGED]
+                    <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', color: '#444' }}>
+                        <div style={{ fontSize: '2rem', marginBottom: '10px' }}>📉</div>
+                        <div>NO_DATA_LOGGED</div>
+                        <div style={{ fontSize: '0.8rem', marginTop: '5px' }}>Add metrics to your sessions to see the graph.</div>
                     </div>
                 )}
             </div>
