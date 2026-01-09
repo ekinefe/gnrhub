@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import '../../../App.css'; // <--- FIXED: Removed one "../" (3 levels up, not 4)
+import '../../../App.css';
 
 const GymTracker = () => {
     // === STATE ===
-    const [view, setView] = useState('dashboard'); // 'dashboard' or 'session_detail'
+    const [view, setView] = useState('dashboard');
     const [sessions, setSessions] = useState([]);
     const [activeSession, setActiveSession] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // Form States
     const [newSessionName, setNewSessionName] = useState('');
@@ -20,22 +21,54 @@ const GymTracker = () => {
         { category: "ARMS", moves: ["Barbell Curl", "Tricep Extension", "Hammer Curl"] }
     ];
 
+    // === INIT: FETCH DATA ===
+    const fetchSessions = async () => {
+        try {
+            const res = await fetch('/api/gym/sessions');
+            if (res.ok) {
+                const data = await res.json();
+                setSessions(data);
+
+                // If we are currently viewing a session, update it live
+                if (activeSession) {
+                    const updatedActive = data.find(s => s.id === activeSession.id);
+                    if (updatedActive) setActiveSession(updatedActive);
+                }
+            }
+        } catch (err) {
+            console.error("Failed to load gym data", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchSessions();
+    }, []);
+
     // === ACTIONS ===
 
-    // 1. Create New Session
-    const handleCreateSession = (e) => {
+    // 1. Create New Session (DB)
+    const handleCreateSession = async (e) => {
         e.preventDefault();
         if (!newSessionName) return;
 
-        const newSession = {
-            id: Date.now(),
-            name: newSessionName,
-            date: new Date().toLocaleDateString(),
-            exercises: []
-        };
+        const dateStr = new Date().toISOString(); // Store ISO for DB
 
-        setSessions([newSession, ...sessions]);
-        setNewSessionName('');
+        try {
+            const res = await fetch('/api/gym/sessions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: newSessionName, date: dateStr })
+            });
+
+            if (res.ok) {
+                setNewSessionName('');
+                fetchSessions(); // Reload list
+            }
+        } catch (err) {
+            console.error("Error creating session");
+        }
     };
 
     // 2. Open a Session
@@ -44,35 +77,56 @@ const GymTracker = () => {
         setView('session_detail');
     };
 
-    // 3. Add Exercise to Active Session
-    const handleAddExercise = (e) => {
+    // 3. Add Exercise (DB)
+    const handleAddExercise = async (e) => {
         e.preventDefault();
         if (!exerciseForm.kg || !exerciseForm.reps) return;
 
-        const newLog = {
-            id: Date.now(),
-            ...exerciseForm
-        };
+        try {
+            const res = await fetch('/api/gym/logs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    session_id: activeSession.id,
+                    name: exerciseForm.name,
+                    kg: exerciseForm.kg,
+                    reps: exerciseForm.reps
+                })
+            });
 
-        const updatedSession = { ...activeSession, exercises: [...activeSession.exercises, newLog] };
-
-        setActiveSession(updatedSession);
-        setSessions(sessions.map(s => s.id === activeSession.id ? updatedSession : s));
-
-        setExerciseForm({ ...exerciseForm, kg: '', reps: '' });
+            if (res.ok) {
+                setExerciseForm({ ...exerciseForm, kg: '', reps: '' });
+                fetchSessions(); // Reload data to see new log
+            }
+        } catch (err) {
+            console.error("Error logging exercise");
+        }
     };
 
-    // 4. Delete Exercise
-    const handleDeleteExercise = (logId) => {
-        const updatedSession = {
-            ...activeSession,
-            exercises: activeSession.exercises.filter(ex => ex.id !== logId)
-        };
-        setActiveSession(updatedSession);
-        setSessions(sessions.map(s => s.id === activeSession.id ? updatedSession : s));
+    // 4. Delete Exercise (DB)
+    const handleDeleteExercise = async (logId) => {
+        try {
+            const res = await fetch('/api/gym/logs', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: logId })
+            });
+
+            if (res.ok) fetchSessions();
+        } catch (err) {
+            console.error("Error deleting log");
+        }
     };
 
-    // === VIEW 1: DASHBOARD (Session List) ===
+    // Helper to format date nicely
+    const formatDate = (isoString) => {
+        if (!isoString) return '';
+        return new Date(isoString).toLocaleDateString();
+    };
+
+    if (loading) return <div className="container" style={{ paddingTop: '4rem' }}>/LOADING_METRICS...</div>;
+
+    // === VIEW 1: DASHBOARD ===
     if (view === 'dashboard') {
         return (
             <div className="container" style={{ paddingTop: '4rem' }}>
@@ -80,7 +134,7 @@ const GymTracker = () => {
                 <p style={{ color: 'var(--text-muted)' }}>Manage training protocols and session history.</p>
 
                 <div className="grid-layout">
-                    {/* CARD 1: CREATE NEW SESSION */}
+                    {/* CREATE NEW SESSION */}
                     <div className="tech-card" style={{ borderColor: 'var(--accent)' }}>
                         <h3 style={{ color: 'var(--accent)', borderBottom: '1px solid var(--accent)' }}>/INIT_SESSION</h3>
                         <form onSubmit={handleCreateSession} style={{ marginTop: '1rem' }}>
@@ -98,7 +152,7 @@ const GymTracker = () => {
                         </form>
                     </div>
 
-                    {/* EXISTING SESSIONS LIST */}
+                    {/* SESSIONS LIST */}
                     {sessions.map(session => (
                         <div
                             key={session.id}
@@ -107,11 +161,11 @@ const GymTracker = () => {
                             onClick={() => openSession(session)}
                         >
                             <div style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '0.8rem', color: '#666' }}>
-                                {session.date}
+                                {formatDate(session.created_at)}
                             </div>
                             <h3>{session.name.toUpperCase()}</h3>
                             <div style={{ marginTop: '1rem', color: '#888', fontSize: '0.9rem' }}>
-                                <div>VOL: {session.exercises.length} sets</div>
+                                <div>VOL: {session.exercises ? session.exercises.length : 0} sets</div>
                                 <div style={{ marginTop: '0.5rem', color: 'var(--accent)' }}>&gt; ACCESS_LOGS</div>
                             </div>
                         </div>
@@ -121,7 +175,7 @@ const GymTracker = () => {
         );
     }
 
-    // === VIEW 2: SESSION DETAIL (Add Exercises) ===
+    // === VIEW 2: SESSION DETAIL ===
     return (
         <div className="container" style={{ paddingTop: '4rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -132,18 +186,17 @@ const GymTracker = () => {
                     <h1>/{activeSession.name.toUpperCase()}</h1>
                 </div>
                 <div style={{ textAlign: 'right', color: '#666', fontFamily: 'monospace' }}>
-                    {activeSession.date}
+                    {formatDate(activeSession.created_at)}
                 </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
 
-                {/* COLUMN 1: INPUT FORM */}
+                {/* INPUT FORM */}
                 <div className="tech-card" style={{ height: 'fit-content' }}>
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/LOG_VECTOR</h3>
                     <form onSubmit={handleAddExercise} style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
 
-                        {/* Exercise Selector */}
                         <div>
                             <label style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '5px' }}>MOVEMENT SELECTOR</label>
                             <select
@@ -191,11 +244,11 @@ const GymTracker = () => {
                     </form>
                 </div>
 
-                {/* COLUMN 2: LOG TABLE */}
+                {/* LOG TABLE */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/SESSION_DATA</h3>
 
-                    {activeSession.exercises.length === 0 ? (
+                    {(!activeSession.exercises || activeSession.exercises.length === 0) ? (
                         <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>NO_DATA_LOGGED</div>
                     ) : (
                         <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem', fontSize: '0.9rem' }}>
@@ -208,10 +261,10 @@ const GymTracker = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {activeSession.exercises.map((ex, index) => (
+                                {activeSession.exercises.map((ex) => (
                                     <tr key={ex.id} style={{ borderBottom: '1px solid #222' }}>
-                                        <td style={{ padding: '0.8rem 0.5rem', fontWeight: 'bold' }}>{ex.name}</td>
-                                        <td style={{ padding: '0.5rem', fontFamily: 'monospace', color: 'var(--accent)' }}>{ex.kg}</td>
+                                        <td style={{ padding: '0.8rem 0.5rem', fontWeight: 'bold' }}>{ex.exercise_name}</td>
+                                        <td style={{ padding: '0.5rem', fontFamily: 'monospace', color: 'var(--accent)' }}>{ex.weight_kg}</td>
                                         <td style={{ padding: '0.5rem', fontFamily: 'monospace' }}>{ex.reps}</td>
                                         <td style={{ padding: '0.5rem', textAlign: 'right' }}>
                                             <button
