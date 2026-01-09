@@ -23,8 +23,6 @@ import { BrandProvider } from './pages/Services/BrandBook/context/BrandContext';
 import { GymProvider } from './pages/Services/GymTracker/context/GymContext';
 import GymDashboard from './pages/Services/GymTracker/components/GymDashboard';
 import GymSessionDetail from './pages/Services/GymTracker/components/GymSessionDetail';
-import GymMetricsChart from './pages/Services/GymTracker/components/GymMetricsChart';
-import GymTracker from './pages/Services/GymTracker/GymTracker';
 import Profile from './pages/Services/Profile';
 
 // Auth
@@ -50,6 +48,13 @@ const BrandContextWrapper = () => (
   <BrandProvider>
     <Outlet />
   </BrandProvider>
+);
+
+// Helper Wrapper for Gym Context
+const GymContextWrapper = () => (
+  <GymProvider>
+    <Outlet />
+  </GymProvider>
 );
 
 function App() {
@@ -96,6 +101,7 @@ function App() {
               {/* 2. Specific Session Page (The Details) */}
               <Route path="/services/gym-tracker/session/:id" element={<GymSessionDetail />} />
             </Route>
+
             {/* PROFILE */}
             <Route path="/services/profile" element={<Profile />} />
 

@@ -44,7 +44,6 @@ IMPORTANT_FILES = [
     "src/pages/Services/BrandBook/context/BrandContext.jsx",
     
     # Gym Tracker Service
-    "src/pages/Services/GymTracker/GymTracker.jsx",
     "src/pages/Services/GymTracker/components/GymDashboard.jsx",
     "src/pages/Services/GymTracker/components/GymSessionDetail.jsx",
     "src/pages/Services/GymTracker/components/GymMetricsChart.jsx",
