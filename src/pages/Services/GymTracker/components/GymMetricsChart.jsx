@@ -41,10 +41,9 @@ const GymMetricsChart = ({ sessions }) => {
 
     return (
         // 1. HARD-CODED HEIGHT HERE TO FIX "height(-1)" ERROR
-        <div className="tech-card" style={{ marginBottom: '2rem', height: '350px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-
+        <div className="tech-card" style={{ marginBottom: '2rem' }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid #333', paddingBottom: '1rem', flexShrink: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid #333', paddingBottom: '1rem' }}>
                 <h3 style={{ margin: 0, color: getColor() }}>/ {getLabel()}</h3>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                     {['body_weight', 'bmi', 'bfi'].map((m) => (
@@ -64,43 +63,39 @@ const GymMetricsChart = ({ sessions }) => {
                 </div>
             </div>
 
-            {/* Chart Container - Forces chart to fill remaining space */}
-            <div style={{ flex: 1, minHeight: 0, width: '100%', position: 'relative' }}>
+            {/* Chart Container - Explicit Dimensions */}
+            <div style={{ width: '100%', height: '300px' }}>
                 {chartData.length > 0 ? (
-                    // 2. ABSOLUTE POSITIONING HACK
-                    // This forces ResponsiveContainer to find the parent's dimensions correctly
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={chartData}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
-                                <XAxis
-                                    dataKey="date"
-                                    stroke="#666"
-                                    tick={{ fontSize: 10, fill: '#666' }}
-                                    tickMargin={10}
-                                />
-                                <YAxis
-                                    stroke="#666"
-                                    domain={['dataMin - 1', 'dataMax + 1']} // Auto scale based on data
-                                    tick={{ fontSize: 10, fill: '#666' }}
-                                    width={30}
-                                />
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: '#000', border: `1px solid ${getColor()}` }}
-                                    itemStyle={{ color: getColor() }}
-                                />
-                                <Line
-                                    type="monotone"
-                                    dataKey="value"
-                                    stroke={getColor()}
-                                    strokeWidth={3}
-                                    dot={{ fill: '#000', stroke: getColor(), strokeWidth: 2, r: 4 }}
-                                    activeDot={{ r: 6, fill: getColor() }}
-                                    isAnimationActive={false} // Disable animation to debug easier
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </div>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
+                            <XAxis
+                                dataKey="date"
+                                stroke="#666"
+                                tick={{ fontSize: 10, fill: '#666' }}
+                                tickMargin={10}
+                            />
+                            <YAxis
+                                stroke="#666"
+                                domain={['dataMin - 1', 'dataMax + 1']}
+                                tick={{ fontSize: 10, fill: '#666' }}
+                                width={30}
+                            />
+                            <Tooltip
+                                contentStyle={{ backgroundColor: '#000', border: `1px solid ${getColor()}` }}
+                                itemStyle={{ color: getColor() }}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="value"
+                                stroke={getColor()}
+                                strokeWidth={3}
+                                dot={{ fill: '#000', stroke: getColor(), strokeWidth: 2, r: 4 }}
+                                activeDot={{ r: 6, fill: getColor() }}
+                                isAnimationActive={false}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
                 ) : (
                     <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
                         [NO_DATA_AVAILABLE]
