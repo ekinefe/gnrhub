@@ -29,7 +29,6 @@ const GymTracker = () => {
                 const data = await res.json();
                 setSessions(data);
 
-                // If we are currently viewing a session, update it live
                 if (activeSession) {
                     const updatedActive = data.find(s => s.id === activeSession.id);
                     if (updatedActive) setActiveSession(updatedActive);
@@ -53,7 +52,7 @@ const GymTracker = () => {
         e.preventDefault();
         if (!newSessionName) return;
 
-        const dateStr = new Date().toISOString(); // Store ISO for DB
+        const dateStr = new Date().toISOString();
 
         try {
             const res = await fetch('/api/gym/sessions', {
@@ -64,7 +63,7 @@ const GymTracker = () => {
 
             if (res.ok) {
                 setNewSessionName('');
-                fetchSessions(); // Reload list
+                fetchSessions();
             }
         } catch (err) {
             console.error("Error creating session");
@@ -96,7 +95,7 @@ const GymTracker = () => {
 
             if (res.ok) {
                 setExerciseForm({ ...exerciseForm, kg: '', reps: '' });
-                fetchSessions(); // Reload data to see new log
+                fetchSessions();
             }
         } catch (err) {
             console.error("Error logging exercise");
@@ -118,7 +117,6 @@ const GymTracker = () => {
         }
     };
 
-    // Helper to format date nicely
     const formatDate = (isoString) => {
         if (!isoString) return '';
         return new Date(isoString).toLocaleDateString();
@@ -180,7 +178,22 @@ const GymTracker = () => {
         <div className="container" style={{ paddingTop: '4rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <button onClick={() => setView('dashboard')} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+                    {/* --- FIXED: Added correct font family and style --- */}
+                    <button
+                        onClick={() => setView('dashboard')}
+                        style={{
+                            background: 'none',
+                            border: 'none',
+                            color: '#666',
+                            cursor: 'pointer',
+                            fontSize: '0.9rem',
+                            marginBottom: '0.5rem',
+                            fontFamily: 'var(--font-main)', // <--- FIX 1
+                            textTransform: 'uppercase',     // <--- FIX 2
+                            fontWeight: 'bold',
+                            letterSpacing: '1px'
+                        }}
+                    >
                         &lt; RETURN_TO_DASHBOARD
                     </button>
                     <h1>/{activeSession.name.toUpperCase()}</h1>
@@ -218,9 +231,11 @@ const GymTracker = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                             <div>
                                 <label style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '5px' }}>LOAD (KG)</label>
+                                {/* --- FIXED: Added step="0.1" for decimals --- */}
                                 <input
                                     type="number"
-                                    placeholder="0"
+                                    step="0.1" // <--- FIX 3
+                                    placeholder="0.0"
                                     className="text-input"
                                     style={{ width: '100%', background: '#000', color: '#fff', border: '1px solid #333', padding: '10px' }}
                                     value={exerciseForm.kg}
