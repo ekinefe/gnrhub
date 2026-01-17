@@ -6,11 +6,15 @@ const Profile = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Identity Update State
-    const [identityData, setIdentityData] = useState({ type: 'username', value: '' });
-    const [identityMsg, setIdentityMsg] = useState('');
+    // --- NEW: SEPARATE STATES FOR CARDS ---
+    const [usernameVal, setUsernameVal] = useState('');
+    const [usernameMsg, setUsernameMsg] = useState('');
 
-    // Password & Delete states... (Keep existing ones)
+    const [emailVal, setEmailVal] = useState('');
+    const [emailMsg, setEmailMsg] = useState('');
+    // ---------------------------------------
+
+    // Password & Delete states
     const [passData, setPassData] = useState({ current: '', new: '', confirm: '' });
     const [passMsg, setPassMsg] = useState('');
     const [deleteData, setDeleteData] = useState({ password: '' });
@@ -43,34 +47,57 @@ const Profile = () => {
         window.location.href = '/sign-in';
     };
 
-    // --- NEW: HANDLE IDENTITY UPDATE ---
-    const handleIdentityUpdate = async (e) => {
+    // --- 1. HANDLE USERNAME UPDATE ---
+    const handleUsernameUpdate = async (e) => {
         e.preventDefault();
-        setIdentityMsg('Processing...');
+        setUsernameMsg('Processing...');
 
         try {
             const res = await fetch('/api/user/update-profile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(identityData)
+                body: JSON.stringify({ type: 'username', value: usernameVal })
             });
             const data = await res.json();
 
             if (res.ok) {
-                setIdentityMsg(`SUCCESS: ${data.message}`);
-                setIdentityData({ type: 'username', value: '' });
-                // If username changed, refresh the page to show new name
-                if (identityData.type === 'username') setTimeout(() => window.location.reload(), 1500);
+                setUsernameMsg(`SUCCESS: ${data.message}`);
+                setUsernameVal('');
+                // Reload to reflect new username in the UI/Session
+                setTimeout(() => window.location.reload(), 1500);
             } else {
-                setIdentityMsg(`ERROR: ${data.error}`);
+                setUsernameMsg(`ERROR: ${data.error}`);
             }
         } catch (err) {
-            setIdentityMsg('ERROR: Network failure');
+            setUsernameMsg('ERROR: Network failure');
         }
     };
-    // -----------------------------------
 
-    // ... (Keep handlePassChange, handleDeleteAccount, handleRoleApply)
+    // --- 2. HANDLE EMAIL UPDATE ---
+    const handleEmailUpdate = async (e) => {
+        e.preventDefault();
+        setEmailMsg('Processing...');
+
+        try {
+            const res = await fetch('/api/user/update-profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'email', value: emailVal })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                setEmailMsg(`SUCCESS: ${data.message}`);
+                setEmailVal('');
+            } else {
+                setEmailMsg(`ERROR: ${data.error}`);
+            }
+        } catch (err) {
+            setEmailMsg('ERROR: Network failure');
+        }
+    };
+
+    // ... (Keep handlePassChange, handleDeleteAccount, handleRoleApply exactly as before)
     const handlePassChange = async (e) => {
         e.preventDefault();
         setPassMsg('');
@@ -124,7 +151,6 @@ const Profile = () => {
     const handleRoleApply = async (e) => {
         e.preventDefault();
         setAppMsg('Transmitting Application...');
-
         try {
             const res = await fetch('/api/user/apply-role', {
                 method: 'POST',
@@ -136,7 +162,6 @@ const Profile = () => {
                     reason: appData.reason
                 })
             });
-
             const data = await res.json();
             if (res.ok) {
                 setAppMsg('SUCCESS: Application Sent to Admin.');
@@ -150,8 +175,7 @@ const Profile = () => {
     };
 
     if (loading) return <div className="container" style={{ paddingTop: '4rem' }}>/LOADING_PROFILE...</div>;
-
-    if (!user) return (/* Access Denied View */ null);
+    if (!user) return (null);
 
     return (
         <div className="container" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
@@ -164,7 +188,7 @@ const Profile = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
 
-                {/* 1. IDENTITY CARD (Existing) */}
+                {/* 1. IDENTITY CARD (Read Only) */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/IDENTITY</h3>
                     <div style={{ marginTop: '1rem', display: 'grid', gap: '0.5rem' }}>
@@ -175,40 +199,52 @@ const Profile = () => {
                     </div>
                 </div>
 
-                {/* 2. UPDATE IDENTITY (NEW) */}
+                {/* 2. CHANGE USERNAME CARD */}
                 <div className="tech-card" style={{ borderColor: 'var(--accent)' }}>
-                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: 'var(--accent)' }}>/UPDATE_IDENTITY</h3>
-                    <form onSubmit={handleIdentityUpdate} style={{ marginTop: '1rem' }}>
-                        <div style={{ marginBottom: '0.5rem' }}>
-                            <label style={{ fontSize: '0.8rem', color: '#888' }}>SELECT FIELD</label>
-                            <select
-                                className="text-input"
-                                style={{ width: '100%', background: '#000', color: '#fff', border: '1px solid #333', padding: '0.5rem' }}
-                                value={identityData.type}
-                                onChange={(e) => setIdentityData({ ...identityData, type: e.target.value })}
-                            >
-                                <option value="username">Change Username</option>
-                                <option value="email">Change Email (Requires Verification)</option>
-                            </select>
-                        </div>
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: 'var(--accent)' }}>/CHANGE_USERNAME</h3>
+                    <form onSubmit={handleUsernameUpdate} style={{ marginTop: '1rem' }}>
+                        <p style={{ fontSize: '0.8rem', color: '#888', marginBottom: '1rem' }}>Update your display handle.</p>
 
                         <input
-                            type={identityData.type === 'email' ? 'email' : 'text'}
-                            placeholder={`New ${identityData.type}`}
+                            type="text"
+                            placeholder="New Username"
                             className="text-input"
                             style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
-                            value={identityData.value}
-                            onChange={e => setIdentityData({ ...identityData, value: e.target.value })}
+                            value={usernameVal}
+                            onChange={e => setUsernameVal(e.target.value)}
                             required
+                            minLength={3}
                         />
 
-                        {identityMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: identityMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{identityMsg}</div>}
+                        {usernameMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: usernameMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{usernameMsg}</div>}
 
-                        <button className="btn primary-btn" style={{ width: '100%' }}>UPDATE</button>
+                        <button className="btn primary-btn" style={{ width: '100%' }}>UPDATE USERNAME</button>
                     </form>
                 </div>
 
-                {/* 3. SECURITY CARD (Existing) */}
+                {/* 3. CHANGE EMAIL CARD */}
+                <div className="tech-card" style={{ borderColor: 'var(--accent)' }}>
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: 'var(--accent)' }}>/CHANGE_EMAIL</h3>
+                    <form onSubmit={handleEmailUpdate} style={{ marginTop: '1rem' }}>
+                        <p style={{ fontSize: '0.8rem', color: '#888', marginBottom: '1rem' }}>Requires email verification.</p>
+
+                        <input
+                            type="email"
+                            placeholder="New Email Address"
+                            className="text-input"
+                            style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
+                            value={emailVal}
+                            onChange={e => setEmailVal(e.target.value)}
+                            required
+                        />
+
+                        {emailMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: emailMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{emailMsg}</div>}
+
+                        <button className="btn primary-btn" style={{ width: '100%' }}>VERIFY & UPDATE</button>
+                    </form>
+                </div>
+
+                {/* 4. SECURITY CARD */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/SECURITY</h3>
                     <form onSubmit={handlePassChange} style={{ marginTop: '1rem' }}>
@@ -220,7 +256,7 @@ const Profile = () => {
                     </form>
                 </div>
 
-                {/* 4. ROLE APPLICATION (Existing) */}
+                {/* 5. ROLE APPLICATION */}
                 <div className="tech-card" style={{ borderColor: '#0f0' }}>
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#0f0' }}>/ROLE_APPLICATION</h3>
                     <form onSubmit={handleRoleApply} style={{ marginTop: '1rem' }}>
@@ -240,7 +276,7 @@ const Profile = () => {
                     </form>
                 </div>
 
-                {/* 5. DELETE ACCOUNT (Existing) */}
+                {/* 6. DELETE ACCOUNT */}
                 <div className="tech-card" style={{ borderColor: '#ff4444' }}>
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#ff4444' }}>/DELETE_ACCOUNT</h3>
                     <form onSubmit={handleDeleteAccount} style={{ marginTop: '1rem' }}>
