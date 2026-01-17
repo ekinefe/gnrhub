@@ -200,8 +200,9 @@ const Profile = () => {
                 </div>
 
                 {/* 2. CHANGE USERNAME CARD */}
-                <div className="tech-card" style={{ borderColor: 'var(--accent)' }}>
-                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: 'var(--accent)' }}>/CHANGE_USERNAME</h3>
+                {/* <div className="tech-card" style={{ borderColor: 'var(--accent)' }}> */}
+                <div className="tech-card">
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/CHANGE_USERNAME</h3>
                     <form onSubmit={handleUsernameUpdate} style={{ marginTop: '1rem' }}>
                         <p style={{ fontSize: '0.8rem', color: '#888', marginBottom: '1rem' }}>Update your display handle.</p>
 
@@ -223,8 +224,9 @@ const Profile = () => {
                 </div>
 
                 {/* 3. CHANGE EMAIL CARD */}
-                <div className="tech-card" style={{ borderColor: 'var(--accent)' }}>
-                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: 'var(--accent)' }}>/CHANGE_EMAIL</h3>
+                {/* <div className="tech-card" style={{ borderColor: 'var(--accent)' }}> */}
+                <div className="tech-card">
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/CHANGE_EMAIL</h3>
                     <form onSubmit={handleEmailUpdate} style={{ marginTop: '1rem' }}>
                         <p style={{ fontSize: '0.8rem', color: '#888', marginBottom: '1rem' }}>Requires email verification.</p>
 
