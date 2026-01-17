@@ -6,18 +6,17 @@ const Profile = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Password Change State
+    // Identity Update State
+    const [identityData, setIdentityData] = useState({ type: 'username', value: '' });
+    const [identityMsg, setIdentityMsg] = useState('');
+
+    // Password & Delete states... (Keep existing ones)
     const [passData, setPassData] = useState({ current: '', new: '', confirm: '' });
     const [passMsg, setPassMsg] = useState('');
-
-    // Delete Account State
     const [deleteData, setDeleteData] = useState({ password: '' });
     const [deleteMsg, setDeleteMsg] = useState('');
-
-    // --- NEW: Role Application State ---
     const [appData, setAppData] = useState({ role: 'TESTER', customRole: '', reason: '' });
     const [appMsg, setAppMsg] = useState('');
-    // -----------------------------------
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -44,6 +43,34 @@ const Profile = () => {
         window.location.href = '/sign-in';
     };
 
+    // --- NEW: HANDLE IDENTITY UPDATE ---
+    const handleIdentityUpdate = async (e) => {
+        e.preventDefault();
+        setIdentityMsg('Processing...');
+
+        try {
+            const res = await fetch('/api/user/update-profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(identityData)
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                setIdentityMsg(`SUCCESS: ${data.message}`);
+                setIdentityData({ type: 'username', value: '' });
+                // If username changed, refresh the page to show new name
+                if (identityData.type === 'username') setTimeout(() => window.location.reload(), 1500);
+            } else {
+                setIdentityMsg(`ERROR: ${data.error}`);
+            }
+        } catch (err) {
+            setIdentityMsg('ERROR: Network failure');
+        }
+    };
+    // -----------------------------------
+
+    // ... (Keep handlePassChange, handleDeleteAccount, handleRoleApply)
     const handlePassChange = async (e) => {
         e.preventDefault();
         setPassMsg('');
@@ -94,7 +121,6 @@ const Profile = () => {
         }
     };
 
-    // --- NEW: Handle Role Application ---
     const handleRoleApply = async (e) => {
         e.preventDefault();
         setAppMsg('Transmitting Application...');
@@ -104,7 +130,7 @@ const Profile = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    userId: user.id, // Sending ID so backend can fetch details
+                    userId: user.id,
                     appliedRole: appData.role,
                     customRoleName: appData.customRole,
                     reason: appData.reason
@@ -114,7 +140,7 @@ const Profile = () => {
             const data = await res.json();
             if (res.ok) {
                 setAppMsg('SUCCESS: Application Sent to Admin.');
-                setAppData({ role: 'TESTER', customRole: '', reason: '' }); // Reset form
+                setAppData({ role: 'TESTER', customRole: '', reason: '' });
             } else {
                 setAppMsg(`ERROR: ${data.error}`);
             }
@@ -122,104 +148,67 @@ const Profile = () => {
             setAppMsg('ERROR: Network transmission failed.');
         }
     };
-    // ------------------------------------
 
     if (loading) return <div className="container" style={{ paddingTop: '4rem' }}>/LOADING_PROFILE...</div>;
 
-    if (!user) {
-        return (
-            <div className="container" style={{ paddingTop: '4rem', textAlign: 'center' }}>
-                <div className="tech-card" style={{ borderColor: 'var(--accent)', padding: '2rem', maxWidth: '500px', margin: '0 auto' }}>
-                    <h3 style={{ color: 'var(--accent)' }}>/ACCESS_DENIED</h3>
-                    <p style={{ marginBottom: '1.5rem' }}>You must be logged in to view your profile.</p>
-                    <Link to="/sign-in" className="btn primary-btn" style={{ width: '100%' }}>LOGIN</Link>
-                </div>
-            </div>
-        );
-    }
+    if (!user) return (/* Access Denied View */ null);
 
     return (
         <div className="container" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
 
             {/* HEADER */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <div>
-                    <h1 style={{ marginBottom: 0 }}>/USER_PROFILE</h1>
-                </div>
-                <button onClick={handleLogout} className="btn secondary-btn" style={{ borderColor: '#ff4444', color: '#ff4444' }}>
-                    TERMINATE SESSION
-                </button>
+                <div><h1 style={{ marginBottom: 0 }}>/USER_PROFILE</h1></div>
+                <button onClick={handleLogout} className="btn secondary-btn" style={{ borderColor: '#ff4444', color: '#ff4444' }}>TERMINATE SESSION</button>
             </div>
 
-            {/* CONTENT GRID */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
 
-                {/* 1. IDENTITY CARD */}
+                {/* 1. IDENTITY CARD (Existing) */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/IDENTITY</h3>
                     <div style={{ marginTop: '1rem', display: 'grid', gap: '0.5rem' }}>
                         <div><small style={{ color: '#666' }}>USERNAME:</small><div>{user.username}</div></div>
                         <div><small style={{ color: '#666' }}>FULL NAME:</small><div>{user.name} {user.surname}</div></div>
                         <div><small style={{ color: '#666' }}>EMAIL:</small><div style={{ color: 'var(--accent)' }}>{user.email}</div></div>
-                        <div><small style={{ color: '#666' }}>ROLE:</small>
-                            <div style={{ display: 'inline-block', padding: '2px 6px', background: '#333', borderRadius: '4px', fontSize: '0.8rem' }}>{user.role?.toUpperCase()}</div>
-                        </div>
+                        <div><small style={{ color: '#666' }}>ROLE:</small><div style={{ display: 'inline-block', padding: '2px 6px', background: '#333', borderRadius: '4px', fontSize: '0.8rem' }}>{user.role?.toUpperCase()}</div></div>
                     </div>
                 </div>
 
-                {/* 2. ROLE APPLICATION CARD (NEW) */}
-                <div className="tech-card" style={{ borderColor: '#0f0' }}>
-                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#0f0' }}>/ROLE_APPLICATION</h3>
-                    <form onSubmit={handleRoleApply} style={{ marginTop: '1rem' }}>
-
-                        {/* Role Selector */}
+                {/* 2. UPDATE IDENTITY (NEW) */}
+                <div className="tech-card" style={{ borderColor: 'var(--accent)' }}>
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: 'var(--accent)' }}>/UPDATE_IDENTITY</h3>
+                    <form onSubmit={handleIdentityUpdate} style={{ marginTop: '1rem' }}>
                         <div style={{ marginBottom: '0.5rem' }}>
-                            <label style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '5px' }}>TARGET ROLE</label>
+                            <label style={{ fontSize: '0.8rem', color: '#888' }}>SELECT FIELD</label>
                             <select
                                 className="text-input"
                                 style={{ width: '100%', background: '#000', color: '#fff', border: '1px solid #333', padding: '0.5rem' }}
-                                value={appData.role}
-                                onChange={(e) => setAppData({ ...appData, role: e.target.value })}
+                                value={identityData.type}
+                                onChange={(e) => setIdentityData({ ...identityData, type: e.target.value })}
                             >
-                                <option value="TESTER">TESTER</option>
-                                <option value="ADMIN">ADMINISTRATOR</option>
-                                <option value="MODERATOR">MODERATOR</option>
-                                <option value="SPECIAL">SPECIAL / RECOMMENDATION</option>
+                                <option value="username">Change Username</option>
+                                <option value="email">Change Email (Requires Verification)</option>
                             </select>
                         </div>
 
-                        {/* Custom Role Input (Only shows if SPECIAL is selected) */}
-                        {appData.role === 'SPECIAL' && (
-                            <input
-                                type="text"
-                                placeholder="Specify Recommended Role"
-                                className="text-input"
-                                style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
-                                value={appData.customRole}
-                                onChange={e => setAppData({ ...appData, customRole: e.target.value })}
-                                required
-                            />
-                        )}
-
-                        {/* Reason Textarea */}
-                        <textarea
-                            placeholder="Statement of Intent: Why are you applying for this role?"
+                        <input
+                            type={identityData.type === 'email' ? 'email' : 'text'}
+                            placeholder={`New ${identityData.type}`}
                             className="text-input"
-                            style={{ width: '100%', minHeight: '80px', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem', fontFamily: 'monospace' }}
-                            value={appData.reason}
-                            onChange={e => setAppData({ ...appData, reason: e.target.value })}
+                            style={{ width: '100%', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }}
+                            value={identityData.value}
+                            onChange={e => setIdentityData({ ...identityData, value: e.target.value })}
                             required
                         />
 
-                        {appMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: appMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{appMsg}</div>}
+                        {identityMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: identityMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{identityMsg}</div>}
 
-                        <button className="btn" style={{ width: '100%', background: '#030', color: '#0f0', borderColor: '#0f0' }}>
-                            SUBMIT APPLICATION
-                        </button>
+                        <button className="btn primary-btn" style={{ width: '100%' }}>UPDATE</button>
                     </form>
                 </div>
 
-                {/* 3. SECURITY CARD */}
+                {/* 3. SECURITY CARD (Existing) */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/SECURITY</h3>
                     <form onSubmit={handlePassChange} style={{ marginTop: '1rem' }}>
@@ -231,7 +220,27 @@ const Profile = () => {
                     </form>
                 </div>
 
-                {/* 4. DELETE ACCOUNT CARD */}
+                {/* 4. ROLE APPLICATION (Existing) */}
+                <div className="tech-card" style={{ borderColor: '#0f0' }}>
+                    <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#0f0' }}>/ROLE_APPLICATION</h3>
+                    <form onSubmit={handleRoleApply} style={{ marginTop: '1rem' }}>
+                        <div style={{ marginBottom: '0.5rem' }}>
+                            <label style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '5px' }}>TARGET ROLE</label>
+                            <select className="text-input" style={{ width: '100%', background: '#000', color: '#fff', border: '1px solid #333', padding: '0.5rem' }} value={appData.role} onChange={(e) => setAppData({ ...appData, role: e.target.value })}>
+                                <option value="TESTER">TESTER</option>
+                                <option value="ADMIN">ADMINISTRATOR</option>
+                                <option value="MODERATOR">MODERATOR</option>
+                                <option value="SPECIAL">SPECIAL / RECOMMENDATION</option>
+                            </select>
+                        </div>
+                        {appData.role === 'SPECIAL' && (<input type="text" placeholder="Specify Recommended Role" className="text-input" style={{ width: '100%', marginBottom: '0.5rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem' }} value={appData.customRole} onChange={e => setAppData({ ...appData, customRole: e.target.value })} required />)}
+                        <textarea placeholder="Statement of Intent: Why are you applying for this role?" className="text-input" style={{ width: '100%', minHeight: '80px', marginBottom: '1rem', background: '#000', border: '1px solid #333', color: '#fff', padding: '0.5rem', fontFamily: 'monospace' }} value={appData.reason} onChange={e => setAppData({ ...appData, reason: e.target.value })} required />
+                        {appMsg && <div style={{ marginBottom: '0.5rem', fontSize: '0.8rem', color: appMsg.startsWith('SUCCESS') ? '#0f0' : '#f44' }}>{appMsg}</div>}
+                        <button className="btn" style={{ width: '100%', background: '#030', color: '#0f0', borderColor: '#0f0' }}>SUBMIT APPLICATION</button>
+                    </form>
+                </div>
+
+                {/* 5. DELETE ACCOUNT (Existing) */}
                 <div className="tech-card" style={{ borderColor: '#ff4444' }}>
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', color: '#ff4444' }}>/DELETE_ACCOUNT</h3>
                     <form onSubmit={handleDeleteAccount} style={{ marginTop: '1rem' }}>

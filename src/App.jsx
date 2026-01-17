@@ -31,6 +31,7 @@ import SignInPage from './components/auth/SignInPage';
 import SignUpPage from './components/auth/SignUpPage';
 import ForgotPasswordPage from './components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './components/auth/ResetPasswordPage';
+import VerifyEmailChangePage from './components/auth/VerifyEmailChangePage';
 
 // Admin
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -77,6 +78,7 @@ function App() {
           <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/verify-email-change" element={<VerifyEmailChangePage />} />
 
           {/* 2. SERVICES DASHBOARD (Public List) */}
           <Route element={<ServicesLayout />}>
