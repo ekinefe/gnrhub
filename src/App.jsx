@@ -12,12 +12,13 @@ import Services from './pages/Services/Services';
 import About from './pages/AboutMe/About';
 import Blog from './pages/Blogs/Blog';
 import VerifyEmailPage from './pages/Auth/VerifyEmailPage';
+import VerifyEmailChangePage from './pages/Auth/VerifyEmailChangePage'; // <--- FIXED IMPORT PATH
 
 // Micro-Services
 import BrandBook from './pages/Services/BrandBook/Dashboard';
 import Editor from './pages/Services/BrandBook/Editor';
-import BrandPreview from './pages/Services/BrandBook/Preview'; // Changed Component Name to match file export
-import { BrandProvider } from './pages/Services/BrandBook/context/BrandContext'; // Import Context Provider
+import BrandPreview from './pages/Services/BrandBook/Preview';
+import { BrandProvider } from './pages/Services/BrandBook/context/BrandContext';
 
 // GYM TRACKER IMPORTS
 import { GymProvider } from './pages/Services/GymTracker/context/GymContext';
@@ -31,7 +32,6 @@ import SignInPage from './components/auth/SignInPage';
 import SignUpPage from './components/auth/SignUpPage';
 import ForgotPasswordPage from './components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './components/auth/ResetPasswordPage';
-import VerifyEmailChangePage from './components/auth/VerifyEmailChangePage';
 
 // Admin
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -76,9 +76,9 @@ function App() {
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route path="/verify-email-change" element={<VerifyEmailChangePage />} /> {/* <--- ADDED ROUTE */}
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/verify-email-change" element={<VerifyEmailChangePage />} />
 
           {/* 2. SERVICES DASHBOARD (Public List) */}
           <Route element={<ServicesLayout />}>
