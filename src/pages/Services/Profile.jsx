@@ -61,10 +61,11 @@ const Profile = () => {
             const data = await res.json();
 
             if (res.ok) {
-                setUsernameMsg(`SUCCESS: ${data.message}`);
-                setUsernameVal('');
-                // Reload to reflect new username in the UI/Session
-                setTimeout(() => window.location.reload(), 1500);
+                // 1. Show the Popup Warning
+                window.alert("Username updated successfully.\n\nYou must login again to complete this change.");
+
+                // 2. Automatically Logout
+                await handleLogout();
             } else {
                 setUsernameMsg(`ERROR: ${data.error}`);
             }
@@ -200,7 +201,6 @@ const Profile = () => {
                 </div>
 
                 {/* 2. CHANGE USERNAME CARD */}
-                {/* <div className="tech-card" style={{ borderColor: 'var(--accent)' }}> */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/CHANGE_USERNAME</h3>
                     <form onSubmit={handleUsernameUpdate} style={{ marginTop: '1rem' }}>
@@ -224,7 +224,6 @@ const Profile = () => {
                 </div>
 
                 {/* 3. CHANGE EMAIL CARD */}
-                {/* <div className="tech-card" style={{ borderColor: 'var(--accent)' }}> */}
                 <div className="tech-card">
                     <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>/CHANGE_EMAIL</h3>
                     <form onSubmit={handleEmailUpdate} style={{ marginTop: '1rem' }}>
