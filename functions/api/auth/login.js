@@ -5,18 +5,21 @@ import { sign } from '../../utils/session';
 export async function onRequestPost(context) {
     try {
         const { request, env } = context;
-        const { email, password } = await request.json();
+        // Check for identifier (from frontend) or email (direct API usage)
+        const body = await request.json();
+        const identifier = body.identifier || body.email;
+        const password = body.password;
 
-        if (!email || !password) {
-            return new Response(JSON.stringify({ error: 'Email and password are required' }), {
+        if (!identifier || !password) {
+            return new Response(JSON.stringify({ error: 'Email/Username and password are required' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' },
             });
         }
 
-        // Prepare the statement to fetch the user
-        const stmt = env.DB.prepare('SELECT * FROM users WHERE email = ?');
-        const user = await stmt.bind(email).first();
+        // Prepare the statement to fetch the user by email or username
+        const stmt = env.DB.prepare('SELECT * FROM users WHERE email = ? OR username = ?');
+        const user = await stmt.bind(identifier, identifier).first();
 
         if (!user) {
             // Return generic error for security
