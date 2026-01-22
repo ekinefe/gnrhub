@@ -5,6 +5,11 @@ import { sign } from '../../utils/session';
 export async function onRequestPost(context) {
     try {
         const { request, env } = context;
+
+        if (!env.JWT_SECRET) {
+            throw new Error('JWT_SECRET is not defined in the environment variables');
+        }
+
         // Check for identifier (from frontend) or email (direct API usage)
         const body = await request.json();
         const identifier = body.identifier || body.email;
@@ -71,7 +76,7 @@ export async function onRequestPost(context) {
 
     } catch (error) {
         console.error('Login error:', error);
-        return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
+        return new Response(JSON.stringify({ error: error.message || error.toString() }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
         });
