@@ -1,36 +1,43 @@
-export async function onRequestGet(context) {
-    const db = context.env.DB;
+import { verify, getTokenFromRequest } from '../../utils/session';
 
-    // 1. EXTRACT COOKIE (Check if they are logged in at all)
-    const cookieHeader = context.request.headers.get("Cookie");
-    if (!cookieHeader || !cookieHeader.includes("auth_token=")) {
-        return new Response("Unauthorized: No Cookie", { status: 401 });
-    }
-
+export async function onRequest(context) {
     try {
-        // 2. DECODE TOKEN (Find out WHO is asking)
-        const token = cookieHeader.split('auth_token=')[1].split(';')[0];
-        const sessionData = JSON.parse(atob(token));
-        // Now we have sessionData.id
+        const { request, env } = context;
 
-        // 3. VERIFY ADMIN STATUS (Check DB using the ID we just found)
-        const user = await db.prepare('SELECT access_level FROM users WHERE id = ?')
-            .bind(sessionData.id).first();
+        // --- AUTH MIDDLEWARE START ---
+        const token = getTokenFromRequest(request);
+        const user = await verify(token, env.JWT_SECRET);
 
-        // If user doesn't exist OR is not an admin -> BLOCK THEM
-        if (!user || user.access_level !== 'admin') {
-            return new Response("Forbidden: You are not an Admin", { status: 403 });
+        if (!user) {
+            return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+                status: 401,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
 
-        // 4. FETCH ALL USERS (Only runs if the check above passes)
-        const { results } = await db.prepare(
-            'SELECT id, username, name, surname, email, access_level, created_at, last_login FROM users ORDER BY created_at DESC'
-        ).all();
+        if (user.role !== 'admin') {
+            return new Response(JSON.stringify({ error: 'Forbidden' }), {
+                status: 403,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+        // --- AUTH MIDDLEWARE END ---
 
-        // Return the list to the frontend
-        return new Response(JSON.stringify(results), { status: 200 });
+        // Protected Admin Logic
+        const stmt = env.DB.prepare('SELECT id, email, username, role, created_at FROM users LIMIT 100');
+        const { results } = await stmt.all();
 
-    } catch (err) {
-        return new Response("Server Error: " + err.message, { status: 500 });
+        return new Response(JSON.stringify({ users: results }), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+    } catch (error) {
+        console.error('Admin users error:', error);
+        return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
     }
 }

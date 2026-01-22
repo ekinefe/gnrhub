@@ -1,32 +1,49 @@
-import { parse } from 'cookie';
+import { serialize } from 'cookie';
+import { verify, getTokenFromRequest } from '../../utils/session';
 
-export async function onRequest(context) {
-    const cookieHeader = context.request.headers.get('Cookie');
-
-    // 1. If no cookie, return 401 (Not Logged In)
-    if (!cookieHeader) {
-        return new Response(JSON.stringify(null), { status: 401 });
-    }
-
-    // 2. Parse the Cookie
-    const cookies = parse(cookieHeader);
-    const token = cookies.auth_token;
-
-    if (!token) {
-        return new Response(JSON.stringify(null), { status: 401 });
-    }
-
-    // 3. Decode the Session
+export async function onRequestGet(context) {
     try {
-        // We decode the base64 token we created in login.js
-        const sessionData = JSON.parse(atob(token));
+        const { request, env } = context;
 
-        // Return the user data to the frontend
-        return new Response(JSON.stringify(sessionData), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
+        // Extract token
+        const token = getTokenFromRequest(request);
+
+        // Verify token
+        const userSession = await verify(token, env.JWT_SECRET);
+
+        if (!userSession) {
+            // Invalid or missing token
+            // Clear the cookie to be safe
+            const cookie = serialize('auth_token', '', {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'lax',
+                path: '/',
+                maxAge: 0, // Expire immediately
+            });
+
+            return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+                status: 401,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Set-Cookie': cookie,
+                },
+            });
+        }
+
+        // Token is valid, return session data
+        // Optionally fetch fresh data from DB if needed, but session data is usually enough for auth check
+        return new Response(JSON.stringify({ user: userSession }), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
-    } catch (err) {
-        return new Response(JSON.stringify(null), { status: 401 });
+
+    } catch (error) {
+        console.error('Session verify error:', error);
+        return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
     }
 }
