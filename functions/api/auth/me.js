@@ -46,6 +46,9 @@ export async function onRequestGet(context) {
         // Return sanitized user data
         const { password_hash, ...sanitizedUser } = user;
 
+        // Ensure role is present
+        sanitizedUser.role = sanitizedUser.role || 'user';
+
         return new Response(JSON.stringify({ user: sanitizedUser }), {
             headers: {
                 'Content-Type': 'application/json',
