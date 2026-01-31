@@ -81,17 +81,37 @@ const CWKeyerHardware = () => {
             {/* SCHEMATICS SECTION */}
             <h2 style={{ color: '#fff' }}>/SCHEMATICS_V3</h2>
             <div className="tech-card" style={{ padding: '0', overflow: 'hidden', marginBottom: '4rem', border: '1px solid #444' }}>
-                <div style={{ background: '#111', padding: '2rem', textAlign: 'center' }}>
-                    {/* PLACEHOLDER FOR IMAGE - Replace 'src' with your actual schematic image path later */}
-                    <div style={{
-                        border: '2px dashed #444',
-                        padding: '4rem',
-                        color: '#666',
-                        fontFamily: 'monospace'
-                    }}>
-                        [SCHEMATIC_IMAGE_PLACEHOLDER]<br />
-                        Connect V-3.0_BUILD-Schmeatic.png here
-                    </div>
+                {/* SCHEMATIC IMAGE */}
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <img
+                        src="/Blogs/CW_keyer/display-01.png"
+                        alt="Circuit Schematic"
+                        style={{
+                            width: '100%',
+                            maxWidth: '800px',
+                            border: '1px solid #444',
+                            borderRadius: '4px'
+                        }}
+                    />
+                </div>
+
+                {/* DOWNLOAD ACTIONS */}
+                <div className="btn-group" style={{ justifyContent: 'center' }}>
+                    <a href="/Blogs/CW_keyer/display-01.png" download="CW_Keyer_Schematic.png">
+                        <button className="btn secondary-btn">
+                            DOWNLOAD PNG
+                        </button>
+                    </a>
+                    <a href="/Blogs/CW_keyer/Schmeatic.pdf" download="CW_Keyer_Schematic.pdf">
+                        <button className="btn secondary-btn">
+                            DOWNLOAD PDF
+                        </button>
+                    </a>
+                    <a href="/Blogs/CW_keyer/BUILD.kicad_sch" download="CW_Keyer_Schematic.kicad_sch">
+                        <button className="btn primary-btn">
+                            DOWNLOAD KiCad FILE
+                        </button>
+                    </a>
                 </div>
                 <div style={{ padding: '2rem' }}>
                     <h3>Technical Implementation Notes:</h3>
@@ -160,7 +180,7 @@ const CWKeyerHardware = () => {
                 </div>
             </div>
 
-        </div>
+        </div >
     );
 };
 
