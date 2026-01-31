@@ -65,7 +65,7 @@ export async function onRequestPost(context) {
         });
 
         // Return sanitized user data
-        const { password_hash, ...sanitizedUser } = user;
+        const { password_hash: _password_hash, ...sanitizedUser } = user;
 
         return new Response(JSON.stringify({ user: sanitizedUser }), {
             headers: {

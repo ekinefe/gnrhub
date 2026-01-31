@@ -44,7 +44,7 @@ export async function onRequestGet(context) {
         }
 
         // Return sanitized user data
-        const { password_hash, ...sanitizedUser } = user;
+        const { password_hash: _password_hash, ...sanitizedUser } = user;
 
         // Ensure role is present
         sanitizedUser.role = sanitizedUser.role || sanitizedUser.access_level || 'user';

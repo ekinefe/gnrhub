@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { projects, getStatusClass } from './data/projects_data';
 
 const Services = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate(); // Unused
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Password Change State
-  const [passData, setPassData] = useState({ current: '', new: '' });
-  const [passMsg, setPassMsg] = useState('');
+  // const [passData, setPassData] = useState({ current: '', new: '' });
+  // const [passMsg, setPassMsg] = useState(''); // Unused (commented out UI)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -21,7 +21,7 @@ const Services = () => {
         } else {
           setUser(null);
         }
-      } catch (err) {
+      } catch (_err) {
         console.error("Failed to load profile");
         setUser(null);
       } finally {
@@ -36,6 +36,7 @@ const Services = () => {
     window.location.href = '/sign-in';
   };
 
+  /* Unused function
   const handlePassChange = async (e) => {
     e.preventDefault();
     setPassMsg('Processing...');
@@ -53,10 +54,11 @@ const Services = () => {
       } else {
         setPassMsg(`ERROR: ${data.error}`);
       }
-    } catch (err) {
+    } catch (_err) {
       setPassMsg('ERROR: Network failure');
     }
   };
+  */
 
   if (loading) return <div className="container" style={{ paddingTop: '4rem' }}>/LOADING_DIRECTORY...</div>;
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
 
@@ -12,7 +12,7 @@ import Services from './pages/Services/Services';
 import About from './pages/AboutMe/About';
 import Blog from './pages/Blogs/Blog';
 import VerifyEmailPage from './pages/Auth/VerifyEmailPage';
-import VerifyEmailChangePage from './pages/Auth/VerifyEmailChangePage'; // <--- FIXED IMPORT PATH
+import VerifyEmailChangePage from './pages/Auth/VerifyEmailChangePage';
 
 // Micro-Services
 import BrandBook from './pages/Services/BrandBook/Dashboard';

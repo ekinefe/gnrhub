@@ -28,7 +28,7 @@ const VerifyEmailPage = () => {
                     const data = await res.json();
                     setStatus(`ERROR: ${data.error}`);
                 }
-            } catch (err) {
+            } catch (_err) {
                 setStatus("ERROR: Network failure.");
             }
         };

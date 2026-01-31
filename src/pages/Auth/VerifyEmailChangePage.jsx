@@ -28,7 +28,7 @@ const VerifyEmailChangePage = () => {
                 } else {
                     setStatus(`ERROR: ${data.error}`);
                 }
-            } catch (err) {
+            } catch (_err) {
                 setStatus("Network Error");
             }
         };

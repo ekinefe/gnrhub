@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
-    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -69,7 +68,7 @@ const Profile = () => {
             } else {
                 setUsernameMsg(`ERROR: ${data.error}`);
             }
-        } catch (err) {
+        } catch (_err) {
             setUsernameMsg('ERROR: Network failure');
         }
     };
@@ -93,7 +92,7 @@ const Profile = () => {
             } else {
                 setEmailMsg(`ERROR: ${data.error}`);
             }
-        } catch (err) {
+        } catch (_err) {
             setEmailMsg('ERROR: Network failure');
         }
     };
@@ -121,7 +120,7 @@ const Profile = () => {
             } else {
                 setPassMsg(`ERROR: ${data.error}`);
             }
-        } catch (err) {
+        } catch (_err) {
             setPassMsg('ERROR: Network failure');
         }
     };
@@ -144,7 +143,7 @@ const Profile = () => {
             } else {
                 setDeleteMsg(`ERROR: ${data.error}`);
             }
-        } catch (err) {
+        } catch (_err) {
             setDeleteMsg('ERROR: Network failure');
         }
     };
@@ -170,7 +169,7 @@ const Profile = () => {
             } else {
                 setAppMsg(`ERROR: ${data.error}`);
             }
-        } catch (err) {
+        } catch (_err) {
             setAppMsg('ERROR: Network transmission failed.');
         }
     };

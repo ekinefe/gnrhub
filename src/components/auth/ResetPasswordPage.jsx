@@ -39,7 +39,7 @@ const ResetPasswordPage = () => {
             } else {
                 setStatus(`Error: ${data.error}`);
             }
-        } catch (err) {
+        } catch (_err) {
             setStatus("Network failure. Please try again.");
         } finally {
             setLoading(false);

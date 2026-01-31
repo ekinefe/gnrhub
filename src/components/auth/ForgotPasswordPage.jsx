@@ -12,7 +12,7 @@ const ForgotPasswordPage = () => {
         setStatus('');
 
         try {
-            const res = await fetch('/api/auth/forgot-password', {
+            await fetch('/api/auth/forgot-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })
@@ -20,7 +20,7 @@ const ForgotPasswordPage = () => {
 
             // Always show success message to prevent user enumeration
             setStatus("If this email exists in our records, a recovery signal has been dispatched.");
-        } catch (err) {
+        } catch (_err) {
             setStatus("System Error: signal_transmission_failed. Please retry.");
         } finally {
             setLoading(false);

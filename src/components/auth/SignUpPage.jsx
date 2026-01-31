@@ -65,7 +65,7 @@ const SignUpPage = () => {
             } else {
                 setError(data.error || "Registration failed");
             }
-        } catch (err) {
+        } catch (_err) {
             setError("Network Error. Please check your connection.");
         } finally {
             setIsLoading(false);

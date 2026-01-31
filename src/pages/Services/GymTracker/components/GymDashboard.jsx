@@ -30,7 +30,7 @@ const GymDashboard = () => {
                 setNewSessionName('');
                 fetchSessions();
             }
-        } catch (err) {
+        } catch (_err) {
             console.error("Error creating session");
         }
     };
@@ -66,7 +66,7 @@ const GymDashboard = () => {
                 setEditingSessionId(null);
                 fetchSessions();
             }
-        } catch (err) {
+        } catch (_err) {
             console.error("Update failed");
         }
     };
@@ -88,8 +88,8 @@ const GymDashboard = () => {
             if (res.ok) {
                 fetchSessions(); // Refresh list
             }
-        } catch (err) {
-            console.error("Delete failed", err);
+        } catch (_err) {
+            console.error("Delete failed", _err);
         }
     };
 

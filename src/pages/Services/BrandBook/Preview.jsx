@@ -43,20 +43,14 @@ const BrandPreview = () => {
             } else {
                 setSendStatus('error');
             }
-        } catch (error) {
+        } catch (_error) {
             setSendStatus('error');
         } finally {
             setIsSending(false);
         }
     };
 
-    const getLabel = (key) => {
-        switch (key) {
-            case 'secondaryText': return 'Secondary Text';
-            case 'secondary': return 'Secondary Color';
-            default: return key;
-        }
-    };
+
 
     return (
         <div className="brand-service-container" style={{ background: '#525659', minHeight: '100%', padding: '2rem' }}>

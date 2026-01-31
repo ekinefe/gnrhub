@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useGym } from '../context/GymContext'; // Import Context
 import '../../../../App.css';
 
 const GymSessionDetail = () => {
     const { id } = useParams(); // Get ID from URL
     const { sessions, loading, fetchSessions } = useGym();
-    const navigate = useNavigate();
 
     // Find the active session from context data
     const session = sessions.find(s => s.id.toString() === id);
@@ -67,7 +66,7 @@ const GymSessionDetail = () => {
                 setIsEditingMetrics(false);
                 fetchSessions();
             }
-        } catch (err) { console.error("Metrics failed"); }
+        } catch (_err) { console.error("Metrics failed"); }
     };
 
     // 3. Submit Exercise
@@ -113,7 +112,7 @@ const GymSessionDetail = () => {
                 setExerciseForm({ ...exerciseForm, kg: exerciseForm.kg, sets: '1', reps: '' });
                 fetchSessions();
             }
-        } catch (err) { console.error("Submit failed"); }
+        } catch (_err) { console.error("Submit failed"); }
     };
 
     // 4. Delete Exercise
@@ -126,7 +125,7 @@ const GymSessionDetail = () => {
                 body: JSON.stringify({ id: logId })
             });
             if (res.ok) fetchSessions();
-        } catch (err) { console.error("Delete failed"); }
+        } catch (_err) { console.error("Delete failed"); }
     };
 
     const startEditingLog = (log) => {

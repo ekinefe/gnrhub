@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SignInPage = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate(); // Unused
     const [formData, setFormData] = useState({ identifier: '', password: '' });
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +28,7 @@ const SignInPage = () => {
             } else {
                 setError(data.error || "Access Denied");
             }
-        } catch (err) {
+        } catch (_err) {
             setError("Network Error");
         } finally {
             setIsLoading(false);

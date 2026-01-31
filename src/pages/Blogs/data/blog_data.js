@@ -2,6 +2,7 @@ import ExampleBlog from '../contents/ExampleBlog.jsx';
 import PythonIntroduction from '../contents/PythonIntroduction/main.jsx';
 import TerminalUsage from '../contents/TerminalUsage/main.jsx';
 import BashScripting from '../contents/BashScripting/BashScripting.jsx';
+import CwKeyer from '../contents/CWKeyerHardware.jsx';
 
 // === BLOG POSTS ===
 export const posts = [
@@ -80,5 +81,14 @@ export const posts = [
       { id: "functions", title: "05_Functions", keywords: ["functions", "parameters", "return"] },
       { id: "automation", title: "06_Automation", keywords: ["automation", "script", "backup"] }
     ]
+  },
+  {
+    id: "CW_KEYER",
+    title: "CW_KEYER",
+    date: "2025-12-15",
+    tag: "CW_KEYER",
+    summary: "Getting started with Bash: Variables, Logic, Loops, Functions, Automation.",
+    keywords: ["cw", "morse", "arduino", "electronics"],
+    content: CwKeyer
   }
 ];
