@@ -28,6 +28,7 @@ import Profile from './pages/Services/Profile';
 
 // Auth
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import AdminRoute from './components/auth/AdminRoute';
 import SignInPage from './components/auth/SignInPage';
 import SignUpPage from './components/auth/SignUpPage';
 import ForgotPasswordPage from './components/auth/ForgotPasswordPage';
@@ -108,7 +109,11 @@ function App() {
             <Route path="/services/profile" element={<Profile />} />
 
             {/* ADMIN */}
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin" element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            } />
           </Route>
 
         </Route>
