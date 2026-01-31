@@ -31,9 +31,22 @@ export async function onRequestGet(context) {
             });
         }
 
-        // Token is valid, return session data
-        // Optionally fetch fresh data from DB if needed, but session data is usually enough for auth check
-        return new Response(JSON.stringify({ user: userSession }), {
+        // Fetch fresh user data from DB
+        const stmt = env.DB.prepare('SELECT * FROM users WHERE id = ?');
+        const user = await stmt.bind(userSession.id).first();
+
+        if (!user) {
+            // User deleted or invalid
+            return new Response(JSON.stringify({ error: 'User not found' }), {
+                status: 404, // OR 401 and clear cookie
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        // Return sanitized user data
+        const { password_hash, ...sanitizedUser } = user;
+
+        return new Response(JSON.stringify({ user: sanitizedUser }), {
             headers: {
                 'Content-Type': 'application/json',
             },
