@@ -17,7 +17,8 @@ export async function onRequestGet(context) {
 
         // Prepare statement
         // Note: binding name 'DB' comes from usage in login.js
-        const stmt = env.DB.prepare("UPDATE users SET role = 'ADMIN' WHERE username = ?");
+        // Updated to use 'access_level' based on schema feedback
+        const stmt = env.DB.prepare("UPDATE users SET access_level = 'ADMIN' WHERE username = ?");
         const info = await stmt.bind(username).run();
 
         if (info.success) {
