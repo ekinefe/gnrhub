@@ -84,7 +84,7 @@ const CWKeyerHardware = () => {
                 {/* SCHEMATIC IMAGE */}
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                     <img
-                        src="/Blogs/CW_keyer/display-01.png"
+                        src="/Blogs/CW_keyer/schematic.png"
                         alt="Circuit Schematic"
                         style={{
                             width: '100%',
@@ -97,7 +97,7 @@ const CWKeyerHardware = () => {
 
                 {/* DOWNLOAD ACTIONS */}
                 <div className="btn-group" style={{ justifyContent: 'center' }}>
-                    <a href="/Blogs/CW_keyer/display-01.png" download="CW_Keyer_Schematic.png">
+                    <a href="/Blogs/CW_keyer/schematic.png" download="CW_Keyer_Schematic.png">
                         <button className="btn secondary-btn">
                             DOWNLOAD PNG
                         </button>
