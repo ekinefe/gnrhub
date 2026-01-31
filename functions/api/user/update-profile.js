@@ -1,16 +1,20 @@
-import { parse } from 'cookie';
+import { verify, getTokenFromRequest } from '../../utils/session';
 
 export async function onRequestPost(context) {
-    const db = context.env.DB;
-    const cookieHeader = context.request.headers.get("Cookie");
+    const { request, env } = context;
+    const db = env.DB;
 
-    // 1. Auth Check
-    if (!cookieHeader) return new Response("Unauthorized", { status: 401 });
-    const cookies = parse(cookieHeader);
-    const token = cookies.auth_token;
-    if (!token) return new Response("Unauthorized", { status: 401 });
+    // 1. Auth Check (Secure)
+    const token = getTokenFromRequest(request);
+    const sessionData = await verify(token, env.JWT_SECRET);
 
-    const sessionData = JSON.parse(atob(token));
+    if (!sessionData) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     const userId = sessionData.id;
 
     try {
