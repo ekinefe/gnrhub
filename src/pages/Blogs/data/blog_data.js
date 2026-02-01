@@ -16,6 +16,15 @@ export const posts = [
   //   content: ExampleBlog
   // },
   {
+    id: "CW_KEYER",
+    title: "CW_KEYER",
+    date: "2025-12-15",
+    tag: "CW_KEYER",
+    summary: "Building a CW Keyer with Arduino: Hardware and Software.",
+    keywords: ["cw", "morse", "arduino", "electronics"],
+    content: CwKeyer
+  },
+  {
     id: "python-intro",
     // title: "Python: Introduction & Setup",
     title: "Python_Introduction",
@@ -65,15 +74,7 @@ export const posts = [
       { id: "search", title: "05_Search", keywords: ["grep", "find", "locate"] }
     ]
   },
-  {
-    id: "CW_KEYER",
-    title: "CW_KEYER",
-    date: "2025-12-15",
-    tag: "CW_KEYER",
-    summary: "Building a CW Keyer with Arduino: Hardware and Software.",
-    keywords: ["cw", "morse", "arduino", "electronics"],
-    content: CwKeyer
-  },
+
   {
     id: "Bash_Scripting",
     title: "Bash_Scripting",
