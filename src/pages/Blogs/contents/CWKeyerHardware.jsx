@@ -302,6 +302,18 @@ const CWKeyerHardware = () => {
                         <span style={{ color: '#0f0' }}>&gt; CLEAN_BTN</span><br />
                         Wipes buffer & display.
                     </div>
+                    <div style={{ background: '#111', padding: '1rem', border: '1px solid #333' }}>
+                        <span style={{ color: '#0f0' }}>&gt; F1_BTN</span><br />
+                        Default Action: Sends "CQ" Sequence.
+                    </div>
+                    <div style={{ background: '#111', padding: '1rem', border: '1px solid #333' }}>
+                        <span style={{ color: '#0f0' }}>&gt; F2_BTN</span><br />
+                        Default Action: Toggle Mute/Unmute.
+                    </div>
+                    <div style={{ background: '#111', padding: '1rem', border: '1px solid #333' }}>
+                        <span style={{ color: '#0f0' }}>&gt; F3-F5_BTN</span><br />
+                        Status: Empty / Programmable.
+                    </div>
                 </div>
             </div>
 

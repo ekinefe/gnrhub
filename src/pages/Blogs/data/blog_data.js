@@ -4,6 +4,8 @@ import TerminalUsage from '../contents/TerminalUsage/main.jsx';
 import BashScripting from '../contents/BashScripting/BashScripting.jsx';
 import CwKeyer from '../contents/CWKeyerHardware.jsx';
 
+import CWKeyerSoftware from '../contents/CWKeyerSoftware.jsx';
+
 // === BLOG POSTS ===
 export const posts = [
   // {
@@ -23,6 +25,16 @@ export const posts = [
     summary: "Building a CW Keyer with Arduino: Hardware and Software.",
     keywords: ["cw", "morse", "arduino", "electronics"],
     content: CwKeyer
+  },
+  {
+    id: "CW_TRAINER_DESKTOP",
+    // title: "CW_TRAINER_DESKTOP",
+    title: "CW_TRAINER",
+    date: "2026-02-02",
+    tag: "SOFTWARE",
+    summary: "The official desktop companion app for Ultimate CW Keyer. Features drills, stats, and real-time decoding.",
+    keywords: ["c++", "qt", "desktop", "training", "qt", "cpp", "serial", "build", "setup", "linux", "usage", "guide", "help"],
+    content: CWKeyerSoftware
   },
   {
     id: "python-intro",
