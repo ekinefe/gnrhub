@@ -111,13 +111,11 @@ const CWKeyerSoftware = () => {
                                 sudo apt update && sudo apt install build-essential qt6-base-dev qt6-multimedia-dev qt6-serialport-dev<br /><br />
                             </div>
                             <br />
-
                             <span style={{ color: '#888' }}># Fedora</span><br />
                             <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                                sudo dnf install gcc-c++ qt6-qtbase-devel qt6-qtmultimedia-devel qt6-qtserialport-devel<br />
+                                sudo dnf install gcc-c++ qt6-qtbase-devel qt6-qtmultimedia-devel qt6-qtserialport-devel<br /><br />
                             </div>
                             <br />
-
                             <span style={{ color: '#888' }}># Arch Linux</span><br />
                             <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
                                 sudo pacman -S base-devel qt6-base qt6-multimedia qt6-serialport
@@ -139,11 +137,31 @@ const CWKeyerSoftware = () => {
                     {/* WINDOWS */}
                     <div>
                         <strong style={{ color: 'var(--accent)', display: 'block', marginBottom: '0.5rem' }}>&gt; WINDOWS</strong>
-                        <div style={{ background: '#111', padding: '1rem', borderLeft: '3px solid #333', fontSize: '0.9rem' }}>
+                        <span style={{ color: '#888' }}># OPTION A: QT INSTALLER</span><br />
+
+                        <div style={{ background: '#111', padding: '1rem', borderLeft: '3px solid #333', fontSize: '0.9rem', marginBottom: '1rem' }}>
                             1. Download the <a href="https://www.qt.io/download-qt-installer-oss" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>Qt Online Installer</a>.<br />
                             2. Run the installer and sign in.<br />
                             3. Select <strong>Qt 6.x</strong> from the list.<br />
                             4. Ensure <strong>MinGW</strong> (or MSVC) compiler is checked under the components list.
+                        </div>
+
+                        <span style={{ color: '#888' }}># OPTION B: MSYS2 TERMINAL</span><br />
+
+                        <div style={{ background: '#111', padding: '1rem', borderLeft: '3px solid #333', fontSize: '0.9rem', fontFamily: 'monospace' }}>
+                            <span style={{ color: '#888' }}># 1. Install MSYS2 via Winget (PowerShell)</span><br />
+                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                                winget install MSYS2<br /><br />
+                            </div>
+
+                            <span style={{ color: '#888' }}># 2. Open "MSYS2 MINGW64" and run:</span><br />
+                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                                pacman -S mingw-w64-x86_64-qt6-base \<br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mingw-w64-x86_64-qt6-multimedia \<br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mingw-w64-x86_64-qt6-serialport \<br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mingw-w64-x86_64-gcc \<br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make git
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,7 +178,7 @@ const CWKeyerSoftware = () => {
                     <div>
                         <h4 style={{ margin: '0 0 0.5rem 0', color: '#ccc' }}>LINUX (Terminal)</h4>
                         <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                            cd CW_keyer/app\[C++\]/<br />
+                            cd CW_trainer-GNR/app\[C++\]/<br />
                             qmake6 UltimateCWKeyer.pro<br />
                             make -j$(nproc)<br />
                             ./UltimateCWKeyer
@@ -171,14 +189,14 @@ const CWKeyerSoftware = () => {
                     <div>
                         <h4 style={{ margin: '0 0 0.5rem 0', color: '#ccc' }}>MACOS (Terminal)</h4>
                         <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                            cd CW_keyer/app\[C++\]/<br />
+                            cd CW_trainer-GNR/app\[C++\]/<br />
                             qmake UltimateCWKeyer.pro<br />
                             make -j$(sysctl -n hw.ncpu)<br />
                             open UltimateCWKeyer.app
                         </div>
                     </div>
 
-                    {/* WINDOWS BUILD */}
+                    {/* WINDOWS BUILD (QT CREATOR) */}
                     <div>
                         <h4 style={{ margin: '0 0 0.5rem 0', color: '#ccc' }}>WINDOWS (Qt Creator)</h4>
                         <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
@@ -186,6 +204,18 @@ const CWKeyerSoftware = () => {
                             2. File &gt; Open Project...<br />
                             3. Select <code>UltimateCWKeyer.pro</code>.<br />
                             4. Click the Green <strong>Play (Run)</strong> button bottom-left.
+                        </div>
+                    </div>
+
+                    {/* WINDOWS BUILD (MSYS2) */}
+                    <div>
+                        <h4 style={{ margin: '0 0 0.5rem 0', color: '#ccc' }}>WINDOWS (MSYS2 CLI)</h4>
+                        <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                            <span style={{ color: '#666' }}># Inside MSYS2 MINGW64 Terminal</span><br />
+                            cd CW_trainer-GNR/app\[C++\]/<br />
+                            /mingw64/bin/qmake6 UltimateCWKeyer.pro<br />
+                            make -j$(nproc)<br />
+                            ./release/UltimateCWKeyer.exe
                         </div>
                     </div>
                 </div>
