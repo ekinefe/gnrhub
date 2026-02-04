@@ -77,145 +77,176 @@ const CWKeyerSoftware = () => {
             {/* INSTALLATION GUIDE */}
             <h2 id="installation" style={{ color: '#fff' }}>/INSTALLATION_PROTOCOL</h2>
 
-            {/* 1. CLONE */}
-            <div className="tech-card" style={{ marginBottom: '2rem' }}>
-                <h3>STEP 1: ACQUIRE SOURCE CODE</h3>
-                <p style={{ color: '#ccc', marginBottom: '1rem' }}>
-                    Open your terminal (Linux/macOS) or Git Bash / PowerShell (Windows) and run:
+            {/* LEVEL 1: DIRECT DOWNLOAD (EASIEST) */}
+            <div className="tech-card" style={{ marginBottom: '4rem', borderColor: 'var(--accent)' }}>
+                <h3 style={{ color: 'var(--accent)' }}>METHOD 1: DIRECT DOWNLOAD (RECOMMENDED)</h3>
+                <p style={{ marginBottom: '1.5rem', color: '#ccc' }}>
+                    Use this method if you just want to use the app without writing code.
                 </p>
-                <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#0f0', fontFamily: 'monospace' }}>
-                    git clone https://github.com/ekinefe/CW_trainer-GNR.git
-                </div>
-                <div style={{ marginTop: '1rem' }}>
-                    <a href="https://github.com/ekinefe/CW_trainer-GNR" target="_blank" rel="noopener noreferrer">
-                        <button className="btn primary-btn">
-                            VIEW ON GITHUB
-                        </button>
-                    </a>
-                </div>
-            </div>
-
-            {/* 2. DEPENDENCIES */}
-            <div className="tech-card" style={{ marginBottom: '2rem' }}>
-                <h3>STEP 2: INSTALL DEPENDENCIES</h3>
-                <p style={{ marginBottom: '1rem' }}>You need a C++ Compiler (GCC/Clang/MSVC) and the Qt 6 Development libraries.</p>
-
-                <div style={{ display: 'grid', gap: '1rem' }}>
-
-                    {/* LINUX */}
-                    <div>
-                        <strong style={{ color: 'var(--accent)', display: 'block', marginBottom: '0.5rem' }}>&gt; LINUX DISTRIBUTIONS</strong>
-                        <div style={{ background: '#111', padding: '1rem', borderLeft: '3px solid #333', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                            <span style={{ color: '#888' }}># Ubuntu / Debian</span><br />
-                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                                sudo apt update && sudo apt install build-essential qt6-base-dev qt6-multimedia-dev qt6-serialport-dev<br /><br />
-                            </div>
-                            <br />
-                            <span style={{ color: '#888' }}># Fedora</span><br />
-                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                                sudo dnf install gcc-c++ qt6-qtbase-devel qt6-qtmultimedia-devel qt6-qtserialport-devel<br /><br />
-                            </div>
-                            <br />
-                            <span style={{ color: '#888' }}># Arch Linux</span><br />
-                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                                sudo pacman -S base-devel qt6-base qt6-multimedia qt6-serialport
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* MACOS */}
-                    <div>
-                        <strong style={{ color: 'var(--accent)', display: 'block', marginBottom: '0.5rem' }}>&gt; MACOS</strong>
-                        <div style={{ background: '#111', padding: '1rem', borderLeft: '3px solid #333', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                            <span style={{ color: '#888' }}># Using Homebrew</span><br />
-                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                                brew install qt
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* WINDOWS */}
-                    <div>
-                        <strong style={{ color: 'var(--accent)', display: 'block', marginBottom: '0.5rem' }}>&gt; WINDOWS</strong>
-                        <span style={{ color: '#888' }}># OPTION A: QT INSTALLER</span><br />
-
-                        <div style={{ background: '#111', padding: '1rem', borderLeft: '3px solid #333', fontSize: '0.9rem', marginBottom: '1rem' }}>
-                            1. Download the <a href="https://www.qt.io/download-qt-installer-oss" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>Qt Online Installer</a>.<br />
-                            2. Run the installer and sign in.<br />
-                            3. Select <strong>Qt 6.x</strong> from the list.<br />
-                            4. Ensure <strong>MinGW</strong> (or MSVC) compiler is checked under the components list.
-                        </div>
-
-                        <span style={{ color: '#888' }}># OPTION B: MSYS2 TERMINAL</span><br />
-
-                        <div style={{ background: '#111', padding: '1rem', borderLeft: '3px solid #333', fontSize: '0.9rem', fontFamily: 'monospace' }}>
-                            <span style={{ color: '#888' }}># 1. Install MSYS2 via Winget (PowerShell)</span><br />
-                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                                winget install MSYS2<br /><br />
-                            </div>
-
-                            <span style={{ color: '#888' }}># 2. Open "MSYS2 MINGW64" and run:</span><br />
-                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                                pacman -S mingw-w64-x86_64-qt6-base \<br />
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mingw-w64-x86_64-qt6-multimedia \<br />
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mingw-w64-x86_64-qt6-serialport \<br />
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mingw-w64-x86_64-gcc \<br />
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make git
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* 3. COMPILE */}
-            <div className="tech-card" style={{ marginBottom: '4rem' }}>
-                <h3>STEP 3: COMPILATION</h3>
-                <p style={{ marginBottom: '1rem' }}>Execute the following commands based on your OS to build the binary.</p>
 
                 <div style={{ display: 'grid', gap: '2rem', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
 
-                    {/* LINUX BUILD */}
+                    {/* WINDOWS EASY */}
                     <div>
-                        <h4 style={{ margin: '0 0 0.5rem 0', color: '#ccc' }}>LINUX (Terminal)</h4>
-                        <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                            cd CW_trainer-GNR/app\[C++\]/<br />
-                            qmake6 UltimateCWKeyer.pro<br />
-                            make -j$(nproc)<br />
-                            ./UltimateCWKeyer
+                        <strong style={{ color: '#fff', display: 'block', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
+                            &gt; WINDOWS USERS
+                        </strong>
+                        <div style={{ background: '#111', padding: '1.5rem', borderLeft: '3px solid #0f0' }}>
+                            <ol style={{ margin: 0, paddingLeft: '1.2rem', lineHeight: '1.8', color: '#ccc', fontSize: '0.95rem' }}>
+                                <li>
+                                    Open the <a href="https://github.com/ekinefe/CW_trainer-GNR/tree/main/Download/Windows" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>GitHub Releases Page</a>.
+                                </li>
+                                <li>
+                                    Find the latest version (e.g., <strong>v1.0.0</strong>) at the top.
+                                </li>
+                                <li>
+                                    Click on <strong>UltimateCWKeyer_Windows.exe</strong> (or .zip) to download it.
+                                </li>
+                                <li>
+                                    Double-click the downloaded file to run it.
+                                </li>
+                                <li style={{ marginTop: '0.5rem', background: '#222', padding: '0.5rem', borderRadius: '4px' }}>
+                                    <span style={{ color: '#ffaa00' }}>⚠️ SYSTEM WARNING?</span><br />
+                                    If Windows says <em>"Windows protected your PC"</em>:<br />
+                                    1. Click <strong><u>More info</u></strong>.<br />
+                                    2. Click the <strong>Run anyway</strong> button.<br />
+                                    <small>(This happens because we are an indie developer, not a corporation).</small>
+                                </li>
+                            </ol>
                         </div>
                     </div>
 
-                    {/* MACOS BUILD */}
+                    {/* LINUX EASY */}
                     <div>
-                        <h4 style={{ margin: '0 0 0.5rem 0', color: '#ccc' }}>MACOS (Terminal)</h4>
-                        <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                            cd CW_trainer-GNR/app\[C++\]/<br />
-                            qmake UltimateCWKeyer.pro<br />
-                            make -j$(sysctl -n hw.ncpu)<br />
-                            open UltimateCWKeyer.app
+                        <strong style={{ color: '#fff', display: 'block', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
+                            &gt; LINUX USERS
+                        </strong>
+                        <div style={{ background: '#111', padding: '1.5rem', borderLeft: '3px solid #0f0' }}>
+                            <ol style={{ margin: 0, paddingLeft: '1.2rem', lineHeight: '1.8', color: '#ccc', fontSize: '0.95rem' }}>
+                                <li>
+                                    Open the <a href="https://github.com/ekinefe/CW_trainer-GNR/tree/main/Download/Linux" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>GitHub Releases Page</a>.
+                                </li>
+                                <li>
+                                    Download the file ending in <strong>.AppImage</strong> (Universal) or <strong>.deb</strong> (Ubuntu/Debian).
+                                </li>
+                                <li>
+                                    <strong>For AppImage:</strong>
+                                    <ul style={{ marginTop: '0.5rem' }}>
+                                        <li>Right-click the file &gt; <strong>Properties</strong>.</li>
+                                        <li>Go to the <strong>Permissions</strong> tab.</li>
+                                        <li>Check <strong>"Allow executing file as program"</strong>.</li>
+                                        <li>Double-click to run.</li>
+                                    </ul>
+                                </li>
+                            </ol>
                         </div>
                     </div>
 
-                    {/* WINDOWS BUILD (QT CREATOR) */}
+                    {/* MACOS WARNING */}
                     <div>
-                        <h4 style={{ margin: '0 0 0.5rem 0', color: '#ccc' }}>WINDOWS (Qt Creator)</h4>
-                        <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                            1. Open <strong>Qt Creator</strong>.<br />
-                            2. File &gt; Open Project...<br />
-                            3. Select <code>UltimateCWKeyer.pro</code>.<br />
-                            4. Click the Green <strong>Play (Run)</strong> button bottom-left.
+                        <strong style={{ color: '#888', display: 'block', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
+                            &gt; MACOS USERS
+                        </strong>
+                        <div style={{ background: '#111', padding: '1.5rem', borderLeft: '3px solid #666', color: '#888', fontStyle: 'italic' }}>
+                            There is currently no pre-made file for macOS. Please use <strong>METHOD 2</strong> below to build it yourself.
                         </div>
                     </div>
 
-                    {/* WINDOWS BUILD (MSYS2) */}
-                    <div>
-                        <h4 style={{ margin: '0 0 0.5rem 0', color: '#ccc' }}>WINDOWS (MSYS2 CLI)</h4>
-                        <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                            <span style={{ color: '#666' }}># Inside MSYS2 MINGW64 Terminal</span><br />
-                            cd CW_trainer-GNR/app\[C++\]/<br />
-                            /mingw64/bin/qmake6 UltimateCWKeyer.pro<br />
-                            make -j$(nproc)<br />
-                            ./release/UltimateCWKeyer.exe
+                </div>
+            </div>
+
+            {/* LEVEL 2: BUILD FROM SOURCE */}
+            <div className="tech-card" style={{ marginBottom: '2rem' }}>
+                <h3 style={{ color: '#888' }}>METHOD 2: BUILD FROM SOURCE (ADVANCED)</h3>
+                <p style={{ marginBottom: '1.5rem', color: '#ccc' }}>
+                    Use this method if you are on macOS or want to modify the code.
+                </p>
+
+                {/* 1. CLONE */}
+                <div style={{ marginBottom: '2rem' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#fff' }}>STEP 1: DOWNLOAD SOURCE</h4>
+                    <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#0f0', fontFamily: 'monospace' }}>
+                        git clone https://github.com/ekinefe/CW_trainer-GNR.git
+                    </div>
+                </div>
+
+                {/* 2. DEPENDENCIES */}
+                <div style={{ marginBottom: '2rem' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#fff' }}>STEP 2: INSTALL TOOLS</h4>
+                    <p style={{ fontSize: '0.9rem', color: '#aaa', marginBottom: '1rem' }}>
+                        Copy the command for your Operating System and paste it into your Terminal.
+                    </p>
+
+                    <div style={{ display: 'grid', gap: '1rem' }}>
+                        {/* MACOS */}
+                        <div>
+                            <strong style={{ color: 'var(--accent)' }}>&gt; MACOS (Homebrew)</strong>
+                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                                brew install qt
+                            </div>
+                        </div>
+
+                        {/* LINUX */}
+                        <div>
+                            <strong style={{ color: 'var(--accent)' }}>&gt; LINUX (Ubuntu/Debian)</strong>
+                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                                sudo apt update && sudo apt install build-essential qt6-base-dev qt6-multimedia-dev qt6-serialport-dev
+                            </div>
+                        </div>
+
+                        {/* WINDOWS SOURCE */}
+                        <div>
+                            <strong style={{ color: 'var(--accent)' }}>&gt; WINDOWS (Select One Path)</strong>
+
+                            {/* PATH A: QT CREATOR */}
+                            <div style={{ marginTop: '0.5rem', marginBottom: '1rem', padding: '1rem', background: '#111', borderLeft: '2px solid #ccc' }}>
+                                <span style={{ color: '#fff', fontWeight: 'bold' }}>Path A: Qt Creator (Visual)</span><br />
+                                <span style={{ fontSize: '0.9rem', color: '#ccc' }}>
+                                    1. Download installer from <a href="https://www.qt.io/download-qt-installer-oss" style={{ color: 'var(--accent)' }}>qt.io</a>.<br />
+                                    2. Install <strong>Qt 6.x</strong> + <strong>MinGW Compiler</strong>.<br />
+                                    3. Open the project in Qt Creator and click Run.
+                                </span>
+                            </div>
+
+                            {/* PATH B: MSYS2 */}
+                            <div style={{ padding: '1rem', background: '#111', borderLeft: '2px solid #ccc' }}>
+                                <span style={{ color: '#fff', fontWeight: 'bold' }}>Path B: MSYS2 (Terminal)</span><br />
+                                <div style={{ background: '#000', padding: '0.8rem', marginTop: '0.5rem', color: '#0f0', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                                    # 1. Open PowerShell & Install MSYS2<br />
+                                    winget install MSYS2<br /><br />
+                                    # 2. Open "MSYS2 MINGW64" & Install Deps<br />
+                                    pacman -S mingw-w64-x86_64-qt6-base mingw-w64-x86_64-qt6-multimedia mingw-w64-x86_64-qt6-serialport mingw-w64-x86_64-gcc make git
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. COMPILE */}
+                <div>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#fff' }}>STEP 3: BUILD & RUN</h4>
+                    <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+
+                        {/* UNIX BUILD */}
+                        <div>
+                            <span style={{ color: '#ccc', fontSize: '0.9rem' }}>LINUX / MACOS:</span>
+                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                                cd CW_trainer-GNR/app\[C++\]/<br />
+                                qmake6 UltimateCWKeyer.pro<br />
+                                make -j$(nproc)<br />
+                                ./UltimateCWKeyer
+                            </div>
+                        </div>
+
+                        {/* WINDOWS BUILD */}
+                        <div>
+                            <span style={{ color: '#ccc', fontSize: '0.9rem' }}>WINDOWS (MSYS2):</span>
+                            <div style={{ background: '#000', padding: '1rem', border: '1px solid #333', color: '#ccc', fontFamily: 'monospace', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                                cd CW_trainer-GNR/app\[C++\]/<br />
+                                /mingw64/bin/qmake6 UltimateCWKeyer.pro<br />
+                                make -j$(nproc)<br />
+                                ./release/UltimateCWKeyer.exe
+                            </div>
                         </div>
                     </div>
                 </div>
