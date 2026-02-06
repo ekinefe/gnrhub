@@ -224,11 +224,45 @@ const BrandPreview = () => {
                     </section>
                 )}
 
+                {/* 6. TEAM MEMBERS */}
+                {!skips.team && (
+                    <section style={{ marginBottom: '4rem' }}>
+                        <h3 style={{ textTransform: 'uppercase', fontSize: '0.9rem', letterSpacing: '2px', color: '#999', marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+                            06. Team Members
+                        </h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '2rem' }}>
+                            {team.map(member => (
+                                <div key={member.id} style={{ border: '1px solid #eee', padding: '1.5rem', borderRadius: '8px', textAlign: 'center' }}>
+                                    {member.photo && (
+                                        <div style={{ marginBottom: '1rem' }}>
+                                            {/* Handling both File objects and URL strings for preview */}
+                                            <img
+                                                src={typeof member.photo === 'object' ? URL.createObjectURL(member.photo) : member.photo}
+                                                alt={member.name}
+                                                style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', background: '#f0f0f0' }}
+                                            />
+                                        </div>
+                                    )}
+                                    <h4 style={{ margin: '0 0 0.5rem 0', color: colors.primary }}>{member.name}</h4>
+                                    <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', fontWeight: 'bold', color: '#555' }}>{member.title}</p>
+                                    <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', lineHeight: '1.5' }}>{member.bio}</p>
+
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', fontSize: '0.8rem' }}>
+                                        {member.Contact && <span style={{ color: '#888' }}>📧 {member.Contact}</span>}
+                                        {member.link1 && <a href={member.link1} target="_blank" rel="noopener noreferrer" style={{ color: colors.primary, textDecoration: 'none' }}>🔗 Link 1</a>}
+                                        {member.link2 && <a href={member.link2} target="_blank" rel="noopener noreferrer" style={{ color: colors.primary, textDecoration: 'none' }}>🔗 Link 2</a>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
                 {/* 7. CONTACT & SOCIALS */}
                 {(!skips.contact) && (
                     <section>
                         <h3 style={{ textTransform: 'uppercase', fontSize: '0.9rem', letterSpacing: '2px', color: '#999', marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
-                            06. Contact Info
+                            07. Contact Info
                         </h3>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                             <div>
@@ -238,11 +272,13 @@ const BrandPreview = () => {
                                 {contact.address && <p style={{ margin: '0 0 0.5rem 0' }}><strong>Address:</strong> {contact.address}</p>}
                             </div>
                             <div>
-                                {socials.map(s => (
-                                    <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: colors.primary, textDecoration: 'none', marginBottom: '0.5rem' }}>
-                                        {s.platform} →
-                                    </a>
-                                ))}
+                                <div>
+                                    {socials.filter(s => s.url).map(s => (
+                                        <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: colors.primary, textDecoration: 'none', marginBottom: '0.5rem' }}>
+                                            {s.platform || 'Link'} →
+                                        </a>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </section>
