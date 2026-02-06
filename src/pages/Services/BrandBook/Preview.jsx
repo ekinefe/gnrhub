@@ -105,8 +105,10 @@ const BrandPreview = () => {
                 {/* 1. HEADER section */}
                 <header style={{ textAlign: 'center', marginBottom: '4rem', borderBottom: '2px solid #eee', paddingBottom: '3rem' }}>
                     {!skips.logo && logos.length > 0 && (
-                        <div style={{ marginBottom: '2rem' }}>
-                            <img src={logos[0].preview} alt="Primary Logo" style={{ height: '120px', objectFit: 'contain' }} />
+                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                            {logos.map((logo, index) => (
+                                <img key={logo.id || index} src={logo.preview} alt={`Logo ${index + 1}`} style={{ height: '120px', objectFit: 'contain' }} />
+                            ))}
                         </div>
                     )}
                     {!skips.brandName && (
@@ -272,9 +274,9 @@ const BrandPreview = () => {
                                     <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', lineHeight: '1.5' }}>{member.bio || 'Member bio goes here...'}</p>
 
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', fontSize: '0.8rem' }}>
-                                        {member.Contact && <span style={{ color: '#888' }}>📧 {member.Contact}</span>}
-                                        {member.link1 && <a href={member.link1} target="_blank" rel="noopener noreferrer" style={{ color: colors.primary, textDecoration: 'none' }}>🔗 Link 1</a>}
-                                        {member.link2 && <a href={member.link2} target="_blank" rel="noopener noreferrer" style={{ color: colors.primary, textDecoration: 'none' }}>🔗 Link 2</a>}
+                                        {member.Contact ? <span style={{ color: '#888' }}>📧 {member.Contact}</span> : <span style={{ fontStyle: 'italic', color: '#ccc' }}>No Email</span>}
+                                        {member.link1 && <a href={member.link1} target="_blank" rel="noopener noreferrer" style={{ color: colors.primary, textDecoration: 'none' }}>🔗 {member.link1}</a>}
+                                        {member.link2 && <a href={member.link2} target="_blank" rel="noopener noreferrer" style={{ color: colors.primary, textDecoration: 'none' }}>🔗 {member.link2}</a>}
                                     </div>
                                 </div>
                             ))}
@@ -299,7 +301,7 @@ const BrandPreview = () => {
                                 <div>
                                     {socials.filter(s => s.url).map(s => (
                                         <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: colors.primary, textDecoration: 'none', marginBottom: '0.5rem' }}>
-                                            {s.platform || 'Link'} →
+                                            {s.platform || 'Link'} → {s.url}
                                         </a>
                                     ))}
                                 </div>
