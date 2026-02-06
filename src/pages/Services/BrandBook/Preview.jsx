@@ -267,9 +267,9 @@ const BrandPreview = () => {
                                             />
                                         </div>
                                     )}
-                                    <h4 style={{ margin: '0 0 0.5rem 0', color: colors.primary }}>{member.name}</h4>
-                                    <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', fontWeight: 'bold', color: '#555' }}>{member.title}</p>
-                                    <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', lineHeight: '1.5' }}>{member.bio}</p>
+                                    <h4 style={{ margin: '0 0 0.5rem 0', color: colors.primary }}>{member.name || 'Member Name'}</h4>
+                                    <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', fontWeight: 'bold', color: '#555' }}>{member.title || 'Job Title'}</p>
+                                    <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', lineHeight: '1.5' }}>{member.bio || 'Member bio goes here...'}</p>
 
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', fontSize: '0.8rem' }}>
                                         {member.Contact && <span style={{ color: '#888' }}>📧 {member.Contact}</span>}
