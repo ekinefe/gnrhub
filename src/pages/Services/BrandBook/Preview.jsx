@@ -6,8 +6,32 @@ import './BrandBook.css';
 
 const BrandPreview = () => {
     const { brandData } = useBrand();
-    const { colors, typography, brandName, brandSlogan, skips, assets, company, voice, ui, contact, socials } = brandData;
-    const logos = assets.logos || [];
+
+    // Prevent crash if brandData is not yet loaded
+    if (!brandData) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#333', color: 'white' }}>
+                <p>Loading Preview...</p>
+            </div>
+        );
+    }
+
+    const {
+        colors = {},
+        typography = {},
+        brandName = '',
+        brandSlogan = '',
+        skips = {},
+        assets = {},
+        company = {},
+        voice = {},
+        ui = {},
+        contact = {},
+        socials = [],
+        team = []
+    } = brandData;
+
+    const logos = assets?.logos || [];
 
     const [isSending, setIsSending] = useState(false);
     const [sendStatus, setSendStatus] = useState(null);
